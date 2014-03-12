@@ -1,0 +1,119 @@
+body {
+  font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS PGothic',sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+#login-contents {
+  width: 400px;
+}
+
+#login {
+  width: 300px;
+  height: 40px;
+  font-size: 20px;
+  background: #3588cc;
+  margin: 40px auto;
+  color: white;
+  display: none;
+}
+
+#login:hover {
+  opacity: 0.9;
+}
+
+#header {
+  position: fixed;
+  width: 400px;
+  height: 30px;
+  top: 0;
+  left: 0;
+  background: white;
+}
+
+#header img:hover {
+  opacity: 0.5;
+}
+
+#logo {
+  margin-top: 7px;
+  margin-left: 6px;
+  margin-right: 280px;
+  vertical-align: top;
+}
+
+#refresh,#option,#logout,#open_newurl {
+  margin-top: 5px;
+  vertical-align: top;
+}
+
+#tweet-contents {
+  padding-top: 32px;
+  width: 400px;
+}
+
+#tweet-contents a {
+  font-size: 13.7px;
+  color: blue;
+  text-decoration: none;
+}
+
+#tweets {
+  width: 380px;
+}
+
+#tweets > .tweet {
+  width: 360px;
+  padding: 8px;
+  padding-left: 13px;
+}
+
+#tweets > .tweet > .tweet-icon {
+  float: left;
+  width: 50px;
+  margin-top: 8px;
+}
+
+#tweets > .tweet > .tweet-detail {
+  float: right;
+  width: 290px;
+  margin: 10px;
+}
+
+#tweets > .tweet > .tweet-detail > pre {
+  word-wrap: break-word;
+  line-height: 18px;
+  margin: 5px 0px;
+}
+
+#tweets > .tweet > .tweet-info {
+  float: right;
+  padding: 5px 0px;
+}
+
+#tweets > .tweet > .tweet-info > ul {
+  padding-left: 0px;
+}
+
+#tweets > .tweet > .tweet-info > ul > li {
+  list-style: none;
+  float: left;
+  margin-right: 5px;
+}
+
+#tweets > .tweet > .tweet-info > ul > li > a {
+  font-size: 12px;
+}
+
+.clearfix {
+  clear: both;
+  content: "";
+  display: block;
+}
+
+#error {
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}

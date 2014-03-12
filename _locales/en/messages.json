@@ -1,0 +1,9 @@
+{
+  "appName": {
+    "message": "favurl"
+  },
+  "appDesc": {
+    "message": "This app help you make better use of favorite in Twitter.", 
+    "description": "This app display favorite tweet with url. This is useful when you see url that you tentatively favorite later.\nIf you use option, you can non-display it with URL of photo or movie or tweet or location servise. This option is ON by default."
+  }
+}
