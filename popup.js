@@ -12,7 +12,6 @@
 
     document.getElementById("logout").onclick = function() {
         twitter.logout();
-        //location.reload();
     };
 
     document.getElementById("refresh").onclick = function() {

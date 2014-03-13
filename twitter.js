@@ -109,6 +109,7 @@ Twitter.prototype.sign = function(pin, cb) {
         "type": "GET",
         "url": OAuth.addToURL(message.action, message.parameters),
         "success": $.proxy(function(data) {
+
             var params = this.parseToken(data);
 
             this.save(params.oauth_token, params.oauth_token_secret, params.user_id);
@@ -192,7 +193,9 @@ Twitter.prototype.saveFavorites = function() {
         "url": OAuth.addToURL(message.action, message.parameters),
         "dataType": "json",
         "success": function(tweets) {
-            chrome.storage.local.set({tweets: tweets}, function() {});
+
+            localStorage["older_tweets"] = JSON.stringify(tweets);
+
         }
     });
 }
@@ -263,16 +266,15 @@ Twitter.prototype.openNewURLsOnStart = function() {
         "dataType": "json",
         "success": function(new_tweets) {
 
-            chrome.storage.local.get([ "tweets" ], function(old_tweets) { // get added_tweets
-                if (!old_tweets.tweets) { // There isn't old tweet, old_tweets.tweets is undefined
+            var olderTweets = JSON.parse(localStorage["older_tweets"]);
+            if (!olderTweets) { // There isn't old tweet, old_tweets.tweets is undefined
                     window.open("./NotSetOldTweet.html");
-                } else {
-                    getNewFavURL(old_tweets.tweets, new_tweets);
-                }
-            });
+            } else {
+                    getNewFavURL(olderTweets, new_tweets);
+            }
 
-            chrome.storage.local.set({ tweets: new_tweets }, function() {});
-            chrome.storage.local.set({ old_tweets: new_tweets }, function() {});      
+            localStorage["older_tweets"] = JSON.stringify(new_tweets);
+            localStorage["oldest_tweets"] = JSON.stringify(new_tweets);
         },
 
         "error": function(xhr) {
@@ -281,20 +283,17 @@ Twitter.prototype.openNewURLsOnStart = function() {
     });
 }
 
-Twitter.prototype.openNewURLsOnPopup = function() {
-    chrome.storage.local.get([ "tweets" ], function(new_tweets) {
-        chrome.storage.local.get([ "old_tweets" ], function(old_tweets) {
-            //console.log(JSON.stringify("old"+old_tweets.old_tweets));
-            //console.log(JSON.stringify("new"+new_tweets.tweets));
-            if (!old_tweets.old_tweets) { // there isn't old tweet, old_tweets.old_tweets is undefined.
-                window.open("./NotSetOldTweet.html");
-            } else {
-                getNewFavURL(old_tweets.old_tweets, new_tweets.tweets);
-            }       
-        });
+Twitter.prototype.openNewURLsOnPopup = function() {    
+    var olderTweets = JSON.parse(localStorage["older_tweets"]);
+    var oldestTweets = JSON.parse(localStorage["oldest_tweets"]); 
 
-        chrome.storage.local.set({ old_tweets: new_tweets.tweets }, function() {});
-    });  
+    if (!oldestTweets) { // there isn't oldest tweet, localStorage["oldest_tweets"] is undefined.
+        window.open("./NotSetOldTweet.html");
+    } else {
+        getNewFavURL(oldestTweets, olderTweets);
+    }
+
+    localStorage["oldest_tweets"] = JSON.stringify(olderTweets);
 }
 
 Twitter.prototype.fetchFavorites = function(elm) {
@@ -325,7 +324,8 @@ Twitter.prototype.fetchFavorites = function(elm) {
         "url": OAuth.addToURL(message.action, message.parameters),
         "dataType": "json",
         "success": function(tweets) {
-            chrome.storage.local.set({tweets: tweets}, function() {});
+
+            localStorage["older_tweets"] = JSON.stringify(tweets);
 
             var root = $("<div>").attr("id", "tweets");
             var remove_pic = localStorage["remove_pic"]; //on or off(set by optionpage) or undefined(not set)
@@ -383,6 +383,7 @@ Twitter.prototype.fetchFavorites = function(elm) {
             $(elm).append(root);
         },
         "error": function(xhr) {
+
         	// https://dev.twitter.com/docs/error-codes-responses
             var root = $("<div>").attr("id", "tweets");
             if (xhr.status === 401) { // for unauthorized

@@ -19,13 +19,13 @@ chrome.runtime.onStartup.addListener(function() {
     // execute only when chrome start
     if (getTwitterAPI().isAuthenticated) {
         if (localStorage["auto_open"] !== "off") {
-            console.log("on");
+            //console.log("on");
             getTwitterAPI().openNewURLsOnStart();
         } else {
-            console.log("off");
-            chrome.storage.local.get([ "tweets" ], function(old_tweets) {
-                chrome.storage.local.set({ old_tweets: old_tweets.tweets }, function() {});
-            });
+            //console.log("off");
+            var olderTweets = localStorage["older_tweets"];
+            localStorage["oldest_tweets"] = olderTweets; // use open new url on popup
+            
         }
     
         // event occur every 15 minutes
@@ -37,7 +37,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     if (alarm) {
         if (alarm.name == 'save') {
             getTwitterAPI().saveFavorites();
-            console.log("alarm!!");
+            //console.log(new Date + "alarm!!");
     　　　}
   　　}
 });
