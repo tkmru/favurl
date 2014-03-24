@@ -23,7 +23,7 @@
     }
     
     document.getElementById("option").onclick = function() {
-        window.open("chrome-extension://lfigaiipdofkibbekkhkdbkjhilfbcom/options.html");
+        window.open("chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/options.html");
     };
 
     if (twitter.isAuthenticated()) {
