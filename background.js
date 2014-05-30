@@ -11,14 +11,15 @@ function getTwitterAPI() {
 
 
 // This function receive request content_script.js send.
-chrome.extension.onRequest.addListener(function(req, sender, res) {
+chrome.runtime.onMessage.addListener(function(req, sender, res) {
 	getTwitterAPI().sign(req.verifier, res);
+    return true;
 });
 
 chrome.runtime.onStartup.addListener(function() {
     // execute only when chrome start
     if (getTwitterAPI().isAuthenticated) {
-        if (localStorage["auto_open"] !== "off") {
+        if (localStorage["auto_open"] === "on") {
             //console.log("on");
             getTwitterAPI().openNewURLsOnStart();
         } else {
@@ -34,10 +35,8 @@ chrome.runtime.onStartup.addListener(function() {
 });
 
 chrome.alarms.onAlarm.addListener(function(alarm) {
-    if (alarm) {
-        if (alarm.name == 'save') {
-            getTwitterAPI().saveFavorites();
-            //console.log(new Date + "alarm!!");
-    　　　}
-  　　}
+    if (alarm.name === 'save') {
+        getTwitterAPI().saveFavorites();
+        //console.log(new Date + "alarm!!");
+    }
 });

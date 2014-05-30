@@ -174,7 +174,7 @@ Twitter.prototype.saveFavorites = function() {
             "oauth_consumer_key": CONSUMER_KEY,
             "oauth_signature_method": "HMAC-SHA1",
             "oauth_token": this.getAccessToken(),
-            "count": 100,
+            "count": 200,
             "include_rts": true,
             "include_entities": true
         }
@@ -246,7 +246,7 @@ Twitter.prototype.openNewURLsOnStart = function() {
             "oauth_consumer_key": CONSUMER_KEY,
             "oauth_signature_method": "HMAC-SHA1",
             "oauth_token": this.getAccessToken(),
-            "count": 100,
+            "count": 200,
             "include_rts": true,
             "include_entities": true
         }
@@ -305,7 +305,7 @@ Twitter.prototype.fetchFavorites = function(elm) {
             "oauth_consumer_key": CONSUMER_KEY,
             "oauth_signature_method": "HMAC-SHA1",
             "oauth_token": this.getAccessToken(),
-            "count": 100,
+            "count": 200,
             "include_rts": true,
             "include_entities": true
         }

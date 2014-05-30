@@ -1,40 +1,67 @@
 (function(undefined) {
-    var bgPage = chrome.extension.getBackgroundPage();
-    var twitter = bgPage.getTwitterAPI();
+    var bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
+        var twitter = bgPage.getTwitterAPI();
 
-    document.getElementById("login").onclick = function() {
-        twitter.login();
-    };
+        $("#login").click(function() {
+            twitter.login();
+        });
 
-    document.getElementById("logo").onclick = function() {
-        window.open("https:/twitter.com");
-    };
+        $("#logout").click(function() {
+            twitter.logout();
+            location.reload();
+        });
 
-    document.getElementById("logout").onclick = function() {
-        twitter.logout();
-    };
+        $("#open_newurl").click(function() {
+            twitter.openNewURLsOnPopup();        
+        });  
 
-    document.getElementById("refresh").onclick = function() {
-        location.reload();
-    };
-
-    document.getElementById("open_newurl").onclick = function() {
-        twitter.openNewURLsOnPopup();        
-    }
-    
-    document.getElementById("option").onclick = function() {
-        window.open("chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/options.html");
-    };
-
-    if (twitter.isAuthenticated()) {
-    	document.getElementById("login").style.display = "none";
-    	document.getElementById("tweet-contents").style.display = "block";
-        var root = document.querySelector("#tweet-contents");
-        twitter.fetchFavorites(root);
+        if (twitter.isAuthenticated()) {
+    	    $("#login").css('display', 'none');
+            $("#tweet-contents").show();
+            var root = $("#tweet-contents");
+            twitter.fetchFavorites(root);
         
-    } else {
-    	document.getElementById("login").style.display = "block";
-        document.getElementById("header").style.display = "none";
-        document.getElementById("tweet-contents").style.display = "none";
-    }
+        } else {
+    	    $('#login').css('display', 'block');
+            $('#header').hide();
+            $('#tweet-contents').hide();
+        }
+    });
 })();
+
+
+$("#logo").click(function() {
+    window.open("https:/twitter.com");
+});
+
+$("#option").click(function() {
+    window.open("chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/options.html");
+});
+
+$("#refresh").click(function() {
+    location.reload();
+});
+
+$('#search').click(function() {
+    $('#search').hide();
+    $('#back').show('fast');
+    $('#tweets').css('display', 'none');
+    $('#search-contents').show();
+});
+
+$('#back').click(function() {
+    $('#back').hide();
+    $('#search').show('fast');
+    $('#search-contents').hide();
+    $('#tweets').css('display', 'block');
+});
+
+jQuery(document).ready(
+    function(){
+        if (localStorage['auto_open'] === 'on'){
+            $('#open_newurl').hide();
+            $('#logo').css('margin-right', '275px');
+        }
+    }
+);
+

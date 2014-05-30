@@ -8,19 +8,22 @@
 <body>
     <div id="header">
         <!-- "img tag" in "a tag" don't work on popup. http://developer.chrome.com/extensions/contentSecurityPolicy.html#JSExecution -->
-        <img src="images/Twitter_logo.png" width=15.99 height=13 title="Twitter web"id="logo">
-        <img src="images/refresh.png" width=17 height=17 title="refresh" id="refresh">
-        <img src="images/open_newurl.png" width=17 height=17 title="open new URL" id="open_newurl">
-        <img src="images/option.png" width=17 height=17 title="option" id="option">
-        <img src="images/logout.png" width=17 height=17 title="logout" id="logout">
+        <img src="images/Twitter_logo.png" width=18 height=14.63 title="Twitter web"id="logo">
+        <img src="images/refresh.png" width=18.6 height=18.6 title="refresh" id="refresh">
+        <img src="images/open_newurl.png" width=18 height=18 title="open new URL" id="open_newurl">
+        <img src="images/search.png" width=18 height=18 title="search" id="search">
+        <img src="images/back.png" width=18 height=18 title="back" id="back">
+        <img src="images/option.png" width=18 height=18 title="option" id="option">
+        <img src="images/logout.png" width=18 height=18 title="logout" id="logout">
     </div>
 
-    <div id="login-contents">
-        <input type="button" value="Login to Twitter" id="login">
-    </div>
+    <input type="button" value="Login to Twitter" id="login">
 
-    <div id="tweet-contents">
-    </div>
+    <div id="tweet-contents"></div>
+
+    <div id="search-contents"></div>
+    
+    <script src="./library/jquery.min.js"></script>
     <script src="popup.js"></script>
 </body>
 </html>

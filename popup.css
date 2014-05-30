@@ -3,9 +3,6 @@ body {
   font-size: 14px;
   line-height: 1.55;
   letter-spacing: 0;
-}
-
-#login-contents {
   width: 400px;
 }
 
@@ -39,13 +36,24 @@ body {
 #logo {
   margin-top: 7px;
   margin-left: 6px;
-  margin-right: 280px;
+  margin-right: 252px;
   vertical-align: top;
 }
 
-#refresh,#option,#logout,#open_newurl {
+#option,#logout,#open_newurl,#search {
   margin-top: 5px;
   vertical-align: top;
+}
+
+#refresh {
+  margin-top: 4px;
+  vertical-align: top;  
+}
+
+#back {
+  margin-top: 5px;
+  vertical-align: top;
+  display: none;
 }
 
 #tweet-contents {
