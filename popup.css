@@ -6,6 +6,7 @@ body {
   width: 400px;
 }
 
+
 #login {
   width: 300px;
   height: 40px;
@@ -19,6 +20,7 @@ body {
 #login:hover {
   opacity: 0.9;
 }
+
 
 #header {
   position: fixed;
@@ -36,11 +38,11 @@ body {
 #logo {
   margin-top: 7px;
   margin-left: 6px;
-  margin-right: 252px;
+  margin-right: 226px;
   vertical-align: top;
 }
 
-#option,#logout,#open_newurl,#search {
+#option,#logout,#open_newurl,#toSearch,#toSoundON,#toSoundOFF {
   margin-top: 5px;
   vertical-align: top;
 }
@@ -56,63 +58,65 @@ body {
   display: none;
 }
 
+
 #tweet-contents {
-  padding-top: 32px;
+  padding-top: 40px;
   width: 400px;
 }
 
-#tweet-contents a {
+.tweets {
+  width: 380px;
+}
+
+.tweets a {
   font-size: 13.7px;
   color: blue;
   text-decoration: none;
 }
 
-#tweets {
-  width: 380px;
-}
-
-#tweets > .tweet {
+.tweets > .tweet {
   width: 360px;
   padding: 8px;
   padding-left: 13px;
 }
 
-#tweets > .tweet > .tweet-icon {
+.tweets > .tweet > .tweet-icon {
   float: left;
   width: 50px;
   margin-top: 8px;
 }
 
-#tweets > .tweet > .tweet-detail {
+.tweets > .tweet > .tweet-detail {
   float: right;
   width: 290px;
   margin: 10px;
 }
 
-#tweets > .tweet > .tweet-detail > pre {
+.tweets > .tweet > .tweet-detail > pre {
   word-wrap: break-word;
   line-height: 18px;
   margin: 5px 0px;
 }
 
-#tweets > .tweet > .tweet-info {
+.tweets > .tweet > .tweet-info {
   float: right;
   padding: 5px 0px;
 }
 
-#tweets > .tweet > .tweet-info > ul {
+.tweets > .tweet > .tweet-info > ul {
   padding-left: 0px;
 }
 
-#tweets > .tweet > .tweet-info > ul > li {
+.tweets > .tweet > .tweet-info > ul > li {
   list-style: none;
   float: left;
   margin-right: 5px;
 }
 
-#tweets > .tweet > .tweet-info > ul > li > a {
+.tweets > .tweet > .tweet-info > ul > li > a {
   font-size: 12px;
 }
+
 
 .clearfix {
   clear: both;
@@ -120,7 +124,17 @@ body {
   display: block;
 }
 
-#error {
+
+#search-contents {
+  display: none;
+  margin: 10px 5px;
+}
+
+#search-contents > #userID {
+  color: #999;
+}
+
+.error {
   text-align: center;
   padding-top: 15px;
   padding-bottom: 15px;

@@ -11,7 +11,9 @@
         <img src="images/Twitter_logo.png" width=18 height=14.63 title="Twitter web"id="logo">
         <img src="images/refresh.png" width=18.6 height=18.6 title="refresh" id="refresh">
         <img src="images/open_newurl.png" width=18 height=18 title="open new URL" id="open_newurl">
-        <img src="images/search.png" width=18 height=18 title="search" id="search">
+        <img src='images/soundON.png' width=18 height=18 title='turn off sound' id='toSoundOFF'>
+        <img src='images/soundOFF.png' width=18 height=18 title='turn on sound' id='toSoundON'>
+        <img src="images/search.png" width=18 height=18 title="search" id="toSearch">
         <img src="images/back.png" width=18 height=18 title="back" id="back">
         <img src="images/option.png" width=18 height=18 title="option" id="option">
         <img src="images/logout.png" width=18 height=18 title="logout" id="logout">
@@ -21,7 +23,10 @@
 
     <div id="tweet-contents"></div>
 
-    <div id="search-contents"></div>
+    <div id="search-contents">
+        <input type='text' id='userID' value=' --- Please put target user ID. ---' size='47'>
+        <input type="submit" value="search" id="search">
+    </div>
     
     <script src="./library/jquery.min.js"></script>
     <script src="popup.js"></script>

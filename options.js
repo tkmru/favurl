@@ -137,7 +137,7 @@ window.onload = function() {
 		    break;
 		    
 		default:
-		    auto_open_en[1].checked = auto_open_jp[0].checked = true;
+		    auto_open_en[1].checked = auto_open_jp[1].checked = true;
 		    break;
     }
 

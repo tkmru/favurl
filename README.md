@@ -16,7 +16,7 @@ or
 Dowload this repository 
 
 Included Library
--------
+----------------
 jquery.min.js
 
 oauth.js
@@ -26,7 +26,7 @@ sha1.js
 underscore-min.js
 
 Special Thanks
--------
+--------------
 https://github.com/kinjouj/chrome-extension-twitter-oauth-demo
 
 License

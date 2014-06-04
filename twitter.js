@@ -58,7 +58,7 @@ Twitter.prototype.login = function() {
         $.proxy(
             function(data) {
                 var params = this.parseToken(data);
-                var token = params.oauth_token;
+                var token =params.oauth_token;
                 var secret = params.oauth_token_secret;
 
                 message.action = "https://api.twitter.com/oauth/authorize";
@@ -113,9 +113,12 @@ Twitter.prototype.sign = function(pin, cb) {
             var params = this.parseToken(data);
 
             this.save(params.oauth_token, params.oauth_token_secret, params.user_id);
-
+            if (localStorage['sound'] !== 'off') {
+                speak('hello', '今日からよろしくお願いします');
+            }
             cb(true);
         }, this),
+
         "error": function() {
             cb(false);
         }
@@ -129,6 +132,9 @@ Twitter.prototype.save = function(accessToken, accessTokenSecret, userid) {
 };
 
 Twitter.prototype.logout = function() {
+    if (localStorage['sound'] !== 'off') {
+        speak('good bye', 'twitterを一緒に戦えて嬉しかったです');
+    }
     localStorage.clear();
     location.reload();
 };
@@ -209,7 +215,9 @@ function getArrayDiff(older, newer){
         }
         return true;
     }
-    return newer.filter(callback_filter, older);
+    if (newer.length === older.length) { //this update change  newer.length
+        return newer.filter(callback_filter, older);
+    }
 }
 
 function getNewFavURL(old_tweets, new_tweets) {
@@ -232,9 +240,89 @@ function getNewFavURL(old_tweets, new_tweets) {
     }
     //console.log("newwurl"+JSON.stringify(new_urls));
                     
-    for (var i = 0; i < new_urls.length; i++) {
-        window.open(new_urls[i]);
+    return new_urls;
+}
+
+function speak(en_words, ja_words) {
+    var msg;
+
+    if (localStorage['lang'] === "ja"){
+        msg = new SpeechSynthesisUtterance(ja_words);
+        msg.lang = 'ja-JP';
+
+    } else if (localStorage['lang'] === 'en') {
+        msg = new SpeechSynthesisUtterance(en_words);
+        msg.lang = 'en-US';
+
+    } else if (navigator.language === 'ja') {
+        localStorage['lang'] === "ja";
+        msg = new SpeechSynthesisUtterance(ja_words);
+        msg.lang = 'ja-JP';
+
+    } else {
+        msg = new SpeechSynthesisUtterance(en_words);
+        msg.lang = 'en-US';
     }
+
+    window.speechSynthesis.speak(msg);
+}
+
+Twitter.prototype.getNewURLsOnStart = function() {
+    // https://dev.twitter.com/docs/api/1.1/get/favorites/list
+    var message = {
+        "method": "GET",
+        "action": "https://api.twitter.com/1.1/favorites/list.json",
+        "parameters": {
+            "oauth_consumer_key": CONSUMER_KEY,
+            "oauth_signature_method": "HMAC-SHA1",
+            "oauth_token": this.getAccessToken(),
+            "count": 200,
+            "include_rts": true,
+            "include_entities": true
+        }
+    };
+
+    var accessor = {
+        "consumerSecret": CONSUMER_SECRET,
+        "tokenSecret": this.getAccessTokenSecret()
+    };
+
+    OAuth.setTimestampAndNonce(message);
+    OAuth.SignatureMethod.sign(message, accessor);
+
+    $.ajax({
+        "type": "GET",
+        "url": OAuth.addToURL(message.action, message.parameters),
+        "dataType": "json",
+        "success": function(new_tweets) {
+
+            var olderTweets = JSON.parse(localStorage["older_tweets"]);
+            if (!olderTweets) { // There isn't old tweet, old_tweets.tweets is undefined
+                window.open("./NotSetOldTweet.html");
+            } else {
+                new_urls = getNewFavURL(olderTweets, new_tweets);
+                localStorage['new_urls'] = JSON.stringify(new_urls);
+                if (localStorage['sound'] !== 'off' ) {
+                    if (new_urls.length === 0) {
+                        speak('I don\'t have new URL', '新着URLはありません');
+                    } else {
+                        speak('You have new '+new_urls.length+' URL', new_urls.length+'つの新着URLがあります');    
+                    }
+                }
+            }
+
+            localStorage["older_tweets"] = JSON.stringify(new_tweets);
+            localStorage["oldest_tweets"] = JSON.stringify(new_tweets);
+        },
+
+        "error": function(xhr) {
+            if (localStorage['sound'] !== 'off') {
+                speak('I\'m sorry, I failed to get favorites.', 'Twitterに接続できません');
+            }
+            windows.open("./failToGetFav.html");  
+        }
+    });
+
 }
 
 Twitter.prototype.openNewURLsOnStart = function() {
@@ -268,36 +356,58 @@ Twitter.prototype.openNewURLsOnStart = function() {
 
             var olderTweets = JSON.parse(localStorage["older_tweets"]);
             if (!olderTweets) { // There isn't old tweet, old_tweets.tweets is undefined
-                    window.open("./NotSetOldTweet.html");
+                window.open("./NotSetOldTweet.html");
             } else {
-                    getNewFavURL(olderTweets, new_tweets);
+                new_urls = getNewFavURL(olderTweets, new_tweets);
+                if (localStorage['sound'] !== 'off' ) {
+                    if (new_urls.length === 0) {
+                        speak('I don\'t have new URL', '新着URLはありません');
+                    } else {
+                        speak('I open new '+new_urls.length+' URL', new_urls.length+'つの新着URLを開きます');    
+                    }
+                }
+
+                for (var i = 0; i < new_urls.length; i++) {
+                    window.open(new_urls[i]);
+                }
             }
 
             localStorage["older_tweets"] = JSON.stringify(new_tweets);
             localStorage["oldest_tweets"] = JSON.stringify(new_tweets);
+            localStorage['new_urls'] = JSON.stringly([]);
         },
 
         "error": function(xhr) {
+            if (localStorage['sound'] !== 'off') {
+                speak('I\'m sorry, I failed to get favorites.', 'Twitterに接続できません');
+            }
             windows.open("./failToGetFav.html");    
         }
     });
 }
 
-Twitter.prototype.openNewURLsOnPopup = function() {    
-    var olderTweets = JSON.parse(localStorage["older_tweets"]);
-    var oldestTweets = JSON.parse(localStorage["oldest_tweets"]); 
-
-    if (!oldestTweets) { // there isn't oldest tweet, localStorage["oldest_tweets"] is undefined.
-        window.open("./NotSetOldTweet.html");
-    } else {
-        getNewFavURL(oldestTweets, olderTweets);
+Twitter.prototype.openNewURLsOnPopup = function() {
+    if (localStorage['sound'] !== 'off') {
+        if (localStorage['new_urls'] === undefined){    
+            speak('This function is enabled next time', 'この機能は次回起動時よりご利用いただけます');
+        } else if (JSON.parse(localStorage['new_urls']).length === 0) {
+            speak('I don\'t have new URL', '新着URLはありません');
+        } else {
+            speak('I open new '+new_urls.length+' URL', new_urls.length+'つの新着URLを開きます');    
+        }
     }
 
-    localStorage["oldest_tweets"] = JSON.stringify(olderTweets);
+    for (var i = 0; i < new_urls.length; i++) {
+        window.open(new_urls[i]);
+    }
+    localStorage['new_urls'] = JSON.stringify([]);
 }
 
-Twitter.prototype.fetchFavorites = function(elm) {
-	// https://dev.twitter.com/docs/api/1.1/post/favorites/destroy
+Twitter.prototype.fetchFavorites = function(elm, userID) {
+	// https://dev.twitter.com/docs/api/1.1/get/favorites/list
+
+    userID = userID || ""; // set default arg
+
     var message = {
         "method": "GET",
         "action": "https://api.twitter.com/1.1/favorites/list.json",
@@ -305,6 +415,7 @@ Twitter.prototype.fetchFavorites = function(elm) {
             "oauth_consumer_key": CONSUMER_KEY,
             "oauth_signature_method": "HMAC-SHA1",
             "oauth_token": this.getAccessToken(),
+            "screen_name": userID,
             "count": 200,
             "include_rts": true,
             "include_entities": true
@@ -325,9 +436,11 @@ Twitter.prototype.fetchFavorites = function(elm) {
         "dataType": "json",
         "success": function(tweets) {
 
-            localStorage["older_tweets"] = JSON.stringify(tweets);
+            if (userID === '') {
+                localStorage["older_tweets"] = JSON.stringify(tweets);
+            }
 
-            var root = $("<div>").attr("id", "tweets");
+            var root = $("<div>").attr("class", "tweets");
             var remove_pic = localStorage["remove_pic"]; //on or off(set by optionpage) or undefined(not set)
             var remove_movie = localStorage["remove_movie"]; //on or off(set by optionpage) or undefined(not set)
 	        var remove_twi = localStorage["remove_twi"]; //on or off(set by optionpage) or undefined(not set)
@@ -383,25 +496,24 @@ Twitter.prototype.fetchFavorites = function(elm) {
             $(elm).append(root);
         },
         "error": function(xhr) {
-
+            speak('Sorry, I can\'t get favorites', 'すいません、ふぁぼを取得できませんでした。');
         	// https://dev.twitter.com/docs/error-codes-responses
-            var root = $("<div>").attr("id", "tweets");
             if (xhr.status === 401) { // for unauthorized
                 localStorage.removeItem("access_token");
 
             } else if (xhr.status === 429) { // for reach API limit
-            	var root = $("<div>").attr("id", "error");
+            	var root = $("<div>").attr("class", "error");
                 root.append("Sorry, request exceeded the API limit.<br/>Please try it later.");
                 $(elm).append(root);
 
             } else if (xhr.status === 500) { // for reach API limit
-                var root = $("<div>").attr("id", "error");
+                var root = $("<div>").attr("class", "error");
                 root.append("Sorry, something in Twitter is technically wrong.<br/>Please try it later.");
                 $(elm).append(root);
 
 
             } else {
-            	var root = $("<div>").attr("id", "error");
+            	var root = $("<div>").attr("class", "error");
                 root.append(xhr.status + " error!<br/>Please try it later.");
                 $(elm).append(root);
             }
@@ -492,7 +604,6 @@ function normalizeTweetText(tweet) {
                 );
             });
         }
-
 
         return text;
     } else {

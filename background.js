@@ -24,13 +24,10 @@ chrome.runtime.onStartup.addListener(function() {
             getTwitterAPI().openNewURLsOnStart();
         } else {
             //console.log("off");
-            var olderTweets = localStorage["older_tweets"];
-            localStorage["oldest_tweets"] = olderTweets; // use open new url on popup
-            
-        }
-    
+            getTwitterAPI().getNewURLsOnStart();
+        }    
         // event occur every 15 minutes
-  　　　 　chrome.alarms.create('save', { periodInMinutes: 15 });
+  　　　 chrome.alarms.create('save', { periodInMinutes: 15 });
     }
 });
 
