@@ -11,10 +11,6 @@ Install
 -------
 Get it at the [chrome web store](https://chrome.google.com/webstore/detail/favurl/bkgheafjpigbhblaobcdfobilcmpjglb?utm_source=chrome-ntp-icon)
 
-or
-
-Dowload this repository 
-
 Included Library
 ----------------
 jquery.min.js
