@@ -3,7 +3,7 @@ var api = null;
 // This function is called by popup.js
 function getTwitterAPI() {
     if (api === null) { // run for the first time.
-        api = new Twitter();
+        api = new Twitter(); // make once.
     }
 
     return api;
@@ -16,14 +16,47 @@ chrome.runtime.onMessage.addListener(function(req, sender, res) {
     return true;
 });
 
+var url = '';
+var title = '';
+
+chrome.contextMenus.onClicked.addListener(function(info, tab){
+    if (info.menuItemId == 'jumpTweetWindow'){
+        if(getTwitterAPI().isAuthenticated()){
+            url = tab.url;
+            title = tab.title;
+            chrome.windows.create({
+                url : 'tweet.html',
+                focused : true,
+                type : 'popup',
+                height : 107,
+                width : 398
+            });
+        } else {
+            alert('Please login to twitter.');
+        }
+    }
+});
+
+// Set up context menu tree at install time.
+chrome.runtime.onInstalled.addListener(function() {
+    // Create contextMenus to jump tweet window
+    chrome.contextMenus.create({
+        'title': 'tweet this URL',
+        'type': 'normal',
+        'id': 'jumpTweetWindow'
+    });
+});
+
+
 chrome.runtime.onStartup.addListener(function() {
     // execute only when chrome start
+    localStorage['lastTime'] = (new Date()).getTime();
     if (getTwitterAPI().isAuthenticated) {
-        if (localStorage["auto_open"] === "on") {
-            //console.log("on");
+        if (localStorage['auto_open'] === 'on') {
+            //console.log('on');
             getTwitterAPI().openNewURLsOnStart();
         } else {
-            //console.log("off");
+            //console.log('off');
             getTwitterAPI().getNewURLsOnStart();
         }    
         // event occur every 15 minutes
@@ -31,9 +64,31 @@ chrome.runtime.onStartup.addListener(function() {
     }
 });
 
+
 chrome.alarms.onAlarm.addListener(function(alarm) {
     if (alarm.name === 'save') {
         getTwitterAPI().saveFavorites();
-        //console.log(new Date + "alarm!!");
+        //console.log(new Date + 'alarm!!');
+        localStorage['lastTime'] = (new Date()).getTime();
+        console.log(localStorage['lastTime']);
     }
+});
+
+
+chrome.tabs.onCreated.addListener(function() {
+    var currentTime = (new Date()).getTime();
+    if ((currentTime - localStorage['lastTime']) > 903000){ // 900000msec = 15min
+        // execute only when chrome return sleep mode
+        console.log('return sleep');
+        if (getTwitterAPI().isAuthenticated) {
+            if (localStorage['auto_open'] === 'on') {
+                //console.log('on');
+                getTwitterAPI().openNewURLsOnStart();
+            } else {
+                //console.log('off');
+                getTwitterAPI().getNewURLsOnStart();
+            }
+        }    
+    }
+    localStorage['lastTime'] = currentTime;
 });

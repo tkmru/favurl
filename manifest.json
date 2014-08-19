@@ -3,7 +3,7 @@
   "description": "__MSG_appDesc__",
   "default_locale": "ja",
 
-  "version": "1.0.1",
+  "version": "1.1.0",
   "icons": {
     "16":  "images/icon16.png",
     "48":  "images/icon48.png",
@@ -41,8 +41,11 @@
     "persistent": false
   },
   "permissions": [
-    "https://api.twitter.com/",
+    "https://api.twitter.com/*",
+    "http://ux.nu/api/*",
     "background",
-    "alarms"
+    "alarms",
+    "contextMenus",
+    "tabs"
   ]
 }

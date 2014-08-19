@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='ja'>
+<head>
+	<meta charset='UTF-8'>
+    <title>tweet favurl</title>
+
+    <style type="text/css">
+        #under-contents{
+            width: 100%;
+            display: -webkit-box;
+        }
+
+        #inputlength {
+            width: 332px;
+        }
+
+        #tweet-button {
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+    <textarea id='tweet-area' rows='4' cols='51'></textarea>
+    <div id="under-contents">
+        <div id="inputlength">0</div>
+        <input type='submit' value='tweet' id='tweet-button'>
+    </div>
+    <script src='./library/jquery.min.js'></script>
+    <script src='./library/twitter-text-tweetlength.js'></script>
+    <script src='tweet.js'></script>
+</body>
+</html>

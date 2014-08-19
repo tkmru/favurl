@@ -8,7 +8,7 @@
 <body>
     <div id="header">
         <!-- "img tag" in "a tag" don't work on popup. http://developer.chrome.com/extensions/contentSecurityPolicy.html#JSExecution -->
-        <img src="images/Twitter_logo.png" width=18 height=14.63 title="Twitter web"id="logo">
+        <canvas width=19 height=16 title="Twitter web"id="logo"></canvas>
         <img src="images/refresh.png" width=18.6 height=18.6 title="refresh" id="refresh">
         <img src="images/open_newurl.png" width=18 height=18 title="open new URL" id="open_newurl">
         <img src='images/soundON.png' width=18 height=18 title='turn off sound' id='toSoundOFF'>
@@ -20,6 +20,11 @@
     </div>
 
     <input type="button" value="Login to Twitter" id="login">
+
+    <div id="tweet-form">
+        <textarea name="tweet-area" rows="4" cols="52"></textarea>
+        <input type="submit" value="tweet" id="tweet-button">
+    </div>
 
     <div id="tweet-contents"></div>
 
