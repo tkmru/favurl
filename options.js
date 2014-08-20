@@ -4,6 +4,7 @@ var twi_radio_en = document.getElementsByName("twi_radio_en");
 var loc_radio_en = document.getElementsByName("loc_radio_en");
 var lang_radio_en = document.getElementsByName("lang_radio_en");
 var auto_open_en = document.getElementsByName("auto_open_en");
+var displayURL_en = document.getElementsByName('displayURL_en');
 
 var movie_radio_jp = document.getElementsByName("movie_radio_jp");
 var pic_radio_jp = document.getElementsByName("pic_radio_jp");
@@ -11,6 +12,7 @@ var twi_radio_jp = document.getElementsByName("twi_radio_jp");
 var loc_radio_jp = document.getElementsByName("loc_radio_jp");
 var lang_radio_jp = document.getElementsByName("lang_radio_jp");
 var auto_open_jp = document.getElementsByName("auto_open_jp");
+var displayURL_jp = document.getElementsByName('displayURL_jp');
 
 
 movie_radio_en[0].onclick = movie_radio_jp[0].onclick = function() {
@@ -67,6 +69,15 @@ lang_radio_en[0].onclick = lang_radio_jp[0].onclick = function() {
 lang_radio_en[1].onclick = lang_radio_jp[1].onclick = function() {
     localStorage["lang"] = "ja";
     location.reload();
+}
+
+
+displayURL_en[0].onclick = displayURL_jp[0].onclick = function(){
+    localStorage['displayURL'] = 'brief';
+}
+
+displayURL_en[1].onclick = displayURL_jp[1].onclick = function(){
+    localStorage['displayURL'] = 'original';	
 }
 
 
@@ -139,6 +150,20 @@ window.onload = function() {
 		default:
 		    auto_open_en[1].checked = auto_open_jp[1].checked = true;
 		    break;
+    }
+
+    switch(localStorage['displayURL']){
+    	case 'brief':
+    		displayURL_en[0].checked = displayURL_jp[0].checked = true;
+    		break;
+
+    	case 'original':
+    		displayURL_en[1].checked = displayURL_jp[1].checked = true;
+    		break;
+
+    	default:
+			displayURL_en[0].checked = displayURL_jp[0].checked = true;
+    		break;    	    
     }
 
     switch(localStorage["lang"]) {
