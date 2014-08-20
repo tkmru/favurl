@@ -16,7 +16,7 @@
   "content_scripts": [
     {
       "matches": ["https://api.twitter.com/oauth/authorize"],
-      "js": ["library/jquery.min.js", "const.js", "content_script.js"],
+      "js": ["library/jquery-2.1.1.min.js", "const.js", "content_script.js"],
       "run_at": "document_idle"
     }
   ],
@@ -30,7 +30,7 @@
   },
   "background": {
     "scripts":  [
-      "library/jquery.min.js",
+      "library/jquery-2.1.1.min.js",
       "library/underscore-min.js",
       "library/sha1.js",
       "library/oauth.js",
@@ -42,7 +42,6 @@
   },
   "permissions": [
     "https://api.twitter.com/*",
-    "http://ux.nu/api/*",
     "background",
     "alarms",
     "contextMenus",

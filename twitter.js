@@ -606,7 +606,7 @@ function normalizeTweetText(tweet) {
             entities.media.forEach(function(media) {
                 text = text.replace(
                     media.url,
-                    '<a href=' + media.media_url_https + '"target="_blank">' + media.url + '</a>'
+                    '<a href=' + media.media_url_https + '"target="_blank">' + media.expanded_url + '</a>'
                 );
             });
         }

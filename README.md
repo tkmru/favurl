@@ -13,13 +13,17 @@ Get it at the [chrome web store](https://chrome.google.com/webstore/detail/favur
 
 Included Library
 ----------------
-jquery.min.js
+jquery-2.1.1.min.js (http://jquery.com/download/)
 
-oauth.js
+oauth.js (https://oauth.googlecode.com/svn/code/javascript/oauth.js)
 
-sha1.js
+sha1-min.js (http://pajhome.org.uk/crypt/md5/scripts.html)
 
-underscore-min.js
+underscore-min.js (http://underscorejs.org/#)
+
+twitter-text-tweetlength.js (https://gist.github.com/tsmd/7069883)
+
+reset.css (http://html5doctor.com/html-5-reset-stylesheet/)
 
 Special Thanks
 --------------

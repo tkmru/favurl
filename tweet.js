@@ -27,12 +27,14 @@
         			} else {
         				$('body').html(result.errors[0].code + ' error. ');
         			}
+                    speak('failed in posting tweet.', 'ふぁぼゆーあーるえるのツイートに失敗しました。');
         			setTimeout(function(){
     					window.close();
     				}, 3000);
 
         		} else {
         			$('body').html('Success!');
+                    speak('Succeeded in posting tweet.', 'ふぁぼゆーあーるえるをツイートしました。');
         			setTimeout(function(){
     					window.close();
     				}, 850);
@@ -48,6 +50,30 @@
     	});
     });
 })();
+
+function speak(en_words, ja_words) {
+    var msg;
+
+    if (localStorage['lang'] === 'ja'){
+        msg = new SpeechSynthesisUtterance(ja_words);
+        msg.lang = 'ja-JP';
+
+    } else if (localStorage['lang'] === 'en') {
+        msg = new SpeechSynthesisUtterance(en_words);
+        msg.lang = 'en-US';
+
+    } else if (navigator.language === 'ja') {
+        localStorage['lang'] === 'ja';
+        msg = new SpeechSynthesisUtterance(ja_words);
+        msg.lang = 'ja-JP';
+
+    } else {
+        msg = new SpeechSynthesisUtterance(en_words);
+        msg.lang = 'en-US';
+    }
+
+    window.speechSynthesis.speak(msg);
+}
 
 
 $('#tweet-area').keyup(function(){
