@@ -27,14 +27,20 @@
         			} else {
         				$('body').html(result.errors[0].code + ' error. ');
         			}
-                    speak('failed in posting tweet.', 'ふぁぼゆーあーるえるのツイートに失敗しました。');
+
+                    if(localStorage['sound'] === 'on'){
+                        speak('failed in posting tweet.', 'ふぁぼゆーあーるえるのツイートに失敗しました。');
+                    }
+
         			setTimeout(function(){
     					window.close();
     				}, 3000);
 
         		} else {
         			$('body').html('Success!');
-                    speak('Succeeded in posting tweet.', 'ふぁぼゆーあーるえるをツイートしました。');
+                    if(localStorage['sound'] === 'on'){
+                        speak('Succeeded in posting tweet.', 'ふぁぼゆーあーるえるをツイートしました。');
+                    }
         			setTimeout(function(){
     					window.close();
     				}, 850);
