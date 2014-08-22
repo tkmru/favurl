@@ -1,7 +1,7 @@
 favurl
 =======
 
-This chrome extention make better use of favorite in Twitter.
+This chrome extention make better use of URL in Twitter.
 
 This display favorite tweet with URL. 
 
