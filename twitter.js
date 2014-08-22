@@ -318,7 +318,7 @@ Twitter.prototype.getNewURLsOnStart = function() {
             if (!olderTweets) { // There isn't old tweet, old_tweets.tweets is undefined
                 window.open('./NotSetOldTweet.html');
             } else {
-                new_urls = getNewFavURL(olderTweets, new_tweets);
+                var new_urls = getNewFavURL(olderTweets, new_tweets);
                 localStorage['new_urls'] = JSON.stringify(new_urls);
                 if (localStorage['sound'] === 'on' ) {
                     if (new_urls.length === 0) {
@@ -330,14 +330,13 @@ Twitter.prototype.getNewURLsOnStart = function() {
             }
 
             localStorage['older_tweets'] = JSON.stringify(new_tweets);
-            localStorage['oldest_tweets'] = JSON.stringify(new_tweets);
         },
 
         'error': function(xhr) {
             if (localStorage['sound'] === 'on') {
                 speak('I\'m sorry, I failed to get favorites.', 'Twitterに接続できません');
             }
-            windows.open('./failToGetFav.html');  
+            window.open('./failToGetFav.html');  
         }
     });
 
@@ -392,8 +391,7 @@ Twitter.prototype.openNewURLsOnStart = function() {
             }
 
             localStorage['older_tweets'] = JSON.stringify(new_tweets);
-            localStorage['oldest_tweets'] = JSON.stringify(new_tweets);
-            localStorage['new_urls'] = JSON.stringly([]);
+            localStorage['new_urls'] = JSON.stringify([]);
         },
 
         'error': function(xhr) {
@@ -407,19 +405,27 @@ Twitter.prototype.openNewURLsOnStart = function() {
 
 
 Twitter.prototype.openNewURLsOnPopup = function() {
-    if (localStorage['sound'] === 'on') {
-        if (localStorage['new_urls'] === undefined){    
+    var new_urls = localStorage['new_urls'];
+
+    if (new_urls === undefined){
+        if (localStorage['sound'] === 'on') {    
             speak('This function is enabled next time', 'この機能は次回起動時よりご利用いただけます');
-        } else if (JSON.parse(localStorage['new_urls']).length === 0) {
-            speak('I don\'t have new URL', '新着URLはありません');
-        } else {
-            speak('I open new '+new_urls.length+' URL', new_urls.length+'つの新着URLを開きます');    
+        }
+    } else {
+        new_urls = JSON.parse(new_urls);
+        if (localStorage['sound'] === 'on') { 
+            if (new_urls.length === 0) {
+                speak('I don\'t have new URL', '新着URLはありません');
+            } else {
+                speak('I open new '+new_urls.length+' URL', new_urls.length+'つの新着URLを開きます');    
+            }
+        }
+
+        for (var i = 0; i < new_urls.length; i++) {
+            window.open(new_urls[i]);
         }
     }
 
-    for (var i = 0; i < new_urls.length; i++) {
-        window.open(new_urls[i]);
-    }
     localStorage['new_urls'] = JSON.stringify([]);
 }
 
@@ -456,10 +462,6 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
         'url': OAuth.addToURL(message.action, message.parameters),
         'dataType': 'json',
         'success': function(tweets) {
-
-            if (userID === '') {
-                localStorage['older_tweets'] = JSON.stringify(tweets);
-            }
 
             var root = $('<div>').attr('class', 'tweets');
             var remove_pic = localStorage['remove_pic']; //on or off(set by optionpage) or undefined(not set)
@@ -515,10 +517,37 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
             });
 
             $(elm).append(root);
+
+            if (userID === '') { // in case get myID's tweet
+                var currentTime = (new Date()).getTime();
+                if ((currentTime - localStorage['lastTime']) > 903000 && localStorage['older_tweets'] !== undefined){ // 900000msec = 15min
+                    // execute only when chrome return sleep mode and not first boot
+                    console.log('return sleep');
+                    var new_urls = getNewFavURL(JSON.parse(localStorage['older_tweets']), tweets);
+                    if (localStorage['auto_open'] === 'on') {                        
+                        if (localStorage['sound'] === 'on'){
+                            if (new_urls.length === 0) {
+                                speak('I don\'t have new URL', '新着URLはありません');
+                            } else {
+                                speak('I open new '+new_urls.length+' URL', new_urls.length+'つの新着URLを開きます');
+                            }
+                        }
+
+                        for (var i = 0; i < new_urls.length; i++) {
+                            window.open(new_urls[i]);
+                        }
+
+                    } else { // off or undefined(default)
+                        localStorage['new_urls'] = JSON.stringify(new_urls);
+                    }
+                }
+
+                localStorage['older_tweets'] = JSON.stringify(tweets);
+            }
         },
         'error': function(xhr) {
             if (localStorage['sound'] === 'on') {
-                speak('Sorry, I can\'t get favorites', 'すいません、ふぁぼを取得できませんでした。');
+                speak('Sorry, I can\'t get favorites', 'すみません、ふぁぼを取得できませんでした。');
         	}
             // https://dev.twitter.com/docs/error-codes-responses
             if (xhr.status === 401) { // for unauthorized
@@ -558,7 +587,7 @@ function checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc) {
 
             // removing URL of movie service
             } else if (remove_movie !== 'off' &&
-            /^instagram\.com\/m|^youtu\.be|^youtube\.com\/watch|^nico\.ms|^vimeo\.com|^veoh\.com|^v\.youku|^ustre\.am|dailymotion\.com\/video|^dai.ly/.test(urls[i].display_url)) {
+            /^instagram\.com\/m|^youtu\.be|^youtube\.com|^nico\.ms|^vimeo\.com|^veoh\.com|^v\.youku|^ustre\.am|dailymotion\.com\/video|^dai.ly/.test(urls[i].display_url)) {
                 judge_remove++;
                 break;
 
@@ -624,7 +653,7 @@ function normalizeTweetText(tweet) {
                 if (localStorage['displayURL'] != 'original'){ // none or brief
                     text = text.replace(
                         url.url,
-                        '<a href="' + url.display_url + '"target="_blank">' + url.display_url + '</a>'
+                        '<a href="' + url.expanded_url + '"target="_blank">' + url.display_url + '</a>'
                     );
                 } else { // original   
                     text = text.replace(

@@ -50,8 +50,7 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.runtime.onStartup.addListener(function() {
     // execute only when chrome start
-    localStorage['lastTime'] = (new Date()).getTime();
-    if (getTwitterAPI().isAuthenticated) {
+    if (getTwitterAPI().isAuthenticated()) {
         if (localStorage['auto_open'] === 'on') {
             //console.log('on');
             getTwitterAPI().openNewURLsOnStart();
@@ -62,33 +61,58 @@ chrome.runtime.onStartup.addListener(function() {
         // event occur every 15 minutes
   　　　 chrome.alarms.create('save', { periodInMinutes: 15 });
     }
+    localStorage['lastTime'] = (new Date()).getTime();
 });
 
 
 chrome.alarms.onAlarm.addListener(function(alarm) {
     if (alarm.name === 'save') {
-        getTwitterAPI().saveFavorites();
-        //console.log(new Date + 'alarm!!');
+        if (getTwitterAPI().isAuthenticated) {
+            console.log(getTwitterAPI().isAuthenticated);
+            getTwitterAPI().saveFavorites();
+        }
+        console.log(new Date + 'alarm!!');
         localStorage['lastTime'] = (new Date()).getTime();
-        console.log(localStorage['lastTime']);
     }
 });
 
 
 chrome.tabs.onCreated.addListener(function() {
+    //var currentTime = (new Date()).getTime();
+    check_returnSleep();
+    console.log('created');
+});
+
+chrome.tabs.onRemoved.addListener(function() {
+    //var currentTime = (new Date()).getTime();
+    check_returnSleep();
+    console.log('removed');
+});
+
+chrome.tabs.onUpdated.addListener(function() {
+    //var currentTime = (new Date()).getTime();
+    check_returnSleep();
+    console.log('updated');
+});
+
+
+function check_returnSleep(){
     var currentTime = (new Date()).getTime();
     if ((currentTime - localStorage['lastTime']) > 903000){ // 900000msec = 15min
         // execute only when chrome return sleep mode
         console.log('return sleep');
         if (getTwitterAPI().isAuthenticated) {
             if (localStorage['auto_open'] === 'on') {
-                //console.log('on');
                 getTwitterAPI().openNewURLsOnStart();
-            } else {
-                //console.log('off');
+            } else { // off or undefined(default)
                 getTwitterAPI().getNewURLsOnStart();
             }
         }    
+        // alarm often don't work when return sleep.
+        chrome.alarms.clear('save');
+        // event occur every 15 minutes
+        chrome.alarms.create('save', { periodInMinutes: 15 });
     }
+    
     localStorage['lastTime'] = currentTime;
-});
+}
