@@ -1,23 +1,25 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
 <head>
 	<meta charset="UTF-8">
 	<title>error</title>
     <style type="text/css">
-        body {
-        	text-align: center;
-            font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック','MS  PGothic',sans-serif;
-            font-size: 19px;
-        }
-        h1 {
-        	font-size: 28px;
-        }
+    body {
+        font-size: 17px;
+    }
     </style>
 </head>
 <body>
-    <h1>error</h1>
+    <div id='en'>
     I'm sorry, I can't open new url.<br>
     Because old tweet doesn't set.<br>
     Please try again.
+    </div>
+    <div id='jp'>
+    古いツイートが無いので、新しいfavurlを<br>選別出来ませんでした。
+    </div>
+    <script src='./library/jquery-2.1.1.min.js'></script>
+    <script src='./close.js'></script>
+    <script src="./switch_lang.js"></script>
 </body>
 </html>

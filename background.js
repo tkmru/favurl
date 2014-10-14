@@ -22,8 +22,8 @@ var title = '';
 chrome.contextMenus.onClicked.addListener(function(info, tab){
     if (info.menuItemId == 'jumpTweetWindow'){
         if(getTwitterAPI().isAuthenticated()){
-            url = tab.url;
-            title = tab.title;
+            url = tab.url; // for twitter.js
+            title = tab.title; // for twitter.js
             chrome.windows.create({
                 url : 'tweet.html',
                 focused : true,
@@ -50,17 +50,12 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.runtime.onStartup.addListener(function() {
     // execute only when chrome start
+    // chrome.tabs.executeScript(null, {code: 'console.log("abc");'}, null);
     if (getTwitterAPI().isAuthenticated()) {
-        if (localStorage['auto_open'] === 'on') {
-            //console.log('on');
-            getTwitterAPI().openNewURLsOnStart();
-        } else {
-            //console.log('off');
-            getTwitterAPI().getNewURLsOnStart();
-        }    
-        // event occur every 15 minutes
-  　　　 chrome.alarms.create('save', { periodInMinutes: 15 });
-    }
+        getTwitterAPI().getNewURLs();
+    }   
+    // event occur every 15 minutes
+    chrome.alarms.create('save', { periodInMinutes: 15 });
     localStorage['lastTime'] = (new Date()).getTime();
 });
 
@@ -102,11 +97,7 @@ function check_returnSleep(){
         // execute only when chrome return sleep mode
         console.log('return sleep');
         if (getTwitterAPI().isAuthenticated) {
-            if (localStorage['auto_open'] === 'on') {
-                getTwitterAPI().openNewURLsOnStart();
-            } else { // off or undefined(default)
-                getTwitterAPI().getNewURLsOnStart();
-            }
+            getTwitterAPI().getNewURLs();
         }    
         // alarm often don't work when return sleep.
         chrome.alarms.clear('save');

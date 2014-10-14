@@ -1,3 +1,5 @@
+// todo http://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-ajax-call
+
 const TWITTER_USER_ID_STORAGE_KEY = 'userid';
 
 var Twitter = function() {};
@@ -236,7 +238,7 @@ function getArrayDiff(older, newer){
 }
 
 
-function getNewFavURL(old_tweets, new_tweets) {
+function getURLdiff(old_tweets, new_tweets) {
     var added_tweets = getArrayDiff(old_tweets, new_tweets);
     //console.log(added_tweets);
 
@@ -285,7 +287,7 @@ function speak(en_words, ja_words) {
 }
 
 
-Twitter.prototype.getNewURLsOnStart = function() {
+Twitter.prototype.getNewURLs = function() {
     // https://dev.twitter.com/docs/api/1.1/get/favorites/list
     var message = {
         'method': 'GET',
@@ -316,91 +318,65 @@ Twitter.prototype.getNewURLsOnStart = function() {
 
             var olderTweets = JSON.parse(localStorage['older_tweets']);
             if (!olderTweets) { // There isn't old tweet, old_tweets.tweets is undefined
-                window.open('./NotSetOldTweet.html');
+                if (localStorage['notification'] !== 'off') {
+                    chrome.windows.create({
+                        url : 'notSetOldTweet.html',
+                        focused : true,
+                        type : 'popup',
+                        height : 107,
+                        width : 398
+                    });
+                }
             } else {
-                var new_urls = getNewFavURL(olderTweets, new_tweets);
+                var new_urls = getURLdiff(olderTweets, new_tweets);
                 localStorage['new_urls'] = JSON.stringify(new_urls);
-                if (localStorage['sound'] === 'on' ) {
-                    if (new_urls.length === 0) {
-                        speak('I don\'t have new URL', '新着URLはありません');
-                    } else {
+                if (new_urls.length !== 0) {
+                    if (localStorage['notification'] !== 'off' && localStorage['auto_open'] !== 'on') {
+                        chrome.windows.create({
+                            url : 'getNewFavURL.html',
+                            focused : true,
+                            type : 'popup',
+                            height : 107,
+                            width : 398
+                        });
+                    }
+
+                    if (localStorage['sound'] === 'on' ) {
                         speak('You have new '+new_urls.length+' URL', new_urls.length+'つの新着URLがあります');    
                     }
+
+                } else if (localStorage['sound'] === 'on' ) {
+                    speak('I don\'t have new URL', '新着URLはありません');
                 }
-            }
 
-            localStorage['older_tweets'] = JSON.stringify(new_tweets);
-        },
-
-        'error': function(xhr) {
-            if (localStorage['sound'] === 'on') {
-                speak('I\'m sorry, I failed to get favorites.', 'Twitterに接続できません');
-            }
-            window.open('./failToGetFav.html');  
-        }
-    });
-
-}
-
-
-Twitter.prototype.openNewURLsOnStart = function() {
-	// https://dev.twitter.com/docs/api/1.1/get/favorites/list
-    var message = {
-        'method': 'GET',
-        'action': 'https://api.twitter.com/1.1/favorites/list.json',
-        'parameters': {
-            'oauth_consumer_key': CONSUMER_KEY,
-            'oauth_signature_method': 'HMAC-SHA1',
-            'oauth_token': this.getAccessToken(),
-            'count': 200,
-            'include_rts': true,
-            'include_entities': true
-        }
-    };
-
-    var accessor = {
-        'consumerSecret': CONSUMER_SECRET,
-        'tokenSecret': this.getAccessTokenSecret()
-    };
-
-    OAuth.setTimestampAndNonce(message);
-    OAuth.SignatureMethod.sign(message, accessor);
-
-    $.ajax({
-        'type': 'GET',
-        'url': OAuth.addToURL(message.action, message.parameters),
-        'dataType': 'json',
-        'success': function(new_tweets) {
-
-            var olderTweets = JSON.parse(localStorage['older_tweets']);
-            if (!olderTweets) { // There isn't old tweet, old_tweets.tweets is undefined
-                window.open('./NotSetOldTweet.html');
-            } else {
-                new_urls = getNewFavURL(olderTweets, new_tweets);
-                if (localStorage['sound'] === 'on' ) {
-                    if (new_urls.length === 0) {
-                        speak('I don\'t have new URL', '新着URLはありません');
-                    } else {
-                        speak('I open new '+new_urls.length+' URL', new_urls.length+'つの新着URLを開きます');    
+                if (localStorage['auto_open'] === 'on') {
+                    for (var i = 0; i < new_urls.length; i++) {
+                        window.open(new_urls[i]);
                     }
-                }
-
-                for (var i = 0; i < new_urls.length; i++) {
-                    window.open(new_urls[i]);
+                    localStorage['new_urls'] = JSON.stringify([]); // for disable open url button  
                 }
             }
 
             localStorage['older_tweets'] = JSON.stringify(new_tweets);
-            localStorage['new_urls'] = JSON.stringify([]);
         },
 
         'error': function(xhr) {
             if (localStorage['sound'] === 'on') {
                 speak('I\'m sorry, I failed to get favorites.', 'Twitterに接続できません');
             }
-            windows.open('./failToGetFav.html');    
+
+            if(localStorage['notification'] !== 'off'){
+                chrome.windows.create({
+                    url : 'failToGetFav.html',
+                    focused : true,
+                    type : 'popup',
+                    height : 107,
+                    width : 398
+                });
+            }
         }
     });
+
 }
 
 
@@ -523,7 +499,7 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
                 if ((currentTime - localStorage['lastTime']) > 903000 && localStorage['older_tweets'] !== undefined){ // 900000msec = 15min
                     // execute only when chrome return sleep mode and not first boot
                     console.log('return sleep');
-                    var new_urls = getNewFavURL(JSON.parse(localStorage['older_tweets']), tweets);
+                    var new_urls = getURLdiff(JSON.parse(localStorage['older_tweets']), tweets);
                     if (localStorage['auto_open'] === 'on') {                        
                         if (localStorage['sound'] === 'on'){
                             if (new_urls.length === 0) {
@@ -599,7 +575,7 @@ function checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc) {
 
             // removing URL of location service
             } else if (remove_loc !== 'off' &&
-                       /^4sq\.com/.test(urls[i].display_url)) {
+                       /^4sq\.com|^swarmapp.com\/c/.test(urls[i].display_url)) {
                 judge_remove++;
                 break;
             }

@@ -38,6 +38,7 @@
 
         		} else {
         			$('body').html('Success!');
+                    $('body').css('font-size', '23px');
                     if(localStorage['sound'] === 'on'){
                         speak('Succeeded in posting tweet.', 'ふぁぼゆーあーるえるをツイートしました。');
                     }
