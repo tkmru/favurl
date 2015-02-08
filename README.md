@@ -1,5 +1,4 @@
-favurl
-=======
+#favurl
 
 This chrome extention make better use of URL in Twitter.
 
@@ -7,12 +6,23 @@ This display favorite tweet with URL.
 
 This is useful when you add tweet to favorite by reason of see URL later. 
 
-Install
--------
+##Install
+
 Get it at the [chrome web store](https://chrome.google.com/webstore/detail/favurl/bkgheafjpigbhblaobcdfobilcmpjglb?utm_source=chrome-ntp-icon)
 
-Included Library
-----------------
+###const.js
+If you use this repository without using chrome web store, you must add const.js
+You need CONSUMER_KEY and CONSUMER_SECRET.
+
+```
+const CONSUMER_KEY = '*******';
+const CONSUMER_SECRET = '*******';
+const ACCESS_TOKEN_STORAGE_KEY = 'access token';
+const ACCESS_TOKEN_SECRET_STORAGE_KEY = 'access token secret';
+```
+
+##Included Library
+
 jquery-2.1.1.min.js (http://jquery.com/download/)
 
 oauth.js (https://oauth.googlecode.com/svn/code/javascript/oauth.js)
@@ -25,12 +35,11 @@ twitter-text-tweetlength.js (https://gist.github.com/tsmd/7069883)
 
 reset.css (http://html5doctor.com/html-5-reset-stylesheet/)
 
-Special Thanks
---------------
+##Special Thanks
+
 https://github.com/kinjouj/chrome-extension-twitter-oauth-demo
 
-License
--------
+##License
 MIT License
 
 Copyright @tkmru
