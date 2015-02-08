@@ -1,8 +1,7 @@
 (function(undefined) {
     var bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
        	var twitter = bgPage.getTwitterAPI();
-        var initText = 'This link is my favurl. ' +
-            bgPage.title + ' ' + bgPage.url + ' #favurl';
+        var initText = bgPage.title + ' ' + bgPage.url + ' #favurl';
         $('#tweet-area').val(initText);
 
         var tweetLength = twttr.txt.getTweetLength(initText);
