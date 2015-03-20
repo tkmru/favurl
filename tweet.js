@@ -12,39 +12,39 @@
 
     	$('#tweet-button').click(function(){
             var tweet = $('#tweet-area').val();
-    		var tweetLength = twttr.txt.getTweetLength(tweet);
-    		if (tweetLength <= 140) {
-    			var result = JSON.parse(twitter.tweet(tweet));
-    			//alert(result);
-        		if('errors' in result){
-        			var errorCode = result.errors[0].code;
-        			if (errorCode === 226) {
-        				$('body').html(result.errors[0].code + ' error. ' +
-        					'This request looks like it might be automated. ' + 
-        					' Please try again later.'
-        				);
-        			} else {
-        				$('body').html(result.errors[0].code + ' error. ');
-        			}
+            var tweetLength = twttr.txt.getTweetLength(tweet);
+            if (tweetLength <= 140) {
+                var result = JSON.parse(twitter.tweet(tweet));
+                //alert(result);
+                if('errors' in result){
+                    var errorCode = result.errors[0].code;
+                    if (errorCode === 226) {
+                        $('body').html(result.errors[0].code + ' error. ' +
+                            'This request looks like it might be automated. ' + 
+                            ' Please try again later.'
+                        );
+                    } else {
+                        $('body').html(result.errors[0].code + ' error. ');
+                    }
 
                     if(localStorage['sound'] === 'on'){
                         speak('failed in posting tweet.', 'ふぁぼゆーあーるえるのツイートに失敗しました。');
                     }
 
-        			setTimeout(function(){
-    					window.close();
-    				}, 3000);
+                    setTimeout(function(){
+                        window.close();
+                    }, 3000);
 
-        		} else {
-        			$('body').html('Success!');
+                } else {
+                    $('body').html('Success!');
                     $('body').css('font-size', '23px');
                     if(localStorage['sound'] === 'on'){
                         speak('Succeeded in posting tweet.', 'ふぁぼゆーあーるえるをツイートしました。');
                     }
-        			setTimeout(function(){
-    					window.close();
-    				}, 850);
-    			}
+                    setTimeout(function(){
+                        window.close();
+                    }, 850);
+                }
                 /*
                 twitter.tweet(text).done(function(){
                     
@@ -87,9 +87,9 @@ $('#tweet-area').keyup(function(){
     var tweetLength = twttr.txt.getTweetLength(tweet);
     $('#inputlength').html(tweetLength);
     if (tweetLength > 140){
-    	$('#inputlength').css('color', 'red');
+        $('#inputlength').css('color', 'red');
     } else {
-    	$('#inputlength').css('color', 'black');
+        $('#inputlength').css('color', 'black');
     }
 });
 
