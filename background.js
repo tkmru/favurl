@@ -12,7 +12,7 @@ function getTwitterAPI() {
 
 // This function receive request content_script.js send.
 chrome.runtime.onMessage.addListener(function(req, sender, res) {
-	getTwitterAPI().sign(req.verifier, res);
+    getTwitterAPI().sign(req.verifier, res);
     return true;
 });
 

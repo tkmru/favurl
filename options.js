@@ -92,88 +92,88 @@ lang_radio_en[1].onclick = lang_radio_jp[1].onclick = function() {
 
 
 window.onload = function() {
-	switch(localStorage["remove_movie"]) {
-		case "on":
-		    movie_radio_en[0].checked = movie_radio_jp[0].checked = true;
-		    break;
-		    
-		case "off":
-		    movie_radio_en[1].checked = movie_radio_jp[1].checked = true;
-		    break;
-		    
-		default:
-		    movie_radio_en[0].checked = movie_radio_jp[0].checked = true;
-		    break;
+    switch(localStorage["remove_movie"]) {
+        case "on":
+            movie_radio_en[0].checked = movie_radio_jp[0].checked = true;
+            break;
+            
+        case "off":
+            movie_radio_en[1].checked = movie_radio_jp[1].checked = true;
+            break;
+
+        default:
+            movie_radio_en[0].checked = movie_radio_jp[0].checked = true;
+            break;
     }
     
-	switch(localStorage["remove_pic"]) {
-		case "on":
-		    pic_radio_en[0].checked = pic_radio_jp[0].checked = true;
-		    break;
-		    
-		case "off":
-		    pic_radio_en[1].checked = pic_radio_jp[1].checked = true;
-		    break;
-		    
-		default:
-		    pic_radio_en[0].checked = pic_radio_jp[0].checked = true;
-		    break;
+    switch(localStorage["remove_pic"]) {
+        case "on":
+            pic_radio_en[0].checked = pic_radio_jp[0].checked = true;
+            break;
+            
+        case "off":
+            pic_radio_en[1].checked = pic_radio_jp[1].checked = true;
+            break;
+            
+        default:
+            pic_radio_en[0].checked = pic_radio_jp[0].checked = true;
+            break;
     }
 
-	switch(localStorage["remove_twi"]) {
-		case "on":
-		    twi_radio_en[0].checked = twi_radio_jp[0].checked = true;
-		    break;
-		    
-		case "off":
-		    twi_radio_en[1].checked = twi_radio_jp[1].checked = true;
-		    break;
-		    
-		default:
-		    twi_radio_en[0].checked = twi_radio_jp[0].checked = true;
-		    break;
+    switch(localStorage["remove_twi"]) {
+        case "on":
+            twi_radio_en[0].checked = twi_radio_jp[0].checked = true;
+            break;
+            
+        case "off":
+            twi_radio_en[1].checked = twi_radio_jp[1].checked = true;
+            break;
+            
+        default:
+            twi_radio_en[0].checked = twi_radio_jp[0].checked = true;
+            break;
     }
 
-	switch(localStorage["remove_loc"]) {
-		case "on":
-		    loc_radio_en[0].checked = loc_radio_jp[0].checked = true;
-		    break;
-		    
-		case "off":
-		    loc_radio_en[1].checked = loc_radio_jp[1].checked = true;
-		    break;
-		    
-		default:
-		    loc_radio_en[0].checked = loc_radio_jp[0].checked = true;
-		    break;
+    switch(localStorage["remove_loc"]) {
+        case "on":
+            loc_radio_en[0].checked = loc_radio_jp[0].checked = true;
+            break;
+            
+        case "off":
+            loc_radio_en[1].checked = loc_radio_jp[1].checked = true;
+            break;
+            
+        default:
+            loc_radio_en[0].checked = loc_radio_jp[0].checked = true;
+            break;
     }
 
-	switch(localStorage["auto_open"]) {
-		case "on":
-		    auto_open_en[0].checked = auto_open_jp[0].checked = true;
-		    break;
-		    
-		case "off":
-		    auto_open_en[1].checked = auto_open_jp[1].checked = true;
-		    break;
-		    
-		default:
-		    auto_open_en[1].checked = auto_open_jp[1].checked = true;
-		    break;
+    switch(localStorage["auto_open"]) {
+        case "on":
+            auto_open_en[0].checked = auto_open_jp[0].checked = true;
+            break;
+            
+        case "off":
+            auto_open_en[1].checked = auto_open_jp[1].checked = true;
+            break;
+            
+        default:
+            auto_open_en[1].checked = auto_open_jp[1].checked = true;
+            break;
     }
 
     switch(localStorage['displayURL']){
-    	case 'brief':
-    		displayURL_en[0].checked = displayURL_jp[0].checked = true;
-    		break;
+        case 'brief':
+            displayURL_en[0].checked = displayURL_jp[0].checked = true;
+            break;
 
-    	case 'original':
-    		displayURL_en[1].checked = displayURL_jp[1].checked = true;
-    		break;
+        case 'original':
+            displayURL_en[1].checked = displayURL_jp[1].checked = true;
+            break;
 
-    	default:
-			displayURL_en[0].checked = displayURL_jp[0].checked = true;
-    		break;    	    
+        default:
+            displayURL_en[0].checked = displayURL_jp[0].checked = true;
+            break;            
     }
 
     switch(localStorage['notification']){
@@ -191,25 +191,25 @@ window.onload = function() {
     }
 
     switch(localStorage["lang"]) {
-		case "en":
-		    lang_radio_en[0].checked = lang_radio_jp[0].checked = true;
-		    break;
-		    
-		case "ja":
-		    lang_radio_en[1].checked = lang_radio_jp[1].checked = true;
-		    break;
-		    
-		default:
-	    	switch(navigator.language) { // for browzer language setting
-		        case "ja":
-		            localStorage["lang"] = "ja"
-		            lang_radio_en[1].checked = lang_radio_jp[1].checked = true;
-		            break;
-		            
-		        default:
-		            localStorage["lang"] = "en"
-		            lang_radio_en[0].checked = lang_radio_jp[0].checked = true;
-		            break;
-		    }
+        case "en":
+            lang_radio_en[0].checked = lang_radio_jp[0].checked = true;
+            break;
+            
+        case "ja":
+            lang_radio_en[1].checked = lang_radio_jp[1].checked = true;
+            break;
+            
+        default:
+            switch(navigator.language) { // for browzer language setting
+                case "ja":
+                    localStorage["lang"] = "ja"
+                    lang_radio_en[1].checked = lang_radio_jp[1].checked = true;
+                    break;
+                    
+                default:
+                    localStorage["lang"] = "en"
+                    lang_radio_en[0].checked = lang_radio_jp[0].checked = true;
+                    break;
+            }
     }
 }
