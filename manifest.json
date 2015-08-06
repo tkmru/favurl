@@ -15,7 +15,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://api.twitter.com/oauth/authorize"],
+      "matches": ["https://twitter.com/oauth/authorize", "https://api.twitter.com/oauth/authorize"],
       "js": ["library/jquery-2.1.1.min.js", "const.js", "content_script.js"],
       "run_at": "document_idle"
     }
