@@ -4,12 +4,15 @@ if (pinArea !== null && document.referrer.match(/oauth_consumer_key=([^&]+)/)) {
     if (RegExp.$1 === CONSUMER_KEY) {
         var pin = pinArea.text();
         chrome.runtime.sendMessage({ "verifier": pin }, function(isSuccess) {
-            pinArea.css("font-size", "20px");
+            pinArea.css({"font-size": "20px",
+                         "line-height": "40px",
+                         "text-align": "left"
+            });
+            
             if (isSuccess === true) {
-                pinArea.text("Congratulations, you've been successfully authenticated. Enjoy favurl!");
-
+                pinArea.html("Congratulations, you've been successfully authenticated. <br>Enjoy favurl!");
             } else {
-                pinArea.text("Sorry, something went wrong. Please try to click icon again.");
+                pinArea.html("Sorry, something went wrong. <br>Please try to login again.");
             }
         });
     }
