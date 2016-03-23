@@ -101,7 +101,7 @@ body {
 }
 
 .tweets > .tweet > .tweet-detail > pre {
-  word-wrap: break-word;
+  white-space: pre-wrap; 
   line-height: 18px;
   margin: 5px 0px;
 }
