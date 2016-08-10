@@ -91,7 +91,7 @@ lang_radio_en[1].onclick = lang_radio_jp[1].onclick = function() {
 }
 
 
-window.onload = function() {
+window.addEventListener("load",function(event){
     switch(localStorage["remove_movie"]) {
         case "on":
             movie_radio_en[0].checked = movie_radio_jp[0].checked = true;
@@ -212,4 +212,4 @@ window.onload = function() {
                     break;
             }
     }
-}
+}, false);
