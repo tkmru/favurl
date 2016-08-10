@@ -109,34 +109,33 @@ let canvas = document.getElementById('logo');
 let ctx = canvas.getContext('2d');
 
 image.onload = function(){
-    // 2d context の取得
     ctx.drawImage(image, 0, 0, 18, 14.63);
 }
 
-function doRotate(ctx, img, delay, i){
+function doRotate(ctx, img, delay, i) {
     setTimeout(function () {
         ctx.save();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.translate(canvas.width/2, canvas.height/2);
         ctx.rotate((Math.PI/9)*i); 
-        ctx.drawImage(img, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height); //draw the image ;)
+        ctx.drawImage(img, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height); // draw the image
         ctx.restore(); //restore the state of canvas
     }, delay);
 }
 
-$(window).keyup(function(e){
+$(window).keyup(function(e) {
     konamikan.push(e.keyCode);
     if (konamikan.slice(-10).toString()=='38,38,40,40,37,39,37,39,66,65'){
         let delay = 40;
-        for(let i=1; i<=18; i++){
+        for(let i = 1; i <= 18; i++) {
             doRotate(ctx, image, delay, i);
             delay += 40;
         }
     }
 });
 
-$(document).ready(function(){
-    $(window).unload(function(){
+$(document).ready(function() {
+    $(window).unload(function() {
         $('#header').show();
         $('#login').css('display', 'none');
         $('#tweet-contents').show();
@@ -144,12 +143,12 @@ $(document).ready(function(){
     });
 
 
-    if (localStorage['auto_open'] === 'on'){
+    if (localStorage['auto_open'] === 'on') {
         $('#open_newurl').hide();
         $('#logo').css('margin-right', '248px');
     }
 
-    if (localStorage['sound'] !== 'on'){ // off or None
+    if (localStorage['sound'] !== 'on') { // off or None
         $('#toSoundON').show();
         $('#toSoundOFF').hide();
     } else {

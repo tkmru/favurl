@@ -218,7 +218,7 @@ Twitter.prototype.tweet = function(text) {
 }
 
 function getArrayDiff(older, newer){
-    function callback_filter(element, index, array) {
+    function checkId(element, index, array) {
         for (let i = 0; i < this.length; i++) {
             if (this[i].id_str === element.id_str) {
                 return false;
@@ -228,7 +228,7 @@ function getArrayDiff(older, newer){
     }
 
     if (newer.length === older.length) { //this update change  newer.length
-        return newer.filter(callback_filter, older);
+        return newer.filter(checkId, older);
     }
 }
 
