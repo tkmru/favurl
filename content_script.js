@@ -1,3 +1,5 @@
+"use strict";
+
 var pinArea = $("#oauth_pin > p > kbd > code");
 
 if (pinArea !== null && document.referrer.match(/oauth_consumer_key=([^&]+)/)) {

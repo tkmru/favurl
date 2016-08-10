@@ -1,3 +1,5 @@
+"use strict";
+
 // todo http://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-ajax-call
 
 const TWITTER_USER_ID_STORAGE_KEY = 'userid';
@@ -213,14 +215,6 @@ Twitter.prototype.tweet = function(text) {
     }).responseText;
 
     return result;
-
-    /*
-    return $.ajax({
-        'type': message.method,
-        'url': OAuth.addToURL(message.action, message.parameters), 
-        'dataType': 'json'
-    }) 
-    */
 }
 
 function getArrayDiff(older, newer){
@@ -232,6 +226,7 @@ function getArrayDiff(older, newer){
         }
         return true;
     }
+
     if (newer.length === older.length) { //this update change  newer.length
         return newer.filter(callback_filter, older);
     }
@@ -252,7 +247,7 @@ function getURLdiff(old_tweets, new_tweets) {
         if (checkURL(added_tweets[i], remove_pic, remove_movie, remove_twi, remove_loc)) {
             // https://dev.twitter.com/docs/platform-objects/entities
             added_tweets[i].entities.urls.forEach(function(urls) {
-            new_urls.push(urls.url);
+                new_urls.push(urls.url);
             });
         }
     }

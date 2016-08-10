@@ -1,3 +1,5 @@
+"use strict";
+
 var movie_radio_en = document.getElementsByName("movie_radio_en");
 var pic_radio_en = document.getElementsByName("pic_radio_en");
 var twi_radio_en = document.getElementsByName("twi_radio_en");

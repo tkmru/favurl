@@ -1,3 +1,5 @@
+"use strict";
+
 var api = null;
 
 // This function is called by popup.js

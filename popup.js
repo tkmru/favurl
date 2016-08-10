@@ -1,3 +1,5 @@
+"use strict";
+
 (function(undefined) {
     var bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
         var twitter = bgPage.getTwitterAPI();
