@@ -126,7 +126,6 @@ function doRotate(ctx, img, delay, i){
 
 $(window).keyup(function(e){
     konamikan.push(e.keyCode);
-    console.log(e.keyCode);
     if (konamikan.slice(-10).toString()=='38,38,40,40,37,39,37,39,66,65'){
         let delay = 40;
         for(let i=1; i<=18; i++){
@@ -142,7 +141,6 @@ $(document).ready(function(){
         $('#login').css('display', 'none');
         $('#tweet-contents').show();
         $('#tweet-form').hide();
-        console.log('close');
     });
 
 

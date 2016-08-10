@@ -47,13 +47,6 @@
                         window.close();
                     }, 850);
                 }
-                /*
-                twitter.tweet(text).done(function(){
-                    
-                }).fail(function(xhr){
-                    $('body').html(xhr.status);
-                });
-                */
         	}
     	});
     });

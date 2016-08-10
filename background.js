@@ -65,31 +65,26 @@ chrome.runtime.onStartup.addListener(function() {
 chrome.alarms.onAlarm.addListener(function(alarm) {
     if (alarm.name === 'save') {
         if (getTwitterAPI().isAuthenticated) {
-            console.log(getTwitterAPI().isAuthenticated);
             getTwitterAPI().saveFavorites();
         }
-        console.log(new Date + 'alarm!!');
         localStorage['lastTime'] = (new Date()).getTime();
     }
 });
 
 
 chrome.tabs.onCreated.addListener(function() {
-    //let currentTime = (new Date()).getTime();
+    // let currentTime = (new Date()).getTime();
     check_returnSleep();
-    console.log('created');
 });
 
 chrome.tabs.onRemoved.addListener(function() {
-    //let currentTime = (new Date()).getTime();
+    // let currentTime = (new Date()).getTime();
     check_returnSleep();
-    console.log('removed');
 });
 
 chrome.tabs.onUpdated.addListener(function() {
-    //let currentTime = (new Date()).getTime();
+    // let currentTime = (new Date()).getTime();
     check_returnSleep();
-    console.log('updated');
 });
 
 
@@ -97,7 +92,6 @@ function check_returnSleep(){
     let currentTime = (new Date()).getTime();
     if ((currentTime - localStorage['lastTime']) > 903000){ // 900000msec = 15min
         // execute only when chrome return sleep mode
-        console.log('return sleep');
         if (getTwitterAPI().isAuthenticated) {
             getTwitterAPI().getNewURLs();
         }    

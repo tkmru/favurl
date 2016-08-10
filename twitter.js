@@ -235,7 +235,6 @@ function getArrayDiff(older, newer){
 
 function getURLdiff(old_tweets, new_tweets) {
     let added_tweets = getArrayDiff(old_tweets, new_tweets);
-    //console.log(added_tweets);
 
     let remove_pic = localStorage['remove_pic']; //on or off(set by optionpage) or undefined(not set)
     let remove_movie = localStorage['remove_movie']; //on or off(set by optionpage) or undefined(not set)
@@ -251,7 +250,6 @@ function getURLdiff(old_tweets, new_tweets) {
             });
         }
     }
-    //console.log('newwurl'+JSON.stringify(new_urls));
                     
     return new_urls;
 }
@@ -337,7 +335,7 @@ Twitter.prototype.getNewURLs = function() {
                     }
 
                     if (localStorage['sound'] === 'on' ) {
-                        speak('You have new '+new_urls.length+' URL', new_urls.length+'つの新着URLがあります');    
+                        speak('You have new ' + new_urls.length + ' URL', new_urls.length+'つの新着URLがあります');    
                     }
 
                 } else if (localStorage['sound'] === 'on' ) {
@@ -435,10 +433,10 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
         'success': function(tweets) {
 
             let root = $('<div>').attr('class', 'tweets');
-            let remove_pic = localStorage['remove_pic']; //on or off(set by optionpage) or undefined(not set)
-            let remove_movie = localStorage['remove_movie']; //on or off(set by optionpage) or undefined(not set)
-	        let remove_twi = localStorage['remove_twi']; //on or off(set by optionpage) or undefined(not set)
-	        let remove_loc = localStorage['remove_loc']; //on or off(set by optionpage) or undefined(not set)
+            let remove_pic = localStorage['remove_pic']; // on or off(set by optionpage) or undefined(not set)
+            let remove_movie = localStorage['remove_movie']; // on or off(set by optionpage) or undefined(not set)
+	        let remove_twi = localStorage['remove_twi']; // on or off(set by optionpage) or undefined(not set)
+	        let remove_loc = localStorage['remove_loc']; // on or off(set by optionpage) or undefined(not set)
             	
             tweets.forEach(function(tweet) {
             	
@@ -493,7 +491,6 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
                 let currentTime = (new Date()).getTime();
                 if ((currentTime - localStorage['lastTime']) > 903000 && localStorage['older_tweets'] !== undefined){ // 900000msec = 15min
                     // execute only when chrome return sleep mode and not first boot
-                    console.log('return sleep');
                     let new_urls = getURLdiff(JSON.parse(localStorage['older_tweets']), tweets);
                     if (localStorage['auto_open'] === 'on') {                        
                         if (localStorage['sound'] === 'on'){
@@ -548,7 +545,7 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
 function checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc) {
     let judge_remove = 0;
     let urls = tweet.entities.urls;
-    if (urls.length > 0) { //url in tweet exist?
+    if (urls.length > 0) { // url in tweet exist?
     	for (let i = 0; i < urls.length; i++) {
         	// removing URL of picture service
         	if (remove_pic !== 'off' &&
@@ -597,7 +594,7 @@ function normalizeTweetText(tweet) {
             entities.hashtags.forEach(function(hashtag) {
                 text = text.replace(
                     '#' + hashtag.text,
-                    '<a href='http://twitter.com/search/' + encodeURIComponent('#' + hashtag.text) + ''target='_blank'>#' + hashtag.text + '</a>'
+                    '<a href=\'http://twitter.com/search/' + encodeURIComponent('#' + hashtag.text) + '\'target=\'_blank\'>#' + hashtag.text + '</a>'
                 );
             });
         }
@@ -607,13 +604,13 @@ function normalizeTweetText(tweet) {
                 if (localStorage['displayURL'] != 'original'){ // none or brief
                         text = text.replace(
                         media.url,
-                        '<a href=' + media.media_url_https + ''target='_blank'>' + media.display_url + '</a>'
+                        '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.display_url + '</a>'
                     );
 
                 } else { // original
                     text = text.replace(
                         media.url,
-                        '<a href=' + media.media_url_https + ''target='_blank'>' + media.expanded_url + '</a>'
+                        '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.expanded_url + '</a>'
                     );
                 }
             });
@@ -639,7 +636,7 @@ function normalizeTweetText(tweet) {
             entities.user_mentions.forEach(function(mention) {
                 text = text.replace(
                     '@' + mention.screen_name,
-                    '<a href='https://twitter.com/' + mention.screen_name + '' target='_blank'>@' + mention.screen_name + '</a>'
+                    '<a href=\'https://twitter.com/' + mention.screen_name + '\' target=\'_blank\'>@' + mention.screen_name + '</a>'
                 );
             });
         }
