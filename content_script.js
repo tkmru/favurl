@@ -1,10 +1,10 @@
 "use strict";
 
-var pinArea = $("#oauth_pin > p > kbd > code");
+let pinArea = $("#oauth_pin > p > kbd > code");
 
 if (pinArea !== null && document.referrer.match(/oauth_consumer_key=([^&]+)/)) {
     if (RegExp.$1 === CONSUMER_KEY) {
-        var pin = pinArea.text();
+        let pin = pinArea.text();
         chrome.runtime.sendMessage({ "verifier": pin }, function(isSuccess) {
             pinArea.css({"font-size": "20px",
                          "line-height": "40px",

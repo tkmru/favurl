@@ -1,8 +1,8 @@
 "use strict";
 
 (function(undefined) {
-    var bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
-        var twitter = bgPage.getTwitterAPI();
+    let bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
+        let twitter = bgPage.getTwitterAPI();
 
         $("#login").click(function() {
             twitter.login();
@@ -18,7 +18,7 @@
         });
 
         $('#search').click(function() {
-            var userID = $("#userID").val();
+            let userID = $("#userID").val();
             if (userID !== '' && userID !== ' --- Please put target user ID. ---') {
                 $("#search-contents").css('margin', '0px');                
                 twitter.fetchFavorites($("#search-contents"), userID);
@@ -101,12 +101,12 @@ $('#userID').focus(function(){
     }
 });
 
-var konamikan=[];
-var image = document.createElement("img");
+let konamikan=[];
+let image = document.createElement("img");
 image.src = "images/Twitter_logo.png";
 
-var canvas = document.getElementById('logo');
-var ctx = canvas.getContext('2d');
+let canvas = document.getElementById('logo');
+let ctx = canvas.getContext('2d');
 
 image.onload = function(){
     // 2d context の取得
@@ -128,8 +128,8 @@ $(window).keyup(function(e){
     konamikan.push(e.keyCode);
     console.log(e.keyCode);
     if (konamikan.slice(-10).toString()=='38,38,40,40,37,39,37,39,66,65'){
-        var delay = 40;
-        for(var i=1; i<=18; i++){
+        let delay = 40;
+        for(let i=1; i<=18; i++){
             doRotate(ctx, image, delay, i);
             delay += 40;
         }

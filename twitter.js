@@ -4,32 +4,32 @@
 
 const TWITTER_USER_ID_STORAGE_KEY = 'userid';
 
-var Twitter = function() {};
+let Twitter = function() {};
 
 Twitter.prototype.getAccessToken = function() {
-    var accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+    let accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
 
     return _.isString(accessToken) ? accessToken : null;
 };
 
 Twitter.prototype.getAccessTokenSecret = function() {
-    var accessTokenSecret = localStorage.getItem(ACCESS_TOKEN_SECRET_STORAGE_KEY);
+    let accessTokenSecret = localStorage.getItem(ACCESS_TOKEN_SECRET_STORAGE_KEY);
 
     return _.isString(accessTokenSecret) ? accessTokenSecret : null;
 };
 
 Twitter.prototype.getUserID = function() {
-    var userid = Number(localStorage.getItem(TWITTER_USER_ID_STORAGE_KEY));
+    let userid = Number(localStorage.getItem(TWITTER_USER_ID_STORAGE_KEY));
 
     return (_.isNumber(userid) && !_.isNaN(userid)) ? userid : null;
 };
 
 Twitter.prototype.parseToken = function(data) {
     if (_.isString(data)) {
-        var parsedToken = {};
+        let parsedToken = {};
 
         data.split('&').forEach(function(token) {
-            var kv = token.split('=');
+            let kv = token.split('=');
 
             parsedToken[kv[0]] = kv[1];
         });
@@ -41,7 +41,7 @@ Twitter.prototype.parseToken = function(data) {
 };
 
 Twitter.prototype.login = function() {
-    var message = {
+    let message = {
         'method': 'GET',
         'action': 'https://api.twitter.com/oauth/request_token',
         'parameters': {
@@ -50,7 +50,7 @@ Twitter.prototype.login = function() {
         }
     };
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET
     };
 
@@ -61,9 +61,9 @@ Twitter.prototype.login = function() {
         OAuth.addToURL(message.action, message.parameters),
         $.proxy(
             function(data) {
-                var params = this.parseToken(data);
-                var token =params.oauth_token;
-                var secret = params.oauth_token_secret;
+                let params = this.parseToken(data);
+                let token =params.oauth_token;
+                let secret = params.oauth_token_secret;
 
                 message.action = 'https://api.twitter.com/oauth/authorize';
                 message.parameters.oauth_token = token;
@@ -85,13 +85,13 @@ Twitter.prototype.login = function() {
 
 
 Twitter.prototype.sign = function(pin, cb) {
-    var requestToken = this.request_token;
-    var requestTokenSecret = this.request_token_secret;
+    let requestToken = this.request_token;
+    let requestTokenSecret = this.request_token_secret;
 
     delete this.request_token;
     delete this.request_token_secret;
 
-    var message = {
+    let message = {
         'method': 'GET',
         'action': 'https://api.twitter.com/oauth/access_token',
         'parameters': {
@@ -102,7 +102,7 @@ Twitter.prototype.sign = function(pin, cb) {
         }
     };
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET,
         'tokenSecret': requestTokenSecret
     };
@@ -115,7 +115,7 @@ Twitter.prototype.sign = function(pin, cb) {
         'url': OAuth.addToURL(message.action, message.parameters),
         'success': $.proxy(function(data) {
 
-            var params = this.parseToken(data);
+            let params = this.parseToken(data);
 
             this.save(params.oauth_token, params.oauth_token_secret, params.user_id);
             if (localStorage['sound'] === 'on') {
@@ -154,7 +154,7 @@ Twitter.prototype.isAuthenticated = function() {
 
 Twitter.prototype.saveFavorites = function() {
 	// https://dev.twitter.com/docs/api/1.1/get/favorites/list
-    var message = {
+    let message = {
         'method': 'GET',
         'action': 'https://api.twitter.com/1.1/favorites/list.json',
         'parameters': {
@@ -167,7 +167,7 @@ Twitter.prototype.saveFavorites = function() {
         }
     };
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET,
         'tokenSecret': this.getAccessTokenSecret()
     };
@@ -188,7 +188,7 @@ Twitter.prototype.saveFavorites = function() {
 
 Twitter.prototype.tweet = function(text) {
     // https://dev.twitter.com/docs/api/1.1/post/statuses/update
-    var message = {
+    let message = {
         'method': 'POST',
         'action': 'https://api.twitter.com/1.1/statuses/update.json',
         'parameters': {
@@ -199,7 +199,7 @@ Twitter.prototype.tweet = function(text) {
         }
     }
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET,
         'tokenSecret': this.getAccessTokenSecret()
     }
@@ -207,7 +207,7 @@ Twitter.prototype.tweet = function(text) {
     OAuth.setTimestampAndNonce(message);
     OAuth.SignatureMethod.sign(message, accessor);
 
-    var result = $.ajax({
+    let result = $.ajax({
         'type': message.method,
         'url': OAuth.addToURL(message.action, message.parameters), 
         'dataType': 'json',
@@ -219,7 +219,7 @@ Twitter.prototype.tweet = function(text) {
 
 function getArrayDiff(older, newer){
     function callback_filter(element, index, array) {
-        for (var i = 0; i < this.length; i++) {
+        for (let i = 0; i < this.length; i++) {
             if (this[i].id_str === element.id_str) {
                 return false;
             }
@@ -234,16 +234,16 @@ function getArrayDiff(older, newer){
 
 
 function getURLdiff(old_tweets, new_tweets) {
-    var added_tweets = getArrayDiff(old_tweets, new_tweets);
+    let added_tweets = getArrayDiff(old_tweets, new_tweets);
     //console.log(added_tweets);
 
-    var remove_pic = localStorage['remove_pic']; //on or off(set by optionpage) or undefined(not set)
-    var remove_movie = localStorage['remove_movie']; //on or off(set by optionpage) or undefined(not set)
-    var remove_twi = localStorage['remove_twi']; //on or off(set by optionpage) or undefined(not set)
-    var remove_loc = localStorage['remove_loc']; //on or off(set by optionpage) or undefined(not set)
+    let remove_pic = localStorage['remove_pic']; //on or off(set by optionpage) or undefined(not set)
+    let remove_movie = localStorage['remove_movie']; //on or off(set by optionpage) or undefined(not set)
+    let remove_twi = localStorage['remove_twi']; //on or off(set by optionpage) or undefined(not set)
+    let remove_loc = localStorage['remove_loc']; //on or off(set by optionpage) or undefined(not set)
 
-    var new_urls = [];
-    for (var i = 0; i < added_tweets.length; i++) { // extract url from new_tweets
+    let new_urls = [];
+    for (let i = 0; i < added_tweets.length; i++) { // extract url from new_tweets
         if (checkURL(added_tweets[i], remove_pic, remove_movie, remove_twi, remove_loc)) {
             // https://dev.twitter.com/docs/platform-objects/entities
             added_tweets[i].entities.urls.forEach(function(urls) {
@@ -258,7 +258,7 @@ function getURLdiff(old_tweets, new_tweets) {
 
 
 function speak(en_words, ja_words) {
-    var msg;
+    let msg;
 
     if (localStorage['lang'] === 'ja'){
         msg = new SpeechSynthesisUtterance(ja_words);
@@ -284,7 +284,7 @@ function speak(en_words, ja_words) {
 
 Twitter.prototype.getNewURLs = function() {
     // https://dev.twitter.com/docs/api/1.1/get/favorites/list
-    var message = {
+    let message = {
         'method': 'GET',
         'action': 'https://api.twitter.com/1.1/favorites/list.json',
         'parameters': {
@@ -297,7 +297,7 @@ Twitter.prototype.getNewURLs = function() {
         }
     };
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET,
         'tokenSecret': this.getAccessTokenSecret()
     };
@@ -311,7 +311,7 @@ Twitter.prototype.getNewURLs = function() {
         'dataType': 'json',
         'success': function(new_tweets) {
 
-            var olderTweets = JSON.parse(localStorage['older_tweets']);
+            let olderTweets = JSON.parse(localStorage['older_tweets']);
             if (!olderTweets) { // There isn't old tweet, old_tweets.tweets is undefined
                 if (localStorage['notification'] !== 'off') {
                     chrome.windows.create({
@@ -323,7 +323,7 @@ Twitter.prototype.getNewURLs = function() {
                     });
                 }
             } else {
-                var new_urls = getURLdiff(olderTweets, new_tweets);
+                let new_urls = getURLdiff(olderTweets, new_tweets);
                 localStorage['new_urls'] = JSON.stringify(new_urls);
                 if (new_urls.length !== 0) {
                     if (localStorage['notification'] !== 'off' && localStorage['auto_open'] !== 'on') {
@@ -345,7 +345,7 @@ Twitter.prototype.getNewURLs = function() {
                 }
 
                 if (localStorage['auto_open'] === 'on') {
-                    for (var i = 0; i < new_urls.length; i++) {
+                    for (let i = 0; i < new_urls.length; i++) {
                         window.open(new_urls[i]);
                     }
                     localStorage['new_urls'] = JSON.stringify([]); // for disable open url button  
@@ -376,7 +376,7 @@ Twitter.prototype.getNewURLs = function() {
 
 
 Twitter.prototype.openNewURLsOnPopup = function() {
-    var new_urls = localStorage['new_urls'];
+    let new_urls = localStorage['new_urls'];
 
     if (new_urls === undefined){
         if (localStorage['sound'] === 'on') {    
@@ -392,7 +392,7 @@ Twitter.prototype.openNewURLsOnPopup = function() {
             }
         }
 
-        for (var i = 0; i < new_urls.length; i++) {
+        for (let i = 0; i < new_urls.length; i++) {
             window.open(new_urls[i]);
         }
     }
@@ -406,7 +406,7 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
 
     userID = userID || ''; // set default arg
 
-    var message = {
+    let message = {
         'method': 'GET',
         'action': 'https://api.twitter.com/1.1/favorites/list.json',
         'parameters': {
@@ -420,7 +420,7 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
         }
     };
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET,
         'tokenSecret': this.getAccessTokenSecret()
     };
@@ -434,19 +434,19 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
         'dataType': 'json',
         'success': function(tweets) {
 
-            var root = $('<div>').attr('class', 'tweets');
-            var remove_pic = localStorage['remove_pic']; //on or off(set by optionpage) or undefined(not set)
-            var remove_movie = localStorage['remove_movie']; //on or off(set by optionpage) or undefined(not set)
-	        var remove_twi = localStorage['remove_twi']; //on or off(set by optionpage) or undefined(not set)
-	        var remove_loc = localStorage['remove_loc']; //on or off(set by optionpage) or undefined(not set)
+            let root = $('<div>').attr('class', 'tweets');
+            let remove_pic = localStorage['remove_pic']; //on or off(set by optionpage) or undefined(not set)
+            let remove_movie = localStorage['remove_movie']; //on or off(set by optionpage) or undefined(not set)
+	        let remove_twi = localStorage['remove_twi']; //on or off(set by optionpage) or undefined(not set)
+	        let remove_loc = localStorage['remove_loc']; //on or off(set by optionpage) or undefined(not set)
             	
             tweets.forEach(function(tweet) {
             	
             	if (checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc)) {
 
-                    var user = tweet.user;
-                    var source = $(tweet.source);
-                    var id = tweet.id
+                    let user = tweet.user;
+                    let source = $(tweet.source);
+                    let id = tweet.id
 
                     if (_.isObject(source) && _.isElement(source[0])) {
                         source.attr('target', '_blank');
@@ -454,7 +454,7 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
                         source = $('<a>').attr('href', 'javascript:void(0)').text(tweet.source);
                     }
 
-                    var tweetView = $('<div>').attr('class', 'tweet').append(
+                    let tweetView = $('<div>').attr('class', 'tweet').append(
                         $('<div>').attr('class', 'tweet-icon').append(
                             $('<img>').attr('src', user.profile_image_url_https)
                         ),
@@ -490,11 +490,11 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
             $(elm).append(root);
 
             if (userID === '') { // in case get myID's tweet
-                var currentTime = (new Date()).getTime();
+                let currentTime = (new Date()).getTime();
                 if ((currentTime - localStorage['lastTime']) > 903000 && localStorage['older_tweets'] !== undefined){ // 900000msec = 15min
                     // execute only when chrome return sleep mode and not first boot
                     console.log('return sleep');
-                    var new_urls = getURLdiff(JSON.parse(localStorage['older_tweets']), tweets);
+                    let new_urls = getURLdiff(JSON.parse(localStorage['older_tweets']), tweets);
                     if (localStorage['auto_open'] === 'on') {                        
                         if (localStorage['sound'] === 'on'){
                             if (new_urls.length === 0) {
@@ -504,7 +504,7 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
                             }
                         }
 
-                        for (var i = 0; i < new_urls.length; i++) {
+                        for (let i = 0; i < new_urls.length; i++) {
                             window.open(new_urls[i]);
                         }
 
@@ -525,18 +525,18 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
                 localStorage.removeItem('access_token');
 
             } else if (xhr.status === 429) { // for reach API limit
-            	var root = $('<div>').attr('class', 'error');
+            	let root = $('<div>').attr('class', 'error');
                 root.append('Sorry, request exceeded the API limit.<br/>Please try it later.');
                 $(elm).append(root);
 
             } else if (xhr.status === 500) {
-                var root = $('<div>').attr('class', 'error');
+                let root = $('<div>').attr('class', 'error');
                 root.append('Sorry, something in Twitter is technically wrong.<br/>Please try it later.');
                 $(elm).append(root);
 
 
             } else {
-            	var root = $('<div>').attr('class', 'error');
+            	let root = $('<div>').attr('class', 'error');
                 root.append(xhr.status + ' error!<br/>Please try it later.');
                 $(elm).append(root);
             }
@@ -546,10 +546,10 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
 
 
 function checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc) {
-    var judge_remove = 0;
-    var urls = tweet.entities.urls;
+    let judge_remove = 0;
+    let urls = tweet.entities.urls;
     if (urls.length > 0) { //url in tweet exist?
-    	for (var i = 0; i < urls.length; i++) {
+    	for (let i = 0; i < urls.length; i++) {
         	// removing URL of picture service
         	if (remove_pic !== 'off' &&
             /^pic\.twitter|^twitpic\.com|^instagram\.com\/p|^p\.twipple|^pckles\.com|^facebook\.com\/photo|^ift\.tt|^path\.com\/p/.test(urls[i].display_url)) {
@@ -589,8 +589,8 @@ function checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc) {
 
 
 function normalizeTweetText(tweet) {
-    var text = tweet.text;
-    var entities = tweet.entities;
+    let text = tweet.text;
+    let entities = tweet.entities;
 
     if (_.isObject(tweet)) {
         if (_.isArray(entities.hashtags)) {

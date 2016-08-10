@@ -1,22 +1,22 @@
 "use strict";
 
-var movie_radio_en = document.getElementsByName("movie_radio_en");
-var pic_radio_en = document.getElementsByName("pic_radio_en");
-var twi_radio_en = document.getElementsByName("twi_radio_en");
-var loc_radio_en = document.getElementsByName("loc_radio_en");
-var auto_open_en = document.getElementsByName("auto_open_en");
-var displayURL_en = document.getElementsByName('displayURL_en');
-var notification_en = document.getElementsByName('notification_en');
-var lang_radio_en = document.getElementsByName("lang_radio_en");
+let movie_radio_en = document.getElementsByName("movie_radio_en");
+let pic_radio_en = document.getElementsByName("pic_radio_en");
+let twi_radio_en = document.getElementsByName("twi_radio_en");
+let loc_radio_en = document.getElementsByName("loc_radio_en");
+let auto_open_en = document.getElementsByName("auto_open_en");
+let displayURL_en = document.getElementsByName('displayURL_en');
+let notification_en = document.getElementsByName('notification_en');
+let lang_radio_en = document.getElementsByName("lang_radio_en");
 
-var movie_radio_jp = document.getElementsByName("movie_radio_jp");
-var pic_radio_jp = document.getElementsByName("pic_radio_jp");
-var twi_radio_jp = document.getElementsByName("twi_radio_jp");
-var loc_radio_jp = document.getElementsByName("loc_radio_jp");
-var auto_open_jp = document.getElementsByName("auto_open_jp");
-var displayURL_jp = document.getElementsByName('displayURL_jp');
-var notification_jp = document.getElementsByName('notification_jp');
-var lang_radio_jp = document.getElementsByName("lang_radio_jp");
+let movie_radio_jp = document.getElementsByName("movie_radio_jp");
+let pic_radio_jp = document.getElementsByName("pic_radio_jp");
+let twi_radio_jp = document.getElementsByName("twi_radio_jp");
+let loc_radio_jp = document.getElementsByName("loc_radio_jp");
+let auto_open_jp = document.getElementsByName("auto_open_jp");
+let displayURL_jp = document.getElementsByName('displayURL_jp');
+let notification_jp = document.getElementsByName('notification_jp');
+let lang_radio_jp = document.getElementsByName("lang_radio_jp");
 
 
 movie_radio_en[0].onclick = movie_radio_jp[0].onclick = function() {
