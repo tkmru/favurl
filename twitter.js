@@ -217,25 +217,8 @@ Twitter.prototype.tweet = function(text) {
     return result;
 }
 
-function getArrayDiff(older, newer){
-    function checkId(element, index, array) {
-        for (let i = 0; i < this.length; i++) {
-            if (this[i].id_str === element.id_str) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    if (newer.length === older.length) { //this update change  newer.length
-        return newer.filter(checkId, older);
-    }
-}
-
-
 function getURLdiff(old_tweets, new_tweets) {
-    let added_tweets = getArrayDiff(old_tweets, new_tweets);
-
+    let added_tweets = new_tweets.filter(x => old_tweets.indexOf(x) < 0 );
     let remove_pic = localStorage['remove_pic']; //on or off(set by optionpage) or undefined(not set)
     let remove_movie = localStorage['remove_movie']; //on or off(set by optionpage) or undefined(not set)
     let remove_twi = localStorage['remove_twi']; //on or off(set by optionpage) or undefined(not set)
