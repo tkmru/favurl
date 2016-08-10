@@ -488,8 +488,8 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
             $(elm).append(root);
 
             if (userID === '') { // in case get myID's tweet
-                let currentTime = (new Date()).getTime();
-                if ((currentTime - localStorage['lastTime']) > 903000 && localStorage['older_tweets'] !== undefined){ // 900000msec = 15min
+                let currentTimeMs = (new Date()).getTime();
+                if ((currentTimeMs - localStorage['lastTimeMs']) > 903000 && localStorage['older_tweets'] !== undefined){ // 900000msec = 15min
                     // execute only when chrome return sleep mode and not first boot
                     let new_urls = getURLdiff(JSON.parse(localStorage['older_tweets']), tweets);
                     if (localStorage['auto_open'] === 'on') {                        
@@ -573,7 +573,7 @@ function checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc) {
             }
         }
         
-    } else { //url not in tweet exist?
+    } else { // url not in tweet exist?
         judge_remove++;
     }
     
