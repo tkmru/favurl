@@ -242,10 +242,10 @@ function getURLdiff(old_tweets, new_tweets) {
     let remove_loc = localStorage['remove_loc']; //on or off(set by optionpage) or undefined(not set)
 
     let new_urls = [];
-    for (let i = 0; i < added_tweets.length; i++) { // extract url from new_tweets
-        if (checkURL(added_tweets[i], remove_pic, remove_movie, remove_twi, remove_loc)) {
+    for (added_tweet of added_tweets) { // extract url from new_tweets
+        if (checkURL(added_tweet, remove_pic, remove_movie, remove_twi, remove_loc)) {
             // https://dev.twitter.com/docs/platform-objects/entities
-            added_tweets[i].entities.urls.forEach(function(urls) {
+            added_tweet.entities.urls.forEach(function(urls) {
                 new_urls.push(urls.url);
             });
         }
@@ -343,8 +343,8 @@ Twitter.prototype.getNewURLs = function() {
                 }
 
                 if (localStorage['auto_open'] === 'on') {
-                    for (let i = 0; i < new_urls.length; i++) {
-                        window.open(new_urls[i]);
+                    for (new_url of new_urls) {
+                        window.open(new_url);
                     }
                     localStorage['new_urls'] = JSON.stringify([]); // for disable open url button  
                 }
@@ -390,8 +390,8 @@ Twitter.prototype.openNewURLsOnPopup = function() {
             }
         }
 
-        for (let i = 0; i < new_urls.length; i++) {
-            window.open(new_urls[i]);
+        for (new_url of new_urls) {
+            window.open(new_url);
         }
     }
 
@@ -501,8 +501,8 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
                             }
                         }
 
-                        for (let i = 0; i < new_urls.length; i++) {
-                            window.open(new_urls[i]);
+                        for (new_url of new_urls) {
+                            window.open(new_url);
                         }
 
                     } else { // off or undefined(default)
@@ -544,30 +544,30 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
 
 function checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc) {
     let judge_remove = 0;
-    let urls = tweet.entities.urls;
-    if (urls.length > 0) { // url in tweet exist?
-    	for (let i = 0; i < urls.length; i++) {
+    let tweet_urls = tweet.entities.urls;
+    if (tweet_urls.length > 0) { // url in tweet exist?
+    	for (tweet_url of tweet_urls) {
         	// removing URL of picture service
         	if (remove_pic !== 'off' &&
-            /^pic\.twitter|^twitpic\.com|^instagram\.com\/p|^p\.twipple|^pckles\.com|^facebook\.com\/photo|^ift\.tt|^path\.com\/p/.test(urls[i].display_url)) {
+            /^pic\.twitter|^twitpic\.com|^instagram\.com\/p|^p\.twipple|^pckles\.com|^facebook\.com\/photo|^ift\.tt|^path\.com\/p/.test(tweet_url.display_url)) {
                 judge_remove++;
                 break;
 
             // removing URL of movie service
             } else if (remove_movie !== 'off' &&
-            /^instagram\.com\/m|^youtu\.be|^youtube\.com|^nico\.ms|^vimeo\.com|^veoh\.com|^v\.youku|^ustre\.am|dailymotion\.com\/video|^dai.ly/.test(urls[i].display_url)) {
+            /^instagram\.com\/m|^youtu\.be|^youtube\.com|^nico\.ms|^vimeo\.com|^veoh\.com|^v\.youku|^ustre\.am|dailymotion\.com\/video|^dai.ly/.test(tweet_url.display_url)) {
                 judge_remove++;
                 break;
 
             // removing URL of tweet
             } else if (remove_twi !== 'off' &&
-                       /^twitter\.com/.test(urls[i].display_url)) {
+                       /^twitter\.com/.test(tweet_url.display_url)) {
                 judge_remove++;
                 break;
 
             // removing URL of location service
             } else if (remove_loc !== 'off' &&
-                       /^4sq\.com|^swarmapp.com\/c/.test(urls[i].display_url)) {
+                       /^4sq\.com|^swarmapp.com\/c/.test(tweet_url.display_url)) {
                 judge_remove++;
                 break;
             }
