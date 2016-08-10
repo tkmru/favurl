@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // todo http://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-ajax-call
 
@@ -62,7 +62,7 @@ Twitter.prototype.login = function() {
         $.proxy(
             function(data) {
                 let params = this.parseToken(data);
-                let token =params.oauth_token;
+                let token = params.oauth_token;
                 let secret = params.oauth_token_secret;
 
                 message.action = 'https://api.twitter.com/oauth/authorize';
@@ -597,7 +597,7 @@ function normalizeTweetText(tweet) {
             entities.hashtags.forEach(function(hashtag) {
                 text = text.replace(
                     '#' + hashtag.text,
-                    '<a href="http://twitter.com/search/' + encodeURIComponent('#' + hashtag.text) + '"target="_blank">#' + hashtag.text + '</a>'
+                    '<a href='http://twitter.com/search/' + encodeURIComponent('#' + hashtag.text) + ''target='_blank'>#' + hashtag.text + '</a>'
                 );
             });
         }
@@ -607,13 +607,13 @@ function normalizeTweetText(tweet) {
                 if (localStorage['displayURL'] != 'original'){ // none or brief
                         text = text.replace(
                         media.url,
-                        '<a href=' + media.media_url_https + '"target="_blank">' + media.display_url + '</a>'
+                        '<a href=' + media.media_url_https + ''target='_blank'>' + media.display_url + '</a>'
                     );
 
                 } else { // original
                     text = text.replace(
                         media.url,
-                        '<a href=' + media.media_url_https + '"target="_blank">' + media.expanded_url + '</a>'
+                        '<a href=' + media.media_url_https + ''target='_blank'>' + media.expanded_url + '</a>'
                     );
                 }
             });
@@ -624,12 +624,12 @@ function normalizeTweetText(tweet) {
                 if (localStorage['displayURL'] != 'original'){ // none or brief
                     text = text.replace(
                         url.url,
-                        '<a href="' + url.expanded_url + '"target="_blank">' + url.display_url + '</a>'
+                        '<a href='' + url.expanded_url + ''target='_blank'>' + url.display_url + '</a>'
                     );
                 } else { // original   
                     text = text.replace(
                         url.url,
-                        '<a href="' + url.expanded_url + '"target="_blank">' + url.expanded_url + '</a>'
+                        '<a href='' + url.expanded_url + ''target='_blank'>' + url.expanded_url + '</a>'
                     );
                 }
             });
@@ -639,7 +639,7 @@ function normalizeTweetText(tweet) {
             entities.user_mentions.forEach(function(mention) {
                 text = text.replace(
                     '@' + mention.screen_name,
-                    '<a href="https://twitter.com/' + mention.screen_name + '" target="_blank">@' + mention.screen_name + '</a>'
+                    '<a href='https://twitter.com/' + mention.screen_name + '' target='_blank'>@' + mention.screen_name + '</a>'
                 );
             });
         }

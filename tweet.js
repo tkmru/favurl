@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 (function(undefined) {
     let bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {

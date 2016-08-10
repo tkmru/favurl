@@ -1,27 +1,27 @@
-"use strict";
+'use strict';
 
 (function(undefined) {
     let bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
         let twitter = bgPage.getTwitterAPI();
 
-        $("#login").click(function() {
+        $('#login').click(function() {
             twitter.login();
         });
 
-        $("#logout").click(function() {
+        $('#logout').click(function() {
             twitter.logout();
             location.reload();
         });
 
-        $("#open_newurl").click(function() {
+        $('#open_newurl').click(function() {
             twitter.openNewURLsOnPopup();        
         });
 
         $('#search').click(function() {
-            let userID = $("#userID").val();
+            let userID = $('#userID').val();
             if (userID !== '' && userID !== ' --- Please put target user ID. ---') {
-                $("#search-contents").css('margin', '0px');                
-                twitter.fetchFavorites($("#search-contents"), userID);
+                $('#search-contents').css('margin', '0px');                
+                twitter.fetchFavorites($('#search-contents'), userID);
                 $('#userID').val('');
                 $('#userID').hide();
                 $('#search').hide();
@@ -32,9 +32,9 @@
         });
 
         if (twitter.isAuthenticated()) {
-            $("#login").css('display', 'none');
-            $("#tweet-contents").show();
-            twitter.fetchFavorites($("#tweet-contents"));
+            $('#login').css('display', 'none');
+            $('#tweet-contents').show();
+            twitter.fetchFavorites($('#tweet-contents'));
         
         } else {
             $('#login').css('display', 'block');
@@ -45,15 +45,15 @@
 })();
 
 
-$("#logo").click(function() {
-    window.open("https:/twitter.com");
+$('#logo').click(function() {
+    window.open('https:/twitter.com');
 });
 
-$("#option").click(function() {
-    window.open("chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/options.html");
+$('#option').click(function() {
+    window.open('chrome-extension://' + chrome.i18n.getMessage('@@extension_id') + '/options.html');
 });
 
-$("#refresh").click(function() {
+$('#refresh').click(function() {
     location.reload();
 });
 
@@ -102,8 +102,8 @@ $('#userID').focus(function(){
 });
 
 let konamikan=[];
-let image = document.createElement("img");
-image.src = "images/Twitter_logo.png";
+let image = document.createElement('img');
+image.src = 'images/Twitter_logo.png';
 
 let canvas = document.getElementById('logo');
 let ctx = canvas.getContext('2d');
@@ -138,10 +138,10 @@ $(window).keyup(function(e){
 
 $(document).ready(function(){
     $(window).unload(function(){
-        $("#header").show();
-        $("#login").css('display', 'none');
-        $("#tweet-contents").show();
-        $("#tweet-form").hide();
+        $('#header').show();
+        $('#login').css('display', 'none');
+        $('#tweet-contents').show();
+        $('#tweet-form').hide();
         console.log('close');
     });
 

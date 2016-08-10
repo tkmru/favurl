@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 let api = null;
 
@@ -52,7 +52,7 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.runtime.onStartup.addListener(function() {
     // execute only when chrome start
-    // chrome.tabs.executeScript(null, {code: 'console.log("abc");'}, null);
+    // chrome.tabs.executeScript(null, {code: 'console.log('abc');'}, null);
     if (getTwitterAPI().isAuthenticated()) {
         getTwitterAPI().getNewURLs();
     }   
