@@ -29,8 +29,6 @@ oauth.js (https://oauth.googlecode.com/svn/code/javascript/oauth.js)
 
 sha1-min.js (http://pajhome.org.uk/crypt/md5/scripts.html)
 
-underscore-min.js (http://underscorejs.org/#)
-
 twitter-text-tweetlength.js (https://gist.github.com/tsmd/7069883)
 
 reset.css (http://html5doctor.com/html-5-reset-stylesheet/)
