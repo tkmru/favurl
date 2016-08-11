@@ -17,7 +17,6 @@
             let tweetLength = twttr.txt.getTweetLength(tweet);
             if (tweetLength <= 140) {
                 let result = JSON.parse(twitter.tweet(tweet));
-                //alert(result);
                 if('errors' in result){
                     let errorCode = result.errors[0].code;
                     if (errorCode === 226) {

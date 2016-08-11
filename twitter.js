@@ -326,8 +326,8 @@ Twitter.prototype.getNewURLs = function() {
                 }
 
                 if (localStorage['autoOpen'] === 'on') {
-                    for (new_url of newURLs) {
-                        window.open(new_url);
+                    for (newURL of newURLs) {
+                        window.open(newURL);
                     }
                     localStorage['newURLs'] = JSON.stringify([]); // for disable open url button  
                 }
@@ -369,12 +369,12 @@ Twitter.prototype.openNewURLsOnPopup = function() {
             if (newURLs.length === 0) {
                 speak('I don\'t have new URL', '新着URLはありません');
             } else {
-                speak('I open new '+newURLs.length+' URL', newURLs.length+'つの新着URLを開きます');    
+                speak('I open new ' + newURLs.length + ' URL', newURLs.length + 'つの新着URLを開きます');    
             }
         }
 
-        for (new_url of newURLs) {
-            window.open(new_url);
+        for (newURL of newURLs) {
+            window.open(newURL);
         }
     }
 
@@ -482,8 +482,8 @@ Twitter.prototype.fetchFavorites = function(elm, userID='') {
                             }
                         }
 
-                        for (new_url of newURLs) {
-                            window.open(new_url);
+                        for (newURL of newURLs) {
+                            window.open(newURL);
                         }
 
                     } else { // off or undefined(default)
@@ -633,7 +633,7 @@ function normalizeDateTime(date) {
     if (_.isDate(date)) {
         return date.getFullYear() + '/' + zeroPadding(date.getMonth() + 1) + '/' + zeroPadding(date.getDate()) + ' ' + zeroPadding(date.getHours()) + ':' + zeroPadding(date.getMinutes()) + ':' + zeroPadding(date.getSeconds());
     } else {
-        throw new Error('argument isn`t prototype of Date');
+        throw new Error('argument isn\'t prototype of Date');
     }
 }
 
