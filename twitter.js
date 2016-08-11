@@ -7,19 +7,19 @@ const TWITTER_USER_ID_STORAGE_KEY = 'userid';
 let Twitter = function() {};
 
 Twitter.prototype.getAccessToken = function() {
-    let accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+    let accessToken = localStorage[ACCESS_TOKEN_STORAGE_KEY];
 
     return (typeof accessToken === 'string' || accessToken instanceof String) ? accessToken : null;
 };
 
 Twitter.prototype.getAccessTokenSecret = function() {
-    let accessTokenSecret = localStorage.getItem(ACCESS_TOKEN_SECRET_STORAGE_KEY);
+    let accessTokenSecret = localStorage[ACCESS_TOKEN_SECRET_STORAGE_KEY];
 
     return (typeof accessTokenSecret === 'string' || accessTokenSecret instanceof String) ? accessTokenSecret : null;
 };
 
 Twitter.prototype.getUserID = function() {
-    let userID = Number(localStorage.getItem(TWITTER_USER_ID_STORAGE_KEY));
+    let userID = Number(localStorage[TWITTER_USER_ID_STORAGE_KEY]);
 
     return (Number.isInteger(userID) && !Number.isNaN(userID)) ? userID : null;
 };
@@ -132,9 +132,9 @@ Twitter.prototype.sign = function(pin, cb) {
 
 
 Twitter.prototype.save = function(accessToken, accessTokenSecret, userid) {
-    localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
-    localStorage.setItem(ACCESS_TOKEN_SECRET_STORAGE_KEY, accessTokenSecret);
-    localStorage.setItem(TWITTER_USER_ID_STORAGE_KEY, userid);
+    localStorage[ACCESS_TOKEN_STORAGE_KEY] = accessToken;
+    localStorage[ACCESS_TOKEN_SECRET_STORAGE_KEY] = accessTokenSecret;
+    localStorage[TWITTER_USER_ID_STORAGE_KEY] = userid;
 };
 
 
