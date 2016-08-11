@@ -1,23 +1,24 @@
+'use strict';
+
 (function(undefined) {
-    var bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
-       	var twitter = bgPage.getTwitterAPI();
-        var initText = bgPage.title + ' ' + bgPage.url + ' #favurl';
+    let bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
+       	let twitter = bgPage.getTwitterAPI();
+        let initText = bgPage.title + ' ' + bgPage.url + ' #favurl';
         $('#tweet-area').val(initText);
 
-        var tweetLength = twttr.txt.getTweetLength(initText);
+        let tweetLength = twttr.txt.getTweetLength(initText);
         $('#inputlength').html(tweetLength);
         if (tweetLength > 140){
             $('#inputlength').css('color', 'red');
         }
 
     	$('#tweet-button').click(function(){
-            var tweet = $('#tweet-area').val();
-            var tweetLength = twttr.txt.getTweetLength(tweet);
+            let tweet = $('#tweet-area').val();
+            let tweetLength = twttr.txt.getTweetLength(tweet);
             if (tweetLength <= 140) {
-                var result = JSON.parse(twitter.tweet(tweet));
-                //alert(result);
+                let result = JSON.parse(twitter.tweet(tweet));
                 if('errors' in result){
-                    var errorCode = result.errors[0].code;
+                    let errorCode = result.errors[0].code;
                     if (errorCode === 226) {
                         $('body').html(result.errors[0].code + ' error. ' +
                             'This request looks like it might be automated. ' + 
@@ -45,36 +46,29 @@
                         window.close();
                     }, 850);
                 }
-                /*
-                twitter.tweet(text).done(function(){
-                    
-                }).fail(function(xhr){
-                    $('body').html(xhr.status);
-                });
-                */
         	}
     	});
     });
 })();
 
-function speak(en_words, ja_words) {
-    var msg;
+function speak(enWords, jaWords) {
+    let msg;
 
     if (localStorage['lang'] === 'ja'){
-        msg = new SpeechSynthesisUtterance(ja_words);
+        msg = new SpeechSynthesisUtterance(jaWords);
         msg.lang = 'ja-JP';
 
     } else if (localStorage['lang'] === 'en') {
-        msg = new SpeechSynthesisUtterance(en_words);
+        msg = new SpeechSynthesisUtterance(enWords);
         msg.lang = 'en-US';
 
     } else if (navigator.language === 'ja') {
         localStorage['lang'] === 'ja';
-        msg = new SpeechSynthesisUtterance(ja_words);
+        msg = new SpeechSynthesisUtterance(jaWords);
         msg.lang = 'ja-JP';
 
     } else {
-        msg = new SpeechSynthesisUtterance(en_words);
+        msg = new SpeechSynthesisUtterance(enWords);
         msg.lang = 'en-US';
     }
 
@@ -83,8 +77,8 @@ function speak(en_words, ja_words) {
 
 
 $('#tweet-area').keyup(function(){
-    var tweet = $('#tweet-area').val();
-    var tweetLength = twttr.txt.getTweetLength(tweet);
+    let tweet = $('#tweet-area').val();
+    let tweetLength = twttr.txt.getTweetLength(tweet);
     $('#inputlength').html(tweetLength);
     if (tweetLength > 140){
         $('#inputlength').css('color', 'red');

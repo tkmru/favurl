@@ -1,4 +1,6 @@
-var api = null;
+'use strict';
+
+let api = null;
 
 // This function is called by popup.js
 function getTwitterAPI() {
@@ -16,8 +18,8 @@ chrome.runtime.onMessage.addListener(function(req, sender, res) {
     return true;
 });
 
-var url = '';
-var title = '';
+let url = '';
+let title = '';
 
 chrome.contextMenus.onClicked.addListener(function(info, tab){
     if (info.menuItemId == 'jumpTweetWindow'){
@@ -50,7 +52,7 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.runtime.onStartup.addListener(function() {
     // execute only when chrome start
-    // chrome.tabs.executeScript(null, {code: 'console.log("abc");'}, null);
+    // chrome.tabs.executeScript(null, {code: 'console.log('abc');'}, null);
     if (getTwitterAPI().isAuthenticated()) {
         getTwitterAPI().getNewURLs();
     }   
@@ -63,39 +65,30 @@ chrome.runtime.onStartup.addListener(function() {
 chrome.alarms.onAlarm.addListener(function(alarm) {
     if (alarm.name === 'save') {
         if (getTwitterAPI().isAuthenticated) {
-            console.log(getTwitterAPI().isAuthenticated);
             getTwitterAPI().saveFavorites();
         }
-        console.log(new Date + 'alarm!!');
         localStorage['lastTime'] = (new Date()).getTime();
     }
 });
 
 
 chrome.tabs.onCreated.addListener(function() {
-    //var currentTime = (new Date()).getTime();
-    check_returnSleep();
-    console.log('created');
+    checkReturnSleep();
 });
 
 chrome.tabs.onRemoved.addListener(function() {
-    //var currentTime = (new Date()).getTime();
-    check_returnSleep();
-    console.log('removed');
+    checkReturnSleep();
 });
 
 chrome.tabs.onUpdated.addListener(function() {
-    //var currentTime = (new Date()).getTime();
-    check_returnSleep();
-    console.log('updated');
+    checkReturnSleep();
 });
 
 
-function check_returnSleep(){
-    var currentTime = (new Date()).getTime();
-    if ((currentTime - localStorage['lastTime']) > 903000){ // 900000msec = 15min
+function checkReturnSleep(){
+    let currentTimeMs = (new Date()).getTime();
+    if ((currentTimeMs - localStorage['lastTimeMs']) > 903000){ // 900000msec = 15min
         // execute only when chrome return sleep mode
-        console.log('return sleep');
         if (getTwitterAPI().isAuthenticated) {
             getTwitterAPI().getNewURLs();
         }    
@@ -105,5 +98,5 @@ function check_returnSleep(){
         chrome.alarms.create('save', { periodInMinutes: 15 });
     }
     
-    localStorage['lastTime'] = currentTime;
+    localStorage['lastTimeMs'] = currentTimeMs;
 }

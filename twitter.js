@@ -1,34 +1,35 @@
+'use strict';
+
 // todo http://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-ajax-call
 
 const TWITTER_USER_ID_STORAGE_KEY = 'userid';
 
-var Twitter = function() {};
+let Twitter = function() {};
 
 Twitter.prototype.getAccessToken = function() {
-    var accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+    let accessToken = localStorage[ACCESS_TOKEN_STORAGE_KEY];
 
-    return _.isString(accessToken) ? accessToken : null;
+    return (typeof accessToken === 'string' || accessToken instanceof String) ? accessToken : null;
 };
 
 Twitter.prototype.getAccessTokenSecret = function() {
-    var accessTokenSecret = localStorage.getItem(ACCESS_TOKEN_SECRET_STORAGE_KEY);
+    let accessTokenSecret = localStorage[ACCESS_TOKEN_SECRET_STORAGE_KEY];
 
-    return _.isString(accessTokenSecret) ? accessTokenSecret : null;
+    return (typeof accessTokenSecret === 'string' || accessTokenSecret instanceof String) ? accessTokenSecret : null;
 };
 
 Twitter.prototype.getUserID = function() {
-    var userid = Number(localStorage.getItem(TWITTER_USER_ID_STORAGE_KEY));
+    let userID = Number(localStorage[TWITTER_USER_ID_STORAGE_KEY]);
 
-    return (_.isNumber(userid) && !_.isNaN(userid)) ? userid : null;
+    return (Number.isInteger(userID) && !Number.isNaN(userID)) ? userID : null;
 };
 
 Twitter.prototype.parseToken = function(data) {
-    if (_.isString(data)) {
-        var parsedToken = {};
+    if (typeof data === 'string' || data instanceof String) {
+        let parsedToken = {};
 
         data.split('&').forEach(function(token) {
-            var kv = token.split('=');
-
+            let kv = token.split('=');
             parsedToken[kv[0]] = kv[1];
         });
 
@@ -39,7 +40,7 @@ Twitter.prototype.parseToken = function(data) {
 };
 
 Twitter.prototype.login = function() {
-    var message = {
+    let message = {
         'method': 'GET',
         'action': 'https://api.twitter.com/oauth/request_token',
         'parameters': {
@@ -48,7 +49,7 @@ Twitter.prototype.login = function() {
         }
     };
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET
     };
 
@@ -59,9 +60,9 @@ Twitter.prototype.login = function() {
         OAuth.addToURL(message.action, message.parameters),
         $.proxy(
             function(data) {
-                var params = this.parseToken(data);
-                var token =params.oauth_token;
-                var secret = params.oauth_token_secret;
+                let params = this.parseToken(data);
+                let token = params.oauth_token;
+                let secret = params.oauth_token_secret;
 
                 message.action = 'https://api.twitter.com/oauth/authorize';
                 message.parameters.oauth_token = token;
@@ -83,13 +84,13 @@ Twitter.prototype.login = function() {
 
 
 Twitter.prototype.sign = function(pin, cb) {
-    var requestToken = this.request_token;
-    var requestTokenSecret = this.request_token_secret;
+    let requestToken = this.request_token;
+    let requestTokenSecret = this.request_token_secret;
 
     delete this.request_token;
     delete this.request_token_secret;
 
-    var message = {
+    let message = {
         'method': 'GET',
         'action': 'https://api.twitter.com/oauth/access_token',
         'parameters': {
@@ -100,7 +101,7 @@ Twitter.prototype.sign = function(pin, cb) {
         }
     };
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET,
         'tokenSecret': requestTokenSecret
     };
@@ -113,7 +114,7 @@ Twitter.prototype.sign = function(pin, cb) {
         'url': OAuth.addToURL(message.action, message.parameters),
         'success': $.proxy(function(data) {
 
-            var params = this.parseToken(data);
+            let params = this.parseToken(data);
 
             this.save(params.oauth_token, params.oauth_token_secret, params.user_id);
             if (localStorage['sound'] === 'on') {
@@ -130,9 +131,9 @@ Twitter.prototype.sign = function(pin, cb) {
 
 
 Twitter.prototype.save = function(accessToken, accessTokenSecret, userid) {
-    localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
-    localStorage.setItem(ACCESS_TOKEN_SECRET_STORAGE_KEY, accessTokenSecret);
-    localStorage.setItem(TWITTER_USER_ID_STORAGE_KEY, userid);
+    localStorage[ACCESS_TOKEN_STORAGE_KEY] = accessToken;
+    localStorage[ACCESS_TOKEN_SECRET_STORAGE_KEY] = accessTokenSecret;
+    localStorage[TWITTER_USER_ID_STORAGE_KEY] = userid;
 };
 
 
@@ -146,13 +147,13 @@ Twitter.prototype.logout = function() {
 
 
 Twitter.prototype.isAuthenticated = function() {
-    return !_.isNull(this.getAccessToken()) && !_.isNull(this.getAccessTokenSecret()) && _.isNumber(this.getUserID()) ? true : false;
+    return (!Object.is(this.getAccessToken(), null) && !Object.is(this.getAccessTokenSecret(), null) && !Object.is(this.getUserID(), null)) ? true : false;
 };
 
 
 Twitter.prototype.saveFavorites = function() {
 	// https://dev.twitter.com/docs/api/1.1/get/favorites/list
-    var message = {
+    let message = {
         'method': 'GET',
         'action': 'https://api.twitter.com/1.1/favorites/list.json',
         'parameters': {
@@ -165,7 +166,7 @@ Twitter.prototype.saveFavorites = function() {
         }
     };
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET,
         'tokenSecret': this.getAccessTokenSecret()
     };
@@ -178,7 +179,7 @@ Twitter.prototype.saveFavorites = function() {
         'url': OAuth.addToURL(message.action, message.parameters),
         'dataType': 'json',
         'success': function(tweets) {
-            localStorage['older_tweets'] = JSON.stringify(tweets);
+            localStorage['olderTweets'] = JSON.stringify(tweets);
         }
     });
 }
@@ -186,7 +187,7 @@ Twitter.prototype.saveFavorites = function() {
 
 Twitter.prototype.tweet = function(text) {
     // https://dev.twitter.com/docs/api/1.1/post/statuses/update
-    var message = {
+    let message = {
         'method': 'POST',
         'action': 'https://api.twitter.com/1.1/statuses/update.json',
         'parameters': {
@@ -197,7 +198,7 @@ Twitter.prototype.tweet = function(text) {
         }
     }
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET,
         'tokenSecret': this.getAccessTokenSecret()
     }
@@ -205,7 +206,7 @@ Twitter.prototype.tweet = function(text) {
     OAuth.setTimestampAndNonce(message);
     OAuth.SignatureMethod.sign(message, accessor);
 
-    var result = $.ajax({
+    let result = $.ajax({
         'type': message.method,
         'url': OAuth.addToURL(message.action, message.parameters), 
         'dataType': 'json',
@@ -213,57 +214,31 @@ Twitter.prototype.tweet = function(text) {
     }).responseText;
 
     return result;
-
-    /*
-    return $.ajax({
-        'type': message.method,
-        'url': OAuth.addToURL(message.action, message.parameters), 
-        'dataType': 'json'
-    }) 
-    */
 }
-
-function getArrayDiff(older, newer){
-    function callback_filter(element, index, array) {
-        for (var i = 0; i < this.length; i++) {
-            if (this[i].id_str === element.id_str) {
-                return false;
-            }
-        }
-        return true;
-    }
-    if (newer.length === older.length) { //this update change  newer.length
-        return newer.filter(callback_filter, older);
-    }
-}
-
 
 function getURLdiff(old_tweets, new_tweets) {
-    var added_tweets = getArrayDiff(old_tweets, new_tweets);
-    //console.log(added_tweets);
+    let added_tweets = new_tweets.filter(x => old_tweets.indexOf(x) < 0 );
+    let removePic = localStorage['removePic']; //on or off(set by optionpage) or undefined(not set)
+    let removeMovie = localStorage['removeMovie']; //on or off(set by optionpage) or undefined(not set)
+    let removeTweet = localStorage['removeTweet']; //on or off(set by optionpage) or undefined(not set)
+    let removeLoc = localStorage['removeLoc']; //on or off(set by optionpage) or undefined(not set)
 
-    var remove_pic = localStorage['remove_pic']; //on or off(set by optionpage) or undefined(not set)
-    var remove_movie = localStorage['remove_movie']; //on or off(set by optionpage) or undefined(not set)
-    var remove_twi = localStorage['remove_twi']; //on or off(set by optionpage) or undefined(not set)
-    var remove_loc = localStorage['remove_loc']; //on or off(set by optionpage) or undefined(not set)
-
-    var new_urls = [];
-    for (var i = 0; i < added_tweets.length; i++) { // extract url from new_tweets
-        if (checkURL(added_tweets[i], remove_pic, remove_movie, remove_twi, remove_loc)) {
+    let newURLs = [];
+    for (added_tweet of added_tweets) { // extract url from new_tweets
+        if (checkURL(added_tweet, removePic, removeMovie, removeTweet, removeLoc)) {
             // https://dev.twitter.com/docs/platform-objects/entities
-            added_tweets[i].entities.urls.forEach(function(urls) {
-            new_urls.push(urls.url);
+            added_tweet.entities.urls.forEach(function(urls) {
+                newURLs.push(urls.url);
             });
         }
     }
-    //console.log('newwurl'+JSON.stringify(new_urls));
                     
-    return new_urls;
+    return newURLs;
 }
 
 
 function speak(en_words, ja_words) {
-    var msg;
+    let msg;
 
     if (localStorage['lang'] === 'ja'){
         msg = new SpeechSynthesisUtterance(ja_words);
@@ -289,7 +264,7 @@ function speak(en_words, ja_words) {
 
 Twitter.prototype.getNewURLs = function() {
     // https://dev.twitter.com/docs/api/1.1/get/favorites/list
-    var message = {
+    let message = {
         'method': 'GET',
         'action': 'https://api.twitter.com/1.1/favorites/list.json',
         'parameters': {
@@ -302,7 +277,7 @@ Twitter.prototype.getNewURLs = function() {
         }
     };
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET,
         'tokenSecret': this.getAccessTokenSecret()
     };
@@ -316,7 +291,7 @@ Twitter.prototype.getNewURLs = function() {
         'dataType': 'json',
         'success': function(new_tweets) {
 
-            var olderTweets = JSON.parse(localStorage['older_tweets']);
+            let olderTweets = JSON.parse(localStorage['olderTweets']);
             if (!olderTweets) { // There isn't old tweet, old_tweets.tweets is undefined
                 if (localStorage['notification'] !== 'off') {
                     chrome.windows.create({
@@ -328,10 +303,10 @@ Twitter.prototype.getNewURLs = function() {
                     });
                 }
             } else {
-                var new_urls = getURLdiff(olderTweets, new_tweets);
-                localStorage['new_urls'] = JSON.stringify(new_urls);
-                if (new_urls.length !== 0) {
-                    if (localStorage['notification'] !== 'off' && localStorage['auto_open'] !== 'on') {
+                let newURLs = getURLdiff(olderTweets, new_tweets);
+                localStorage['newURLs'] = JSON.stringify(newURLs);
+                if (newURLs.length !== 0) {
+                    if (localStorage['notification'] !== 'off' && localStorage['autoOpen'] !== 'on') {
                         chrome.windows.create({
                             url : 'getNewFavURL.html',
                             focused : true,
@@ -342,22 +317,22 @@ Twitter.prototype.getNewURLs = function() {
                     }
 
                     if (localStorage['sound'] === 'on' ) {
-                        speak('You have new '+new_urls.length+' URL', new_urls.length+'つの新着URLがあります');    
+                        speak('You have new ' + newURLs.length + ' URL', newURLs.length+'つの新着URLがあります');    
                     }
 
                 } else if (localStorage['sound'] === 'on' ) {
                     speak('I don\'t have new URL', '新着URLはありません');
                 }
 
-                if (localStorage['auto_open'] === 'on') {
-                    for (var i = 0; i < new_urls.length; i++) {
-                        window.open(new_urls[i]);
+                if (localStorage['autoOpen'] === 'on') {
+                    for (newURL of newURLs) {
+                        window.open(newURL);
                     }
-                    localStorage['new_urls'] = JSON.stringify([]); // for disable open url button  
+                    localStorage['newURLs'] = JSON.stringify([]); // for disable open url button  
                 }
             }
 
-            localStorage['older_tweets'] = JSON.stringify(new_tweets);
+            localStorage['olderTweets'] = JSON.stringify(new_tweets);
         },
 
         'error': function(xhr) {
@@ -381,37 +356,35 @@ Twitter.prototype.getNewURLs = function() {
 
 
 Twitter.prototype.openNewURLsOnPopup = function() {
-    var new_urls = localStorage['new_urls'];
+    let newURLs = localStorage['newURLs'];
 
-    if (new_urls === undefined){
+    if (newURLs === undefined){
         if (localStorage['sound'] === 'on') {    
             speak('This function is enabled next time', 'この機能は次回起動時よりご利用いただけます');
         }
     } else {
-        new_urls = JSON.parse(new_urls);
+        newURLs = JSON.parse(newURLs);
         if (localStorage['sound'] === 'on') { 
-            if (new_urls.length === 0) {
+            if (newURLs.length === 0) {
                 speak('I don\'t have new URL', '新着URLはありません');
             } else {
-                speak('I open new '+new_urls.length+' URL', new_urls.length+'つの新着URLを開きます');    
+                speak('I open new ' + newURLs.length + ' URL', newURLs.length + 'つの新着URLを開きます');    
             }
         }
 
-        for (var i = 0; i < new_urls.length; i++) {
-            window.open(new_urls[i]);
+        for (newURL of newURLs) {
+            window.open(newURL);
         }
     }
 
-    localStorage['new_urls'] = JSON.stringify([]);
+    localStorage['newURLs'] = JSON.stringify([]);
 }
 
 
-Twitter.prototype.fetchFavorites = function(elm, userID) {
+Twitter.prototype.fetchFavorites = function(elm, userID='') {
 	// https://dev.twitter.com/docs/api/1.1/get/favorites/list
 
-    userID = userID || ''; // set default arg
-
-    var message = {
+    let message = {
         'method': 'GET',
         'action': 'https://api.twitter.com/1.1/favorites/list.json',
         'parameters': {
@@ -425,7 +398,7 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
         }
     };
 
-    var accessor = {
+    let accessor = {
         'consumerSecret': CONSUMER_SECRET,
         'tokenSecret': this.getAccessTokenSecret()
     };
@@ -439,27 +412,21 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
         'dataType': 'json',
         'success': function(tweets) {
 
-            var root = $('<div>').attr('class', 'tweets');
-            var remove_pic = localStorage['remove_pic']; //on or off(set by optionpage) or undefined(not set)
-            var remove_movie = localStorage['remove_movie']; //on or off(set by optionpage) or undefined(not set)
-	        var remove_twi = localStorage['remove_twi']; //on or off(set by optionpage) or undefined(not set)
-	        var remove_loc = localStorage['remove_loc']; //on or off(set by optionpage) or undefined(not set)
+            let root = $('<div>').attr('class', 'tweets');
+            let removePic = localStorage['removePic']; // on or off(set by optionpage) or undefined(not set)
+            let removeMovie = localStorage['removeMovie']; // on or off(set by optionpage) or undefined(not set)
+	        let removeTweet = localStorage['removeTweet']; // on or off(set by optionpage) or undefined(not set)
+	        let removeLoc = localStorage['removeLoc']; // on or off(set by optionpage) or undefined(not set)
             	
             tweets.forEach(function(tweet) {
             	
-            	if (checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc)) {
+            	if (checkURL(tweet, removePic, removeMovie, removeTweet, removeLoc)) {
 
-                    var user = tweet.user;
-                    var source = $(tweet.source);
-                    var id = tweet.id
+                    let user = tweet.user;
+                    let source = $(tweet.source);
+                    let id = tweet.id
 
-                    if (_.isObject(source) && _.isElement(source[0])) {
-                        source.attr('target', '_blank');
-                    } else {
-                        source = $('<a>').attr('href', 'javascript:void(0)').text(tweet.source);
-                    }
-
-                    var tweetView = $('<div>').attr('class', 'tweet').append(
+                    let tweetView = $('<div>').attr('class', 'tweet').append(
                         $('<div>').attr('class', 'tweet-icon').append(
                             $('<img>').attr('src', user.profile_image_url_https)
                         ),
@@ -472,7 +439,7 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
                         ),
                         $('<div>').attr('class', 'tweet-info').append(
                             $('<ul>').append(
-                                $('<li>').append(source),
+                                $('<li>').append(source), 
                                 $('<li>').append(
                                     $('<a>').attr(
                                         'href',
@@ -495,30 +462,29 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
             $(elm).append(root);
 
             if (userID === '') { // in case get myID's tweet
-                var currentTime = (new Date()).getTime();
-                if ((currentTime - localStorage['lastTime']) > 903000 && localStorage['older_tweets'] !== undefined){ // 900000msec = 15min
+                let currentTimeMs = (new Date()).getTime();
+                if ((currentTimeMs - localStorage['lastTimeMs']) > 903000 && localStorage['olderTweets'] !== undefined){ // 900000msec = 15min
                     // execute only when chrome return sleep mode and not first boot
-                    console.log('return sleep');
-                    var new_urls = getURLdiff(JSON.parse(localStorage['older_tweets']), tweets);
-                    if (localStorage['auto_open'] === 'on') {                        
+                    let newURLs = getURLdiff(JSON.parse(localStorage['olderTweets']), tweets);
+                    if (localStorage['autoOpen'] === 'on') {                        
                         if (localStorage['sound'] === 'on'){
-                            if (new_urls.length === 0) {
+                            if (newURLs.length === 0) {
                                 speak('I don\'t have new URL', '新着URLはありません');
                             } else {
-                                speak('I open new '+new_urls.length+' URL', new_urls.length+'つの新着URLを開きます');
+                                speak('I open new '+newURLs.length+' URL', newURLs.length+'つの新着URLを開きます');
                             }
                         }
 
-                        for (var i = 0; i < new_urls.length; i++) {
-                            window.open(new_urls[i]);
+                        for (newURL of newURLs) {
+                            window.open(newURL);
                         }
 
                     } else { // off or undefined(default)
-                        localStorage['new_urls'] = JSON.stringify(new_urls);
+                        localStorage['newURLs'] = JSON.stringify(newURLs);
                     }
                 }
 
-                localStorage['older_tweets'] = JSON.stringify(tweets);
+                localStorage['olderTweets'] = JSON.stringify(tweets);
             }
         },
         'error': function(xhr) {
@@ -530,18 +496,18 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
                 localStorage.removeItem('access_token');
 
             } else if (xhr.status === 429) { // for reach API limit
-            	var root = $('<div>').attr('class', 'error');
+            	let root = $('<div>').attr('class', 'error');
                 root.append('Sorry, request exceeded the API limit.<br/>Please try it later.');
                 $(elm).append(root);
 
             } else if (xhr.status === 500) {
-                var root = $('<div>').attr('class', 'error');
+                let root = $('<div>').attr('class', 'error');
                 root.append('Sorry, something in Twitter is technically wrong.<br/>Please try it later.');
                 $(elm).append(root);
 
 
             } else {
-            	var root = $('<div>').attr('class', 'error');
+            	let root = $('<div>').attr('class', 'error');
                 root.append(xhr.status + ' error!<br/>Please try it later.');
                 $(elm).append(root);
             }
@@ -550,42 +516,42 @@ Twitter.prototype.fetchFavorites = function(elm, userID) {
 };
 
 
-function checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc) {
-    var judge_remove = 0;
-    var urls = tweet.entities.urls;
-    if (urls.length > 0) { //url in tweet exist?
-    	for (var i = 0; i < urls.length; i++) {
+function checkURL(tweet, removePic, removeMovie, removeTweet, removeLoc) {
+    let removeCount = 0;
+    let tweetURLs = tweet.entities.urls;
+    if (tweetURLs.length > 0) { // url in tweet exist?
+    	for (let i = 0; i < tweetURLs.length; i++) {
         	// removing URL of picture service
-        	if (remove_pic !== 'off' &&
-            /^pic\.twitter|^twitpic\.com|^instagram\.com\/p|^p\.twipple|^pckles\.com|^facebook\.com\/photo|^ift\.tt|^path\.com\/p/.test(urls[i].display_url)) {
-                judge_remove++;
+        	if (removePic !== 'off' &&
+            /^pic\.twitter|^twitpic\.com|^instagram\.com\/p|^p\.twipple|^pckles\.com|^facebook\.com\/photo|^ift\.tt|^path\.com\/p/.test(tweetURLs[i].display_url)) {
+                removeCount++;
                 break;
 
             // removing URL of movie service
-            } else if (remove_movie !== 'off' &&
-            /^instagram\.com\/m|^youtu\.be|^youtube\.com|^nico\.ms|^vimeo\.com|^veoh\.com|^v\.youku|^ustre\.am|dailymotion\.com\/video|^dai.ly/.test(urls[i].display_url)) {
-                judge_remove++;
+            } else if (removeMovie !== 'off' &&
+            /^instagram\.com\/m|^youtu\.be|^youtube\.com|^nico\.ms|^vimeo\.com|^veoh\.com|^v\.youku|^ustre\.am|dailymotion\.com\/video|^dai.ly/.test(tweetURLs[i].display_url)) {
+                removeCount++;
                 break;
 
             // removing URL of tweet
-            } else if (remove_twi !== 'off' &&
-                       /^twitter\.com/.test(urls[i].display_url)) {
-                judge_remove++;
+            } else if (removeTweet !== 'off' &&
+                       /^twitter\.com/.test(tweetURLs[i].display_url)) {
+                removeCount++;
                 break;
 
             // removing URL of location service
-            } else if (remove_loc !== 'off' &&
-                       /^4sq\.com|^swarmapp.com\/c/.test(urls[i].display_url)) {
-                judge_remove++;
+            } else if (removeLoc !== 'off' &&
+                       /^4sq\.com|^swarmapp.com\/c/.test(tweetURLs[i].display_url)) {
+                removeCount++;
                 break;
             }
         }
         
-    } else { //url not in tweet exist?
-        judge_remove++;
+    } else { // url not in tweet exist?
+        removeCount++;
     }
     
-    if (judge_remove === 0) {
+    if (removeCount === 0) {
     	return true;
     } else {
         return false;
@@ -594,82 +560,70 @@ function checkURL(tweet, remove_pic, remove_movie, remove_twi, remove_loc) {
 
 
 function normalizeTweetText(tweet) {
-    var text = tweet.text;
-    var entities = tweet.entities;
+    let text = tweet.text;
+    let entities = tweet.entities;
 
-    if (_.isObject(tweet)) {
-        if (_.isArray(entities.hashtags)) {
-            entities.hashtags.forEach(function(hashtag) {
-                text = text.replace(
-                    '#' + hashtag.text,
-                    '<a href="http://twitter.com/search/' + encodeURIComponent('#' + hashtag.text) + '"target="_blank">#' + hashtag.text + '</a>'
-                );
-            });
-        }
-
-        if (_.isArray(entities.media)) {
-            entities.media.forEach(function(media) {
-                if (localStorage['displayURL'] != 'original'){ // none or brief
-                        text = text.replace(
-                        media.url,
-                        '<a href=' + media.media_url_https + '"target="_blank">' + media.display_url + '</a>'
-                    );
-
-                } else { // original
-                    text = text.replace(
-                        media.url,
-                        '<a href=' + media.media_url_https + '"target="_blank">' + media.expanded_url + '</a>'
-                    );
-                }
-            });
-        }
-
-        if (_.isArray(entities.urls) > 0) {
-            entities.urls.forEach(function(url) {
-                if (localStorage['displayURL'] != 'original'){ // none or brief
-                    text = text.replace(
-                        url.url,
-                        '<a href="' + url.expanded_url + '"target="_blank">' + url.display_url + '</a>'
-                    );
-                } else { // original   
-                    text = text.replace(
-                        url.url,
-                        '<a href="' + url.expanded_url + '"target="_blank">' + url.expanded_url + '</a>'
-                    );
-                }
-            });
-        }
-
-        if (_.isArray(entities.user_mentions)) {
-            entities.user_mentions.forEach(function(mention) {
-                text = text.replace(
-                    '@' + mention.screen_name,
-                    '<a href="https://twitter.com/' + mention.screen_name + '" target="_blank">@' + mention.screen_name + '</a>'
-                );
-            });
-        }
-
-        return text;
-    } else {
-        throw new Error('argument isn`t prototype of String');
+    if (Array.isArray(entities.hashtags)) {
+        entities.hashtags.forEach(function(hashtag) {
+            text = text.replace(
+                '#' + hashtag.text,
+                '<a href=\'http://twitter.com/search/' + encodeURIComponent('#' + hashtag.text) + '\'target=\'_blank\'>#' + hashtag.text + '</a>'
+            );
+        });
     }
+
+    if (Array.isArray(entities.media)) {
+        entities.media.forEach(function(media) {
+            if (localStorage['displayURL'] != 'original'){ // none or brief
+                    text = text.replace(
+                    media.url,
+                    '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.display_url + '</a>'
+                );
+
+            } else { // original
+                text = text.replace(
+                    media.url,
+                    '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.expanded_url + '</a>'
+                );
+            }
+        });
+    }
+
+    if (Array.isArray(entities.urls) > 0) {
+        entities.urls.forEach(function(url) {
+            if (localStorage['displayURL'] != 'original'){ // none or brief
+                text = text.replace(
+                    url.url,
+                    '<a href=\'' + url.expanded_url + '\' target=\'_blank\'>' + url.display_url + '</a>'
+                );
+            } else { // original   
+                text = text.replace(
+                    url.url,
+                    '<a href=\'' + url.expanded_url + '\' target=\'_blank\'>' + url.expanded_url + '</a>'
+                );
+            }
+        });
+    }
+
+    if (Array.isArray(entities.user_mentions)) {
+        entities.user_mentions.forEach(function(mention) {
+            text = text.replace(
+                '@' + mention.screen_name,
+                '<a href=\'https://twitter.com/' + mention.screen_name + '\' target=\'_blank\'>@' + mention.screen_name + '</a>'
+            );
+        });
+    }
+
+    return text;
 }
 
 
 function normalizeDateTime(date) {
-    if (_.isDate(date)) {
-        return date.getFullYear() + '/' + zeroPadding(date.getMonth() + 1) + '/' + zeroPadding(date.getDate()) + ' ' + zeroPadding(date.getHours()) + ':' + zeroPadding(date.getMinutes()) + ':' + zeroPadding(date.getSeconds());
-    } else {
-        throw new Error('argument isn`t prototype of Date');
-    }
-}
-
-function zeroPadding(n) {
-    if (_.isNumber(n)) {
-        if (String(n).length == 1) {
-            return '0' + n;
-        }
-    }
-
-    return n;
+    let year = date.getFullYear();
+    let month = ('00' + (date.getMonth() + 1)).slice(-2);
+    let day = ('00' + date.getDate()).slice(-2);
+    let hour = ('00' + date.getHours()).slice(-2);
+    let min = ('00' + date.getMinutes()).slice(-2);
+    let sec = ('00' + date.getSeconds()).slice(-2);
+    return year + '/' + month + '/' + day + ' ' + hour + ':' + min + ':' + sec;
 }

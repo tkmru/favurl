@@ -1,25 +1,27 @@
-(function(undefined) {
-    var bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
-        var twitter = bgPage.getTwitterAPI();
+'use strict';
 
-        $("#login").click(function() {
+(function(undefined) {
+    let bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
+        let twitter = bgPage.getTwitterAPI();
+
+        $('#login').click(function() {
             twitter.login();
         });
 
-        $("#logout").click(function() {
+        $('#logout').click(function() {
             twitter.logout();
             location.reload();
         });
 
-        $("#open_newurl").click(function() {
+        $('#open_newurl').click(function() {
             twitter.openNewURLsOnPopup();        
         });
 
         $('#search').click(function() {
-            var userID = $("#userID").val();
+            let userID = $('#userID').val();
             if (userID !== '' && userID !== ' --- Please put target user ID. ---') {
-                $("#search-contents").css('margin', '0px');                
-                twitter.fetchFavorites($("#search-contents"), userID);
+                $('#search-contents').css('margin', '0px');                
+                twitter.fetchFavorites($('#search-contents'), userID);
                 $('#userID').val('');
                 $('#userID').hide();
                 $('#search').hide();
@@ -30,9 +32,9 @@
         });
 
         if (twitter.isAuthenticated()) {
-            $("#login").css('display', 'none');
-            $("#tweet-contents").show();
-            twitter.fetchFavorites($("#tweet-contents"));
+            $('#login').css('display', 'none');
+            $('#tweet-contents').show();
+            twitter.fetchFavorites($('#tweet-contents'));
         
         } else {
             $('#login').css('display', 'block');
@@ -43,15 +45,15 @@
 })();
 
 
-$("#logo").click(function() {
-    window.open("https:/twitter.com");
+$('#logo').click(function() {
+    window.open('https:/twitter.com');
 });
 
-$("#option").click(function() {
-    window.open("chrome-extension://" + chrome.i18n.getMessage("@@extension_id") + "/options.html");
+$('#option').click(function() {
+    window.open('chrome-extension://' + chrome.i18n.getMessage('@@extension_id') + '/options.html');
 });
 
-$("#refresh").click(function() {
+$('#refresh').click(function() {
     location.reload();
 });
 
@@ -99,57 +101,54 @@ $('#userID').focus(function(){
     }
 });
 
-var konamikan=[];
-var image = document.createElement("img");
-image.src = "images/Twitter_logo.png";
+let konamikan = [];
+let image = document.createElement('img');
+image.src = 'images/Twitter_logo.png';
 
-var canvas = document.getElementById('logo');
-var ctx = canvas.getContext('2d');
+let canvas = document.getElementById('logo');
+let ctx = canvas.getContext('2d');
 
 image.onload = function(){
-    // 2d context の取得
     ctx.drawImage(image, 0, 0, 18, 14.63);
 }
 
-function doRotate(ctx, img, delay, i){
+function doRotate(ctx, img, delay, i) {
     setTimeout(function () {
         ctx.save();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.translate(canvas.width/2, canvas.height/2);
         ctx.rotate((Math.PI/9)*i); 
-        ctx.drawImage(img, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height); //draw the image ;)
+        ctx.drawImage(img, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height); // draw the image
         ctx.restore(); //restore the state of canvas
     }, delay);
 }
 
-$(window).keyup(function(e){
+$(window).keyup(function(e) {
     konamikan.push(e.keyCode);
-    console.log(e.keyCode);
     if (konamikan.slice(-10).toString()=='38,38,40,40,37,39,37,39,66,65'){
-        var delay = 40;
-        for(var i=1; i<=18; i++){
+        let delay = 40;
+        for(let i = 1; i <= 18; i++) {
             doRotate(ctx, image, delay, i);
             delay += 40;
         }
     }
 });
 
-$(document).ready(function(){
-    $(window).unload(function(){
-        $("#header").show();
-        $("#login").css('display', 'none');
-        $("#tweet-contents").show();
-        $("#tweet-form").hide();
-        console.log('close');
+$(document).ready(function() {
+    $(window).unload(function() {
+        $('#header').show();
+        $('#login').css('display', 'none');
+        $('#tweet-contents').show();
+        $('#tweet-form').hide();
     });
 
 
-    if (localStorage['auto_open'] === 'on'){
+    if (localStorage['auto_open'] === 'on') {
         $('#open_newurl').hide();
         $('#logo').css('margin-right', '248px');
     }
 
-    if (localStorage['sound'] !== 'on'){ // off or None
+    if (localStorage['sound'] !== 'on') { // off or None
         $('#toSoundON').show();
         $('#toSoundOFF').hide();
     } else {
@@ -157,4 +156,3 @@ $(document).ready(function(){
         $('#toSoundON').hide();
     }
 });
-
