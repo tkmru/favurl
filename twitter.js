@@ -25,12 +25,11 @@ Twitter.prototype.getUserID = function() {
 };
 
 Twitter.prototype.parseToken = function(data) {
-    if (typeof data === 'string' || data instanceof String {
+    if (typeof data === 'string' || data instanceof String) {
         let parsedToken = {};
 
         data.split('&').forEach(function(token) {
             let kv = token.split('=');
-
             parsedToken[kv[0]] = kv[1];
         });
 
@@ -440,7 +439,7 @@ Twitter.prototype.fetchFavorites = function(elm, userID='') {
                         ),
                         $('<div>').attr('class', 'tweet-info').append(
                             $('<ul>').append(
-                                $('<li>').append($('<a>').attr('href', 'javascript:void(0)').text(tweet.source)),
+                                $('<li>').append(source), 
                                 $('<li>').append(
                                     $('<a>').attr(
                                         'href',
@@ -521,28 +520,28 @@ function checkURL(tweet, removePic, removeMovie, removeTweet, removeLoc) {
     let removeCount = 0;
     let tweetURLs = tweet.entities.urls;
     if (tweetURLs.length > 0) { // url in tweet exist?
-    	for (tweet_url of tweetURLs) {
+    	for (let i = 0; i < tweetURLs.length; i++) {
         	// removing URL of picture service
         	if (removePic !== 'off' &&
-            /^pic\.twitter|^twitpic\.com|^instagram\.com\/p|^p\.twipple|^pckles\.com|^facebook\.com\/photo|^ift\.tt|^path\.com\/p/.test(tweet_url.display_url)) {
+            /^pic\.twitter|^twitpic\.com|^instagram\.com\/p|^p\.twipple|^pckles\.com|^facebook\.com\/photo|^ift\.tt|^path\.com\/p/.test(tweetURLs[i].display_url)) {
                 removeCount++;
                 break;
 
             // removing URL of movie service
             } else if (removeMovie !== 'off' &&
-            /^instagram\.com\/m|^youtu\.be|^youtube\.com|^nico\.ms|^vimeo\.com|^veoh\.com|^v\.youku|^ustre\.am|dailymotion\.com\/video|^dai.ly/.test(tweet_url.display_url)) {
+            /^instagram\.com\/m|^youtu\.be|^youtube\.com|^nico\.ms|^vimeo\.com|^veoh\.com|^v\.youku|^ustre\.am|dailymotion\.com\/video|^dai.ly/.test(tweetURLs[i].display_url)) {
                 removeCount++;
                 break;
 
             // removing URL of tweet
             } else if (removeTweet !== 'off' &&
-                       /^twitter\.com/.test(tweet_url.display_url)) {
+                       /^twitter\.com/.test(tweetURLs[i].display_url)) {
                 removeCount++;
                 break;
 
             // removing URL of location service
             } else if (removeLoc !== 'off' &&
-                       /^4sq\.com|^swarmapp.com\/c/.test(tweet_url.display_url)) {
+                       /^4sq\.com|^swarmapp.com\/c/.test(tweetURLs[i].display_url)) {
                 removeCount++;
                 break;
             }
@@ -595,12 +594,12 @@ function normalizeTweetText(tweet) {
             if (localStorage['displayURL'] != 'original'){ // none or brief
                 text = text.replace(
                     url.url,
-                    '<a href='' + url.expanded_url + ''target='_blank'>' + url.display_url + '</a>'
+                    '<a href=\'' + url.expanded_url + '\' target=\'_blank\'>' + url.display_url + '</a>'
                 );
             } else { // original   
                 text = text.replace(
                     url.url,
-                    '<a href='' + url.expanded_url + ''target='_blank'>' + url.expanded_url + '</a>'
+                    '<a href=\'' + url.expanded_url + '\' target=\'_blank\'>' + url.expanded_url + '</a>'
                 );
             }
         });
