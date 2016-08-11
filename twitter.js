@@ -630,19 +630,11 @@ function normalizeTweetText(tweet) {
 
 
 function normalizeDateTime(date) {
-    if (_.isDate(date)) {
-        return date.getFullYear() + '/' + zeroPadding(date.getMonth() + 1) + '/' + zeroPadding(date.getDate()) + ' ' + zeroPadding(date.getHours()) + ':' + zeroPadding(date.getMinutes()) + ':' + zeroPadding(date.getSeconds());
-    } else {
-        throw new Error('argument isn\'t prototype of Date');
-    }
-}
-
-function zeroPadding(n) {
-    if (_.isNumber(n)) {
-        if (String(n).length == 1) {
-            return '0' + n;
-        }
-    }
-
-    return n;
+    let year = date.getFullYear();
+    let month = ('00' + (date.getMonth() + 1)).slice(-2);
+    let day = ('00' + date.getDate()).slice(-2);
+    let hour = ('00' + date.getHours()).slice(-2);
+    let min = ('00' + date.getMinutes()).slice(-2);
+    let sec = ('00' + date.getSeconds()).slice(-2);
+    return year + '/' + month + '/' + day + ' ' + hour + ':' + min + ':' + sec;
 }
