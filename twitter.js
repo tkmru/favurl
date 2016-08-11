@@ -382,10 +382,8 @@ Twitter.prototype.openNewURLsOnPopup = function() {
 }
 
 
-Twitter.prototype.fetchFavorites = function(elm, userID) {
+Twitter.prototype.fetchFavorites = function(elm, userID='') {
 	// https://dev.twitter.com/docs/api/1.1/get/favorites/list
-
-    userID = userID || ''; // set default arg
 
     let message = {
         'method': 'GET',
