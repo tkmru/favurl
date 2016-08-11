@@ -9,23 +9,23 @@ let Twitter = function() {};
 Twitter.prototype.getAccessToken = function() {
     let accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
 
-    return _.isString(accessToken) ? accessToken : null;
+    return (typeof accessToken === 'string' || accessToken instanceof String) ? accessToken : null;
 };
 
 Twitter.prototype.getAccessTokenSecret = function() {
     let accessTokenSecret = localStorage.getItem(ACCESS_TOKEN_SECRET_STORAGE_KEY);
 
-    return _.isString(accessTokenSecret) ? accessTokenSecret : null;
+    return (typeof accessTokenSecret === 'string' || accessTokenSecret instanceof String) ? accessTokenSecret : null;
 };
 
 Twitter.prototype.getUserID = function() {
-    let userid = Number(localStorage.getItem(TWITTER_USER_ID_STORAGE_KEY));
+    let userID = Number(localStorage.getItem(TWITTER_USER_ID_STORAGE_KEY));
 
-    return (_.isNumber(userid) && !_.isNaN(userid)) ? userid : null;
+    return (Number.isInteger(userID) && !Number.isNaN(userID)) ? userID : null;
 };
 
 Twitter.prototype.parseToken = function(data) {
-    if (_.isString(data)) {
+    if (typeof data === 'string' || data instanceof String {
         let parsedToken = {};
 
         data.split('&').forEach(function(token) {
@@ -148,7 +148,7 @@ Twitter.prototype.logout = function() {
 
 
 Twitter.prototype.isAuthenticated = function() {
-    return !_.isNull(this.getAccessToken()) && !_.isNull(this.getAccessTokenSecret()) && _.isNumber(this.getUserID()) ? true : false;
+    return (!Object.is(this.getAccessToken(), null) && !Object.is(this.getAccessTokenSecret(), null) && !Object.is(this.getUserID(), null)) ? true : false;
 };
 
 
@@ -427,12 +427,6 @@ Twitter.prototype.fetchFavorites = function(elm, userID='') {
                     let source = $(tweet.source);
                     let id = tweet.id
 
-                    if (_.isObject(source) && _.isElement(source[0])) {
-                        source.attr('target', '_blank');
-                    } else {
-                        source = $('<a>').attr('href', 'javascript:void(0)').text(tweet.source);
-                    }
-
                     let tweetView = $('<div>').attr('class', 'tweet').append(
                         $('<div>').attr('class', 'tweet-icon').append(
                             $('<img>').attr('src', user.profile_image_url_https)
@@ -446,7 +440,7 @@ Twitter.prototype.fetchFavorites = function(elm, userID='') {
                         ),
                         $('<div>').attr('class', 'tweet-info').append(
                             $('<ul>').append(
-                                $('<li>').append(source),
+                                $('<li>').append($('<a>').attr('href', 'javascript:void(0)').text(tweet.source)),
                                 $('<li>').append(
                                     $('<a>').attr(
                                         'href',
@@ -570,62 +564,58 @@ function normalizeTweetText(tweet) {
     let text = tweet.text;
     let entities = tweet.entities;
 
-    if (_.isObject(tweet)) {
-        if (_.isArray(entities.hashtags)) {
-            entities.hashtags.forEach(function(hashtag) {
-                text = text.replace(
-                    '#' + hashtag.text,
-                    '<a href=\'http://twitter.com/search/' + encodeURIComponent('#' + hashtag.text) + '\'target=\'_blank\'>#' + hashtag.text + '</a>'
-                );
-            });
-        }
-
-        if (_.isArray(entities.media)) {
-            entities.media.forEach(function(media) {
-                if (localStorage['displayURL'] != 'original'){ // none or brief
-                        text = text.replace(
-                        media.url,
-                        '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.display_url + '</a>'
-                    );
-
-                } else { // original
-                    text = text.replace(
-                        media.url,
-                        '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.expanded_url + '</a>'
-                    );
-                }
-            });
-        }
-
-        if (_.isArray(entities.urls) > 0) {
-            entities.urls.forEach(function(url) {
-                if (localStorage['displayURL'] != 'original'){ // none or brief
-                    text = text.replace(
-                        url.url,
-                        '<a href='' + url.expanded_url + ''target='_blank'>' + url.display_url + '</a>'
-                    );
-                } else { // original   
-                    text = text.replace(
-                        url.url,
-                        '<a href='' + url.expanded_url + ''target='_blank'>' + url.expanded_url + '</a>'
-                    );
-                }
-            });
-        }
-
-        if (_.isArray(entities.user_mentions)) {
-            entities.user_mentions.forEach(function(mention) {
-                text = text.replace(
-                    '@' + mention.screen_name,
-                    '<a href=\'https://twitter.com/' + mention.screen_name + '\' target=\'_blank\'>@' + mention.screen_name + '</a>'
-                );
-            });
-        }
-
-        return text;
-    } else {
-        throw new Error('argument isn\'t prototype of String');
+    if (Array.isArray(entities.hashtags)) {
+        entities.hashtags.forEach(function(hashtag) {
+            text = text.replace(
+                '#' + hashtag.text,
+                '<a href=\'http://twitter.com/search/' + encodeURIComponent('#' + hashtag.text) + '\'target=\'_blank\'>#' + hashtag.text + '</a>'
+            );
+        });
     }
+
+    if (Array.isArray(entities.media)) {
+        entities.media.forEach(function(media) {
+            if (localStorage['displayURL'] != 'original'){ // none or brief
+                    text = text.replace(
+                    media.url,
+                    '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.display_url + '</a>'
+                );
+
+            } else { // original
+                text = text.replace(
+                    media.url,
+                    '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.expanded_url + '</a>'
+                );
+            }
+        });
+    }
+
+    if (Array.isArray(entities.urls) > 0) {
+        entities.urls.forEach(function(url) {
+            if (localStorage['displayURL'] != 'original'){ // none or brief
+                text = text.replace(
+                    url.url,
+                    '<a href='' + url.expanded_url + ''target='_blank'>' + url.display_url + '</a>'
+                );
+            } else { // original   
+                text = text.replace(
+                    url.url,
+                    '<a href='' + url.expanded_url + ''target='_blank'>' + url.expanded_url + '</a>'
+                );
+            }
+        });
+    }
+
+    if (Array.isArray(entities.user_mentions)) {
+        entities.user_mentions.forEach(function(mention) {
+            text = text.replace(
+                '@' + mention.screen_name,
+                '<a href=\'https://twitter.com/' + mention.screen_name + '\' target=\'_blank\'>@' + mention.screen_name + '</a>'
+            );
+        });
+    }
+
+    return text;
 }
 
 
