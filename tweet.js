@@ -52,24 +52,24 @@
     });
 })();
 
-function speak(en_words, ja_words) {
+function speak(enWords, jaWords) {
     let msg;
 
     if (localStorage['lang'] === 'ja'){
-        msg = new SpeechSynthesisUtterance(ja_words);
+        msg = new SpeechSynthesisUtterance(jaWords);
         msg.lang = 'ja-JP';
 
     } else if (localStorage['lang'] === 'en') {
-        msg = new SpeechSynthesisUtterance(en_words);
+        msg = new SpeechSynthesisUtterance(enWords);
         msg.lang = 'en-US';
 
     } else if (navigator.language === 'ja') {
         localStorage['lang'] === 'ja';
-        msg = new SpeechSynthesisUtterance(ja_words);
+        msg = new SpeechSynthesisUtterance(jaWords);
         msg.lang = 'ja-JP';
 
     } else {
-        msg = new SpeechSynthesisUtterance(en_words);
+        msg = new SpeechSynthesisUtterance(enWords);
         msg.lang = 'en-US';
     }
 

@@ -101,7 +101,7 @@ $('#userID').focus(function(){
     }
 });
 
-let konamikan=[];
+let konamikan = [];
 let image = document.createElement('img');
 image.src = 'images/Twitter_logo.png';
 

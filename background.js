@@ -73,19 +73,19 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
 
 chrome.tabs.onCreated.addListener(function() {
-    check_returnSleep();
+    checkReturnSleep();
 });
 
 chrome.tabs.onRemoved.addListener(function() {
-    check_returnSleep();
+    checkReturnSleep();
 });
 
 chrome.tabs.onUpdated.addListener(function() {
-    check_returnSleep();
+    checkReturnSleep();
 });
 
 
-function check_returnSleep(){
+function checkReturnSleep(){
     let currentTimeMs = (new Date()).getTime();
     if ((currentTimeMs - localStorage['lastTimeMs']) > 903000){ // 900000msec = 15min
         // execute only when chrome return sleep mode
