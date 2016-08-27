@@ -41,7 +41,6 @@
   },
   "permissions": [
     "https://api.twitter.com/*",
-    "http://*/*",
     "background",
     "alarms",
     "contextMenus",
