@@ -8,19 +8,16 @@ let Twitter = function() {};
 
 Twitter.prototype.getAccessToken = function() {
   let accessToken = localStorage[ACCESS_TOKEN_STORAGE_KEY];
-
   return (typeof accessToken === 'string' || accessToken instanceof String) ? accessToken : null;
 };
 
 Twitter.prototype.getAccessTokenSecret = function() {
   let accessTokenSecret = localStorage[ACCESS_TOKEN_SECRET_STORAGE_KEY];
-
   return (typeof accessTokenSecret === 'string' || accessTokenSecret instanceof String) ? accessTokenSecret : null;
 };
 
 Twitter.prototype.getUserID = function() {
   let userID = Number(localStorage[TWITTER_USER_ID_STORAGE_KEY]);
-
   return (Number.isInteger(userID) && !Number.isNaN(userID)) ? userID : null;
 };
 
@@ -292,17 +289,7 @@ Twitter.prototype.getNewURLs = function() {
     'success': function(new_tweets) {
 
       let olderTweets = JSON.parse(localStorage.olderTweets);
-      if (!olderTweets) { // There isn't old tweet, old_tweets.tweets is undefined
-        if (localStorage.notification !== 'off') {
-          chrome.windows.create({
-            url : 'notSetOldTweet.html',
-            focused : true,
-            type : 'popup',
-            height : 107,
-            width : 398
-          });
-        }
-      } else {
+      if (olderTweets) {
         let newURLs = getURLdiff(olderTweets, new_tweets);
         localStorage.newURLs = JSON.stringify(newURLs);
         if (newURLs.length !== 0) {
@@ -372,13 +359,13 @@ Twitter.prototype.openNewURLsOnPopup = function() {
       }
     }
 
-    for (newURL of newURLs) {
+    for (var newURL of newURLs) {
       window.open(newURL);
     }
   }
 
   localStorage.newURLs = JSON.stringify([]);
-}
+};
 
 
 Twitter.prototype.fetchFavorites = function(elm, userID='') {
