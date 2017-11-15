@@ -10,7 +10,7 @@ if (pinArea !== null && document.referrer.match(/oauth_consumer_key=([^&]+)/)) {
                          'line-height': '40px',
                          'text-align': 'left'
             });
-            
+
             if (isSuccess === true) {
                 pinArea.html('Congratulations, you\'ve been successfully authenticated. <br>Enjoy favurl!');
             } else {

@@ -1,6 +1,5 @@
-'use strict';
-
 (function(undefined) {
+  'use strict';
   let bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
     let twitter = bgPage.getTwitterAPI();
 
@@ -113,6 +112,7 @@ image.onload = function(){
 }
 
 function doRotate(ctx, img, delay, i) {
+  'use strict';
   setTimeout(function () {
     ctx.save();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -124,6 +124,7 @@ function doRotate(ctx, img, delay, i) {
 }
 
 $(window).keyup(function(e) {
+  'use strict';
   konamikan.push(e.keyCode);
   if (konamikan.slice(-10).toString()=='38,38,40,40,37,39,37,39,66,65'){
     let delay = 40;
