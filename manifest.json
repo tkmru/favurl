@@ -16,7 +16,7 @@
   "content_scripts": [
     {
       "matches": ["https://twitter.com/oauth/authorize", "https://api.twitter.com/oauth/authorize"],
-      "js": ["library/jquery-2.1.1.min.js", "const.js", "content_script.js"],
+      "js": ["js/library/jquery-2.1.1.min.js", "js/const.js", "js/content_script.js"],
       "run_at": "document_idle"
     }
   ],
@@ -30,12 +30,12 @@
   },
   "background": {
     "scripts":  [
-      "library/jquery-2.1.1.min.js",
-      "library/sha1.js",
-      "library/oauth.js",
-      "const.js",
-      "twitter.js",
-      "background.js"
+      "js/library/jquery-2.1.1.min.js",
+      "js/library/sha1.js",
+      "js/library/oauth.js",
+      "js/const.js",
+      "js/twitter.js",
+      "js/background.js"
     ],
     "persistent": false
   },
