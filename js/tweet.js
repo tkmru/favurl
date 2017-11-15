@@ -28,7 +28,7 @@
                         $('body').html(result.errors[0].code + ' error. ');
                     }
 
-                    if(localStorage['sound'] === 'on'){
+                    if(localStorage.sound === 'on'){
                         speak('failed in posting tweet.', 'ふぁぼゆーあーるえるのツイートに失敗しました。');
                     }
 
@@ -39,7 +39,7 @@
                 } else {
                     $('body').html('Success!');
                     $('body').css('font-size', '23px');
-                    if(localStorage['sound'] === 'on'){
+                    if(localStorage.sound === 'on'){
                         speak('Succeeded in posting tweet.', 'ふぁぼゆーあーるえるをツイートしました。');
                     }
                     setTimeout(function(){
@@ -54,16 +54,16 @@
 function speak(enWords, jaWords) {
     let msg;
 
-    if (localStorage['lang'] === 'ja'){
+    if (localStorage.lang === 'ja'){
         msg = new SpeechSynthesisUtterance(jaWords);
         msg.lang = 'ja-JP';
 
-    } else if (localStorage['lang'] === 'en') {
+    } else if (localStorage.lang === 'en') {
         msg = new SpeechSynthesisUtterance(enWords);
         msg.lang = 'en-US';
 
     } else if (navigator.language === 'ja') {
-        localStorage['lang'] === 'ja';
+        localStorage.lang === 'ja';
         msg = new SpeechSynthesisUtterance(jaWords);
         msg.lang = 'ja-JP';
 

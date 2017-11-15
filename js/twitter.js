@@ -117,7 +117,7 @@ Twitter.prototype.sign = function(pin, cb) {
             let params = this.parseToken(data);
 
             this.save(params.oauth_token, params.oauth_token_secret, params.user_id);
-            if (localStorage['sound'] === 'on') {
+            if (localStorage.sound === 'on') {
                 speak('hello', '今日からよろしくお願いします');
             }
             cb(true);
@@ -138,7 +138,7 @@ Twitter.prototype.save = function(accessToken, accessTokenSecret, userid) {
 
 
 Twitter.prototype.logout = function() {
-    if (localStorage['sound'] === 'on') {
+    if (localStorage.sound === 'on') {
         speak('good bye', 'twitterを一緒に戦えて嬉しかったです');
     }
     localStorage.clear();
@@ -179,7 +179,7 @@ Twitter.prototype.saveFavorites = function() {
         'url': OAuth.addToURL(message.action, message.parameters),
         'dataType': 'json',
         'success': function(tweets) {
-            localStorage['olderTweets'] = JSON.stringify(tweets);
+            localStorage.olderTweets = JSON.stringify(tweets);
         }
     });
 }
@@ -218,10 +218,10 @@ Twitter.prototype.tweet = function(text) {
 
 function getURLdiff(old_tweets, new_tweets) {
     let added_tweets = new_tweets.filter(x => old_tweets.indexOf(x) < 0 );
-    let removePic = localStorage['removePic']; //on or off(set by optionpage) or undefined(not set)
-    let removeMovie = localStorage['removeMovie']; //on or off(set by optionpage) or undefined(not set)
-    let removeTweet = localStorage['removeTweet']; //on or off(set by optionpage) or undefined(not set)
-    let removeLoc = localStorage['removeLoc']; //on or off(set by optionpage) or undefined(not set)
+    let removePic = localStorage.removePic; //on or off(set by optionpage) or undefined(not set)
+    let removeMovie = localStorage.removeMovie; //on or off(set by optionpage) or undefined(not set)
+    let removeTweet = localStorage.removeTweet; //on or off(set by optionpage) or undefined(not set)
+    let removeLoc = localStorage.removeLoc; //on or off(set by optionpage) or undefined(not set)
 
     let newURLs = [];
     for (added_tweet of added_tweets) { // extract url from new_tweets
@@ -240,16 +240,16 @@ function getURLdiff(old_tweets, new_tweets) {
 function speak(en_words, ja_words) {
     let msg;
 
-    if (localStorage['lang'] === 'ja'){
+    if (localStorage.lang === 'ja'){
         msg = new SpeechSynthesisUtterance(ja_words);
         msg.lang = 'ja-JP';
 
-    } else if (localStorage['lang'] === 'en') {
+    } else if (localStorage.lang === 'en') {
         msg = new SpeechSynthesisUtterance(en_words);
         msg.lang = 'en-US';
 
     } else if (navigator.language === 'ja') {
-        localStorage['lang'] === 'ja';
+        localStorage.lang === 'ja';
         msg = new SpeechSynthesisUtterance(ja_words);
         msg.lang = 'ja-JP';
 
@@ -291,9 +291,9 @@ Twitter.prototype.getNewURLs = function() {
         'dataType': 'json',
         'success': function(new_tweets) {
 
-            let olderTweets = JSON.parse(localStorage['olderTweets']);
+            let olderTweets = JSON.parse(localStorage.olderTweets);
             if (!olderTweets) { // There isn't old tweet, old_tweets.tweets is undefined
-                if (localStorage['notification'] !== 'off') {
+                if (localStorage.notification !== 'off') {
                     chrome.windows.create({
                         url : 'notSetOldTweet.html',
                         focused : true,
@@ -304,9 +304,9 @@ Twitter.prototype.getNewURLs = function() {
                 }
             } else {
                 let newURLs = getURLdiff(olderTweets, new_tweets);
-                localStorage['newURLs'] = JSON.stringify(newURLs);
+                localStorage.newURLs = JSON.stringify(newURLs);
                 if (newURLs.length !== 0) {
-                    if (localStorage['notification'] !== 'off' && localStorage['autoOpen'] !== 'on') {
+                    if (localStorage.notification !== 'off' && localStorage.autoOpen !== 'on') {
                         chrome.windows.create({
                             url : 'getNewFavURL.html',
                             focused : true,
@@ -316,31 +316,31 @@ Twitter.prototype.getNewURLs = function() {
                         });
                     }
 
-                    if (localStorage['sound'] === 'on' ) {
+                    if (localStorage.sound === 'on' ) {
                         speak('You have new ' + newURLs.length + ' URL', newURLs.length+'つの新着URLがあります');    
                     }
 
-                } else if (localStorage['sound'] === 'on' ) {
+                } else if (localStorage.sound === 'on' ) {
                     speak('I don\'t have new URL', '新着URLはありません');
                 }
 
-                if (localStorage['autoOpen'] === 'on') {
+                if (localStorage.autoOpen === 'on') {
                     for (newURL of newURLs) {
                         window.open(newURL);
                     }
-                    localStorage['newURLs'] = JSON.stringify([]); // for disable open url button  
+                    localStorage.newURLs = JSON.stringify([]); // for disable open url button  
                 }
             }
 
-            localStorage['olderTweets'] = JSON.stringify(new_tweets);
+            localStorage.olderTweets = JSON.stringify(new_tweets);
         },
 
         'error': function(xhr) {
-            if (localStorage['sound'] === 'on') {
+            if (localStorage.sound === 'on') {
                 speak('I\'m sorry, I failed to get favorites.', 'Twitterに接続できません');
             }
 
-            if(localStorage['notification'] !== 'off'){
+            if(localStorage.notification !== 'off'){
                 chrome.windows.create({
                     url : 'failToGetFav.html',
                     focused : true,
@@ -356,15 +356,15 @@ Twitter.prototype.getNewURLs = function() {
 
 
 Twitter.prototype.openNewURLsOnPopup = function() {
-    let newURLs = localStorage['newURLs'];
+    let newURLs = localStorage.newURLs;
 
     if (newURLs === undefined){
-        if (localStorage['sound'] === 'on') {    
+        if (localStorage.sound === 'on') {    
             speak('This function is enabled next time', 'この機能は次回起動時よりご利用いただけます');
         }
     } else {
         newURLs = JSON.parse(newURLs);
-        if (localStorage['sound'] === 'on') { 
+        if (localStorage.sound === 'on') { 
             if (newURLs.length === 0) {
                 speak('I don\'t have new URL', '新着URLはありません');
             } else {
@@ -377,7 +377,7 @@ Twitter.prototype.openNewURLsOnPopup = function() {
         }
     }
 
-    localStorage['newURLs'] = JSON.stringify([]);
+    localStorage.newURLs = JSON.stringify([]);
 }
 
 
@@ -413,10 +413,10 @@ Twitter.prototype.fetchFavorites = function(elm, userID='') {
         'success': function(tweets) {
 
             let root = $('<div>').attr('class', 'tweets');
-            let removePic = localStorage['removePic']; // on or off(set by optionpage) or undefined(not set)
-            let removeMovie = localStorage['removeMovie']; // on or off(set by optionpage) or undefined(not set)
-	        let removeTweet = localStorage['removeTweet']; // on or off(set by optionpage) or undefined(not set)
-	        let removeLoc = localStorage['removeLoc']; // on or off(set by optionpage) or undefined(not set)
+            let removePic = localStorage.removePic; // on or off(set by optionpage) or undefined(not set)
+            let removeMovie = localStorage.removeMovie; // on or off(set by optionpage) or undefined(not set)
+	        let removeTweet = localStorage.removeTweet; // on or off(set by optionpage) or undefined(not set)
+	        let removeLoc = localStorage.removeLoc; // on or off(set by optionpage) or undefined(not set)
             	
             tweets.forEach(function(tweet) {
             	
@@ -463,11 +463,11 @@ Twitter.prototype.fetchFavorites = function(elm, userID='') {
 
             if (userID === '') { // in case get myID's tweet
                 let currentTimeMs = (new Date()).getTime();
-                if ((currentTimeMs - localStorage['lastTimeMs']) > 903000 && localStorage['olderTweets'] !== undefined){ // 900000msec = 15min
+                if ((currentTimeMs - localStorage.lastTimeMs) > 903000 && localStorage.olderTweets !== undefined){ // 900000msec = 15min
                     // execute only when chrome return sleep mode and not first boot
-                    let newURLs = getURLdiff(JSON.parse(localStorage['olderTweets']), tweets);
-                    if (localStorage['autoOpen'] === 'on') {                        
-                        if (localStorage['sound'] === 'on'){
+                    let newURLs = getURLdiff(JSON.parse(localStorage.olderTweets), tweets);
+                    if (localStorage.autoOpen === 'on') {                        
+                        if (localStorage.sound === 'on'){
                             if (newURLs.length === 0) {
                                 speak('I don\'t have new URL', '新着URLはありません');
                             } else {
@@ -480,15 +480,15 @@ Twitter.prototype.fetchFavorites = function(elm, userID='') {
                         }
 
                     } else { // off or undefined(default)
-                        localStorage['newURLs'] = JSON.stringify(newURLs);
+                        localStorage.newURLs = JSON.stringify(newURLs);
                     }
                 }
 
-                localStorage['olderTweets'] = JSON.stringify(tweets);
+                localStorage.olderTweets = JSON.stringify(tweets);
             }
         },
         'error': function(xhr) {
-            if (localStorage['sound'] === 'on') {
+            if (localStorage.sound === 'on') {
                 speak('Sorry, I can\'t get favorites', 'すみません、ふぁぼを取得できませんでした。');
         	}
             // https://dev.twitter.com/docs/error-codes-responses
@@ -520,35 +520,35 @@ function checkURL(tweet, removePic, removeMovie, removeTweet, removeLoc) {
     let removeCount = 0;
     let tweetURLs = tweet.entities.urls;
     if (tweetURLs.length > 0) { // url in tweet exist?
-    	for (let i = 0; i < tweetURLs.length; i++) {
+    	for (let i = 0; i < tweetURLs.length; i += 1) {
         	// removing URL of picture service
         	if (removePic !== 'off' &&
             /^pic\.twitter|^twitpic\.com|^instagram\.com\/p|^p\.twipple|^pckles\.com|^facebook\.com\/photo|^ift\.tt|^path\.com\/p/.test(tweetURLs[i].display_url)) {
-                removeCount++;
+                removeCount += 1;
                 break;
 
             // removing URL of movie service
             } else if (removeMovie !== 'off' &&
             /^instagram\.com\/m|^youtu\.be|^youtube\.com|^nico\.ms|^vimeo\.com|^veoh\.com|^v\.youku|^ustre\.am|dailymotion\.com\/video|^dai.ly/.test(tweetURLs[i].display_url)) {
-                removeCount++;
+                removeCount += 1;
                 break;
 
             // removing URL of tweet
             } else if (removeTweet !== 'off' &&
                        /^twitter\.com/.test(tweetURLs[i].display_url)) {
-                removeCount++;
+                removeCount += 1;
                 break;
 
             // removing URL of location service
             } else if (removeLoc !== 'off' &&
                        /^4sq\.com|^swarmapp.com\/c/.test(tweetURLs[i].display_url)) {
-                removeCount++;
+                removeCount += 1;
                 break;
             }
         }
         
     } else { // url not in tweet exist?
-        removeCount++;
+        removeCount += 1;
     }
     
     if (removeCount === 0) {
@@ -574,7 +574,7 @@ function normalizeTweetText(tweet) {
 
     if (Array.isArray(entities.media)) {
         entities.media.forEach(function(media) {
-            if (localStorage['displayURL'] != 'original'){ // none or brief
+            if (localStorage.displayURL != 'original'){ // none or brief
                     text = text.replace(
                     media.url,
                     '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.display_url + '</a>'
@@ -591,7 +591,7 @@ function normalizeTweetText(tweet) {
 
     if (Array.isArray(entities.urls) > 0) {
         entities.urls.forEach(function(url) {
-            if (localStorage['displayURL'] != 'original'){ // none or brief
+            if (localStorage.displayURL != 'original'){ // none or brief
                 text = text.replace(
                     url.url,
                     '<a href=\'' + url.expanded_url + '\' target=\'_blank\'>' + url.display_url + '</a>'

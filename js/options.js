@@ -20,81 +20,81 @@ let langRadioJp = document.getElementsByName('lang_radio_jp');
 
 
 movie_radio_en[0].onclick = movie_radio_jp[0].onclick = function() {
-    localStorage['removeMovie'] = 'on';
+    localStorage.removeMovie = 'on';
 }
 
 movie_radio_en[1].onclick = movie_radio_jp[1].onclick = function() {
-    localStorage['removeMovie'] = 'off';
+    localStorage.removeMovie = 'off';
 }
 
 
 pic_radio_en[0].onclick = pic_radio_jp[0].onclick = function() {
-    localStorage['removePic'] = 'on';
+    localStorage.removePic = 'on';
 }
 
 pic_radio_en[1].onclick = pic_radio_jp[1].onclick = function() {
-    localStorage['removePic'] = 'off';
+    localStorage.removePic = 'off';
 }
 
 
 twiRadioEn[0].onclick = twiRadioJp[0].onclick = function() {
-    localStorage['removeTwi'] = 'on';
+    localStorage.removeTwi = 'on';
 }
 
 twiRadioEn[1].onclick = twiRadioJp[1].onclick = function() {
-    localStorage['removeTwi'] = 'off';
+    localStorage.removeTwi = 'off';
 }
 
 
 loc_radio_en[0].onclick = locRadioJp[0].onclick = function() {
-    localStorage['removeLoc'] = 'on';
+    localStorage.removeLoc = 'on';
 }
 
 loc_radio_en[1].onclick = locRadioJp[1].onclick = function() {
-    localStorage['removeLoc'] = 'off';
+    localStorage.removeLoc = 'off';
 }
 
 
 autoOpenEn[0].onclick = autoOpenJp[0].onclick = function() {
-    localStorage['autoOpen'] = 'on';
+    localStorage.autoOpen = 'on';
 }
 
 autoOpenEn[1].onclick = autoOpenJp[1].onclick = function() {
-    localStorage['autoOpen'] = 'off';
+    localStorage.autoOpen = 'off';
 }
 
 
 displayURLEn[0].onclick = displayURLJp[0].onclick = function(){
-    localStorage['displayURL'] = 'brief';
+    localStorage.displayURL = 'brief';
 }
 
 displayURLEn[1].onclick = displayURLJp[1].onclick = function(){
-    localStorage['displayURL'] = 'original';    
+    localStorage.displayURL = 'original';    
 }
 
 
 notificationEn[0].onclick = notificationJp[0].onclick = function(){
-    localStorage['notification'] = 'on';
+    localStorage.notification = 'on';
 }
 
 notificationEn[1].onclick = notificationJp[1].onclick = function(){
-    localStorage['notification'] = 'off';
+    localStorage.notification = 'off';
 }
 
 
 langRadioEn[0].onclick = langRadioJp[0].onclick = function() {
-    localStorage['lang'] = 'en';
+    localStorage.lang = 'en';
     location.reload();
 }
 
 langRadioEn[1].onclick = langRadioJp[1].onclick = function() {
-    localStorage['lang'] = 'ja';
+    localStorage.lang = 'ja';
     location.reload();
 }
 
 
 window.addEventListener('load',function(event){
-    switch(localStorage['removeMovie']) {
+    switch(localStorage.removeMovie) {
         case 'on':
             movie_radio_en[0].checked = movie_radio_jp[0].checked = true;
             break;
@@ -108,7 +108,7 @@ window.addEventListener('load',function(event){
             break;
     }
     
-    switch(localStorage['removePic']) {
+    switch(localStorage.removePic) {
         case 'on':
             pic_radio_en[0].checked = pic_radio_jp[0].checked = true;
             break;
@@ -122,7 +122,7 @@ window.addEventListener('load',function(event){
             break;
     }
 
-    switch(localStorage['removeTwi']) {
+    switch(localStorage.removeTwi) {
         case 'on':
             twiRadioEn[0].checked = twiRadioJp[0].checked = true;
             break;
@@ -136,7 +136,7 @@ window.addEventListener('load',function(event){
             break;
     }
 
-    switch(localStorage['removeLoc']) {
+    switch(localStorage.removeLoc) {
         case 'on':
             loc_radio_en[0].checked = locRadioJp[0].checked = true;
             break;
@@ -150,7 +150,7 @@ window.addEventListener('load',function(event){
             break;
     }
 
-    switch(localStorage['autoOpen']) {
+    switch(localStorage.autoOpen) {
         case 'on':
             autoOpenEn[0].checked = autoOpenJp[0].checked = true;
             break;
@@ -164,7 +164,7 @@ window.addEventListener('load',function(event){
             break;
     }
 
-    switch(localStorage['displayURL']){
+    switch(localStorage.displayURL){
         case 'brief':
             displayURLEn[0].checked = displayURLJp[0].checked = true;
             break;
@@ -178,7 +178,7 @@ window.addEventListener('load',function(event){
             break;            
     }
 
-    switch(localStorage['notification']){
+    switch(localStorage.notification){
         case 'on':
             notificationEn[0].checked = notificationJp[0].checked = true;
             break;
@@ -192,7 +192,7 @@ window.addEventListener('load',function(event){
             break;            
     }
 
-    switch(localStorage['lang']) {
+    switch(localStorage.lang) {
         case 'en':
             langRadioEn[0].checked = langRadioJp[0].checked = true;
             break;
@@ -204,12 +204,12 @@ window.addEventListener('load',function(event){
         default:
             switch(navigator.language) { // for browzer language setting
                 case 'ja':
-                    localStorage['lang'] = 'ja'
+                    localStorage.lang = 'ja'
                     langRadioEn[1].checked = langRadioJp[1].checked = true;
                     break;
                     
                 default:
-                    localStorage['lang'] = 'en'
+                    localStorage.lang = 'en'
                     langRadioEn[0].checked = langRadioJp[0].checked = true;
                     break;
             }

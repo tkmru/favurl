@@ -58,7 +58,7 @@ chrome.runtime.onStartup.addListener(function() {
     }
     // event occur every 15 minutes
     chrome.alarms.create('save', { periodInMinutes: 15 });
-    localStorage['lastTime'] = (new Date()).getTime();
+    localStorage.lastTime = (new Date()).getTime();
 });
 
 
@@ -67,7 +67,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         if (getTwitterAPI().isAuthenticated) {
             getTwitterAPI().saveFavorites();
         }
-        localStorage['lastTime'] = (new Date()).getTime();
+        localStorage.lastTime = (new Date()).getTime();
     }
 });
 
@@ -87,7 +87,7 @@ chrome.tabs.onUpdated.addListener(function() {
 
 function checkReturnSleep(){
     let currentTimeMs = (new Date()).getTime();
-    if ((currentTimeMs - localStorage['lastTimeMs']) > 903000){ // 900000msec = 15min
+    if ((currentTimeMs - localStorage.lastTimeMs) > 903000){ // 900000msec = 15min
         // execute only when chrome return sleep mode
         if (getTwitterAPI().isAuthenticated) {
             getTwitterAPI().getNewURLs();
@@ -98,5 +98,5 @@ function checkReturnSleep(){
         chrome.alarms.create('save', { periodInMinutes: 15 });
     }
 
-    localStorage['lastTimeMs'] = currentTimeMs;
+    localStorage.lastTimeMs = currentTimeMs;
 }

@@ -79,13 +79,13 @@ $('#back').click(function() {
 });
 
 $('#toSoundOFF').click(function(){
-  localStorage['sound'] = 'off';
+  localStorage.sound = 'off';
   $('#toSoundOFF').hide();
   $('#toSoundON').show('fast');
 });
 
 $('#toSoundON').click(function(){
-  localStorage['sound'] = 'on';
+  localStorage.sound = 'on';
   $('#toSoundON').hide();
   $('#toSoundOFF').show('fast');
 });
@@ -127,7 +127,7 @@ $(window).keyup(function(e) {
   konamikan.push(e.keyCode);
   if (konamikan.slice(-10).toString()=='38,38,40,40,37,39,37,39,66,65'){
     let delay = 40;
-    for(let i = 1; i <= 18; i++) {
+    for(let i = 1; i <= 18; i += 1) {
       doRotate(ctx, image, delay, i);
       delay += 40;
     }
@@ -143,12 +143,12 @@ $(document).ready(function() {
   });
 
 
-  if (localStorage['auto_open'] === 'on') {
+  if (localStorage.auto_open === 'on') {
     $('#open_newurl').hide();
     $('#logo').css('margin-right', '248px');
   }
 
-  if (localStorage['sound'] !== 'on') { // off or None
+  if (localStorage.sound !== 'on') { // off or None
     $('#toSoundON').show();
     $('#toSoundOFF').hide();
   } else {
