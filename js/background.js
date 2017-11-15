@@ -1,6 +1,6 @@
 'use strict';
 
-let api = null;
+var api = null;
 
 // This function is called by popup.js
 function getTwitterAPI() {
@@ -18,8 +18,8 @@ chrome.runtime.onMessage.addListener(function(req, sender, res) {
     return true;
 });
 
-let url = '';
-let title = '';
+var url = '';
+var title = '';
 
 chrome.contextMenus.onClicked.addListener(function(info, tab){
     if (info.menuItemId == 'jumpTweetWindow'){
@@ -55,7 +55,7 @@ chrome.runtime.onStartup.addListener(function() {
     // chrome.tabs.executeScript(null, {code: 'console.log('abc');'}, null);
     if (getTwitterAPI().isAuthenticated()) {
         getTwitterAPI().getNewURLs();
-    }   
+    }
     // event occur every 15 minutes
     chrome.alarms.create('save', { periodInMinutes: 15 });
     localStorage['lastTime'] = (new Date()).getTime();
@@ -91,12 +91,12 @@ function checkReturnSleep(){
         // execute only when chrome return sleep mode
         if (getTwitterAPI().isAuthenticated) {
             getTwitterAPI().getNewURLs();
-        }    
+        }
         // alarm often don't work when return sleep.
         chrome.alarms.clear('save');
         // event occur every 15 minutes
         chrome.alarms.create('save', { periodInMinutes: 15 });
     }
-    
+
     localStorage['lastTimeMs'] = currentTimeMs;
 }

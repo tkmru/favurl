@@ -3,7 +3,7 @@
 (function(undefined) {
     let bgPage = chrome.runtime.getBackgroundPage(function(bgPage) {
        	let twitter = bgPage.getTwitterAPI();
-        let initText = bgPage.title + ' ' + bgPage.url + ' #favurl';
+        let initText = bgPage.title + ' ' + bgPage.url;
         $('#tweet-area').val(initText);
 
         let tweetLength = twttr.txt.getTweetLength(initText);
@@ -21,7 +21,7 @@
                     let errorCode = result.errors[0].code;
                     if (errorCode === 226) {
                         $('body').html(result.errors[0].code + ' error. ' +
-                            'This request looks like it might be automated. ' + 
+                            'This request looks like it might be automated. ' +
                             ' Please try again later.'
                         );
                     } else {
@@ -90,4 +90,3 @@ $('#tweet-area').keyup(function(){
 $('#tweet-area').hover(function(){
     $('#tweet-area').focus();
 });
-
