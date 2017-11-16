@@ -4,24 +4,34 @@
 	<meta charset='UTF-8'>
     <title>tweet favurl</title>
     <style type="text/css">
-        #under-contents{
-            width: 100%;
-            display: -webkit-box;
+        #tweet-area {
+            resize: none;
+            width: 98%; 
+            height: 45px;
+            padding: 1%;
+        }
+
+        #under-contents {
             padding-top: 8px;
+            overflow: hidden;
         }
 
         #inputlength {
-            width: 332px;
             font-size: 20px;
+            float: left;
         }
 
         #tweet-button {
-            width: 50px;
+            float: right;
+        }
+
+        body{
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
-    <textarea id='tweet-area' rows='4' cols='60'></textarea>
+    <textarea id='tweet-area'></textarea>
     <div id="under-contents">
         <div id="inputlength">0</div>
         <input type='submit' value='tweet' id='tweet-button'>

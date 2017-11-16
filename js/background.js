@@ -24,12 +24,17 @@ chrome.contextMenus.onClicked.addListener(function(info, tab){
     if(getTwitterAPI().isAuthenticated()){
       url = tab.url; // for twitter.js
       title = tab.title; // for twitter.js
+      let windowHeight = 107;
+      let windowWidth = 450;
+      if (navigator.platform.indexOf("Win") != -1) {
+        windowHeight = 140;
+      }
       chrome.windows.create({
         url : 'tweet.html',
         focused : true,
         type : 'popup',
-        height : 107,
-        width : 398
+        height : windowHeight,
+        width : windowWidth
       });
     } else {
       alert('Please login to twitter.');
