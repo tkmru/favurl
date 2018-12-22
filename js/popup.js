@@ -56,7 +56,7 @@ $('#toSearch').click(function() {
   $('#toSearch').hide();
   $('#back').show('fast');
   $('#tweet-contents > .tweets').css('display', 'none');
-  if ($('#tweet-contents > .error').size() === 0) { //not diplay  error
+  if ($('#tweet-contents > .error').length === 0) {
     $('#search-contents').show();
   }
 });
@@ -120,7 +120,7 @@ $(window).keyup(function(e) {
 });
 
 $(document).ready(function() {
-  $(window).unload(function() {
+  $(window).on("unload", function() {
     $('#header').show();
     $('#login').css('display', 'none');
     $('#tweet-contents').show();

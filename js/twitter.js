@@ -452,34 +452,19 @@ function normalizeTweetText(tweet) {
 
   if (Array.isArray(entities.media)) {
     entities.media.forEach(function(media) {
-      if (localStorage.displayURL != 'original'){ // none or brief
-          text = text.replace(
-          media.url,
-          '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.display_url + '</a>'
-        );
-
-      } else { // original
-        text = text.replace(
-          media.url,
-          '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.expanded_url + '</a>'
-        );
-      }
+      text = text.replace(
+        media.url,
+        '<a href=' + media.media_url_https + '\'target=\'_blank\'>' + media.display_url + '</a>'
+      );
     });
   }
 
   if (Array.isArray(entities.urls) > 0) {
     entities.urls.forEach(function(url) {
-      if (localStorage.displayURL != 'original'){ // none or brief
-        text = text.replace(
-          url.url,
-          '<a href=\'' + url.expanded_url + '\' target=\'_blank\'>' + url.display_url + '</a>'
-        );
-      } else { // original
-        text = text.replace(
-          url.url,
-          '<a href=\'' + url.expanded_url + '\' target=\'_blank\'>' + url.expanded_url + '</a>'
-        );
-      }
+      text = text.replace(
+        url.url,
+        '<a href=\'' + url.expanded_url + '\' target=\'_blank\'>' + url.display_url + '</a>'
+      );
     });
   }
 

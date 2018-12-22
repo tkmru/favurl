@@ -23,7 +23,7 @@ const ACCESS_TOKEN_SECRET_STORAGE_KEY = 'access-token-secret';
 
 ## Included Library
 
-- jquery-2.1.1.min.js (http://jquery.com/download/)
+- jquery-3.3.1.min.js (http://jquery.com/download/)
 - oauth.js (https://oauth.googlecode.com/svn/code/javascript/oauth.js)
 - sha1-min.js (http://pajhome.org.uk/crypt/md5/scripts.html)
 - twitter-text-tweetlength.js (https://gist.github.com/tsmd/7069883)

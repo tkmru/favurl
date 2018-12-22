@@ -4,14 +4,12 @@ let movieRadioEn = document.getElementsByName('movie_radio_en');
 let picRadioEn = document.getElementsByName('pic_radio_en');
 let twiRadioEn = document.getElementsByName('twi_radio_en');
 let locRadioEn = document.getElementsByName('loc_radio_en');
-let displayURLEn = document.getElementsByName('displayURL_en');
 let langRadioEn = document.getElementsByName('lang_radio_en');
 
 let movieRadioJp = document.getElementsByName('movie_radio_jp');
 let picRadioJp = document.getElementsByName('pic_radio_jp');
 let twiRadioJp = document.getElementsByName('twi_radio_jp');
 let locRadioJp = document.getElementsByName('loc_radio_jp');
-let displayURLJp = document.getElementsByName('displayURL_jp');
 let langRadioJp = document.getElementsByName('lang_radio_jp');
 
 
@@ -50,14 +48,6 @@ locRadioEn[1].onclick = locRadioJp[1].onclick = function() {
   localStorage.removeLoc = 'off';
 }
 
-
-displayURLEn[0].onclick = displayURLJp[0].onclick = function(){
-  localStorage.displayURL = 'brief';
-}
-
-displayURLEn[1].onclick = displayURLJp[1].onclick = function(){
-  localStorage.displayURL = 'original';
-}
 
 langRadioEn[0].onclick = langRadioJp[0].onclick = function() {
   localStorage.lang = 'en';
@@ -124,20 +114,6 @@ window.addEventListener('load',function(event){
 
     default:
       locRadioEn[0].checked = locRadioJp[0].checked = true;
-      break;
-  }
-
-  switch(localStorage.displayURL){
-    case 'brief':
-      displayURLEn[0].checked = displayURLJp[0].checked = true;
-      break;
-
-    case 'original':
-      displayURLEn[1].checked = displayURLJp[1].checked = true;
-      break;
-
-    default:
-      displayURLEn[0].checked = displayURLJp[0].checked = true;
       break;
   }
 
