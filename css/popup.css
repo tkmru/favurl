@@ -37,8 +37,8 @@ body {
 
 #logo {
   margin-top: 7px;
-  margin-left: 6px;
-  margin-right: 226px;
+  margin-left: 10px;
+  margin-right: 270px;
   vertical-align: top;
 }
 
@@ -46,7 +46,7 @@ body {
   opacity: 0.5;
 }
 
-#option,#logout,#open_newurl,#toSearch,#toSoundON,#toSoundOFF {
+#option,#logout,#toSearch {
   margin-top: 5px;
   vertical-align: top;
 }

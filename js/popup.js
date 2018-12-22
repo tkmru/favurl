@@ -12,10 +12,6 @@
       location.reload();
     });
 
-    $('#open_newurl').click(function() {
-      twitter.openNewURLsOnPopup();
-    });
-
     $('#search').click(function() {
       let userID = $('#userID').val();
       if (userID !== '' && userID !== ' --- Please put target user ID. ---') {
@@ -77,18 +73,6 @@ $('#back').click(function() {
   $('#search-contents').css('margin', '10px 5px');
 });
 
-$('#toSoundOFF').click(function(){
-  localStorage.sound = 'off';
-  $('#toSoundOFF').hide();
-  $('#toSoundON').show('fast');
-});
-
-$('#toSoundON').click(function(){
-  localStorage.sound = 'on';
-  $('#toSoundON').hide();
-  $('#toSoundOFF').show('fast');
-});
-
 $('#userID').hover(function(){
   $('#userID').focus();
 });
@@ -142,18 +126,4 @@ $(document).ready(function() {
     $('#tweet-contents').show();
     $('#tweet-form').hide();
   });
-
-
-  if (localStorage.auto_open === 'on') {
-    $('#open_newurl').hide();
-    $('#logo').css('margin-right', '248px');
-  }
-
-  if (localStorage.sound !== 'on') { // off or None
-    $('#toSoundON').show();
-    $('#toSoundOFF').hide();
-  } else {
-    $('#toSoundOFF').show();
-    $('#toSoundON').hide();
-  }
 });

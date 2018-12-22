@@ -4,18 +4,14 @@ let movieRadioEn = document.getElementsByName('movie_radio_en');
 let picRadioEn = document.getElementsByName('pic_radio_en');
 let twiRadioEn = document.getElementsByName('twi_radio_en');
 let locRadioEn = document.getElementsByName('loc_radio_en');
-let autoOpenEn = document.getElementsByName('auto_open_en');
 let displayURLEn = document.getElementsByName('displayURL_en');
-let notificationEn = document.getElementsByName('notification_en');
 let langRadioEn = document.getElementsByName('lang_radio_en');
 
 let movieRadioJp = document.getElementsByName('movie_radio_jp');
 let picRadioJp = document.getElementsByName('pic_radio_jp');
 let twiRadioJp = document.getElementsByName('twi_radio_jp');
 let locRadioJp = document.getElementsByName('loc_radio_jp');
-let autoOpenJp = document.getElementsByName('auto_open_jp');
 let displayURLJp = document.getElementsByName('displayURL_jp');
-let notificationJp = document.getElementsByName('notification_jp');
 let langRadioJp = document.getElementsByName('lang_radio_jp');
 
 
@@ -55,15 +51,6 @@ locRadioEn[1].onclick = locRadioJp[1].onclick = function() {
 }
 
 
-autoOpenEn[0].onclick = autoOpenJp[0].onclick = function() {
-  localStorage.autoOpen = 'on';
-}
-
-autoOpenEn[1].onclick = autoOpenJp[1].onclick = function() {
-  localStorage.autoOpen = 'off';
-}
-
-
 displayURLEn[0].onclick = displayURLJp[0].onclick = function(){
   localStorage.displayURL = 'brief';
 }
@@ -71,16 +58,6 @@ displayURLEn[0].onclick = displayURLJp[0].onclick = function(){
 displayURLEn[1].onclick = displayURLJp[1].onclick = function(){
   localStorage.displayURL = 'original';
 }
-
-
-notificationEn[0].onclick = notificationJp[0].onclick = function(){
-  localStorage.notification = 'on';
-}
-
-notificationEn[1].onclick = notificationJp[1].onclick = function(){
-  localStorage.notification = 'off';
-}
-
 
 langRadioEn[0].onclick = langRadioJp[0].onclick = function() {
   localStorage.lang = 'en';
@@ -150,20 +127,6 @@ window.addEventListener('load',function(event){
       break;
   }
 
-  switch(localStorage.autoOpen) {
-    case 'on':
-      autoOpenEn[0].checked = autoOpenJp[0].checked = true;
-      break;
-
-    case 'off':
-      autoOpenEn[1].checked = autoOpenJp[1].checked = true;
-      break;
-
-    default:
-      autoOpenEn[1].checked = autoOpenJp[1].checked = true;
-      break;
-  }
-
   switch(localStorage.displayURL){
     case 'brief':
       displayURLEn[0].checked = displayURLJp[0].checked = true;
@@ -175,20 +138,6 @@ window.addEventListener('load',function(event){
 
     default:
       displayURLEn[0].checked = displayURLJp[0].checked = true;
-      break;
-  }
-
-  switch(localStorage.notification){
-    case 'on':
-      notificationEn[0].checked = notificationJp[0].checked = true;
-      break;
-
-    case 'off':
-      notificationEn[1].checked = notificationJp[1].checked = true;
-      break;
-
-    default:
-      notificationEn[1].checked = notificationJp[1].checked = true;
       break;
   }
 
