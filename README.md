@@ -6,6 +6,11 @@ This display favorite tweet with URL.
 
 This is useful when you add tweet to favorite by reason of see URL later.
 
+![login](./screenshot/login.png)
+![popup](./screenshot/popup.png)
+![showTweetWindow](./screenshot/showTweetWindow.png)
+![tweetWindow](./screenshot/tweetWindow.png)
+
 ## Install
 
 Get it at the [chrome web store](https://chrome.google.com/webstore/detail/favurl/bkgheafjpigbhblaobcdfobilcmpjglb?utm_source=chrome-ntp-icon)
