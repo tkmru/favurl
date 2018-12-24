@@ -8,10 +8,13 @@ This is useful when you add tweet to favorite by reason of see URL later.
 
 ![login](./screenshot/login.png)
 ![popup](./screenshot/popup.png)
+
+It also has the ability to tweet URL.
+
 ![showTweetWindow](./screenshot/showTweetWindow.png)
 ![tweetWindow](./screenshot/tweetWindow.png)
 
-## Install
+## Installation
 
 Get it at the [chrome web store](https://chrome.google.com/webstore/detail/favurl/bkgheafjpigbhblaobcdfobilcmpjglb?utm_source=chrome-ntp-icon)
 
@@ -38,7 +41,7 @@ const ACCESS_TOKEN_SECRET_STORAGE_KEY = 'access-token-secret';
 
 https://github.com/kinjouj/chrome-extension-twitter-oauth-demo
 
-## License
+# License
 MIT License
 
 Copyright @tkmru
